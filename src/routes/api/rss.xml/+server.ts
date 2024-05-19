@@ -1,4 +1,4 @@
-import { siteTitle, siteDescription, siteURL, siteLink } from '$lib/config'
+import { siteDescription, siteLink, siteTitle, siteURL } from '$lib/config'
 import type { RequestHandler } from '@sveltejs/kit'
 
 export const prerender = true

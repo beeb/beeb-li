@@ -9,6 +9,7 @@ export const load = async ({ params }) => {
 			meta: { ...post.metadata, slug: params.post },
 		}
 	} catch (err) {
-		error(404, err)
+		console.error(err)
+		error(404, 'post not found')
 	}
 }
