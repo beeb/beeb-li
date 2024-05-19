@@ -5,7 +5,7 @@ import { redirect } from '@sveltejs/kit'
 export const load = async ({ fetch, params }) => {
 	const page = Number.parseInt(params.page ?? '1')
 
-	// Keeps from duplicationg the blog index route as page 1
+	// Keeps from duplicating the blog index route as page 1
 	if (page <= 1) {
 		redirect(301, '/blog')
 	}
