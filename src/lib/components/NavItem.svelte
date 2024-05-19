@@ -1,5 +1,5 @@
 <script>
-	import { currentPage, isMenuOpen } from '../assets/js/store';
+	import { currentPage, isMenuOpen } from "../assets/store";
 
 	export let href;
 
@@ -17,7 +17,7 @@
 		{href}
 		on:click={maybeCloseMenu}
 		class:active={isCurrentPage}
-		aria-current={isCurrentPage ? 'page' : false}
+		aria-current={isCurrentPage ? "page" : false}
 	>
 		<slot />
 	</a>

@@ -9,10 +9,9 @@ export const csr = true
 export const load = async ({ url }) => {
 	try {
 		return {
-			path: url.pathname
+			path: url.pathname,
 		}
-	}
-	catch(err) {
-		error(500, err);
+	} catch (err) {
+		error(500, err)
 	}
 }
