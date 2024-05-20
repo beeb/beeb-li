@@ -4,10 +4,11 @@
 	import Header from "$lib/components/Header.svelte";
 	import Footer from "$lib/components/Footer.svelte";
 	import { currentPage, isMenuOpen } from "../lib/assets/store";
-	import { navItems, siteTitle, siteURL } from "$lib/config";
+	import { navItems, siteTitle } from "$lib/config";
 	import { preloadCode } from "$app/navigation";
 	import { onMount } from "svelte";
 	import { fade } from "svelte/transition";
+
 	export let data;
 
 	const transitionIn = { delay: 150, duration: 150 };
@@ -37,7 +38,7 @@
 		rel="alternate"
 		type="application/rss+xml"
 		title={siteTitle}
-		href="http://{siteURL}/api/rss.xml"
+		href={`http://${data.host}/api/rss.xml`}
 	/>
 </svelte:head>
 

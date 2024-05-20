@@ -36,14 +36,14 @@ const render = (baseUrl: string, posts: PostData[]) => `<?xml version="1.0" enco
 <channel>
 <title>${siteTitle}</title>
 <description>${siteDescription}</description>
-<link>https://${baseUrl}</link>
-<atom:link href="https://${baseUrl}/api/rss.xml" rel="self" type="application/rss+xml"/>
+<link>${baseUrl}</link>
+<atom:link href="${baseUrl}/api/rss.xml" rel="self" type="application/rss+xml"/>
 ${posts
 	.map(
 		(post) => `<item>
-<guid isPermaLink="true">https://${baseUrl}/blog/${post.slug}</guid>
+<guid isPermaLink="true">${baseUrl}/blog/${post.slug}</guid>
 <title>${post.title}</title>
-<link>https://${baseUrl}/blog/${post.slug}</link>
+<link>${baseUrl}/blog/${post.slug}</link>
 <description>${post.excerpt}</description>
 <pubDate>${new Date(post.date).toUTCString()}</pubDate>
 </item>`,
