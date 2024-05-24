@@ -1,13 +1,13 @@
 ---
-title: "First Article"
-date: "2024-05-19"
-updated: "2024-05-19"
+title: 'First Article'
+date: '2024-05-19T21:47:00Z'
+updated: ''
 categories:
-  - "default"
-#coverImage: "/images/jefferson-santos-fCEJGBzAkrU-unsplash.jpg"
-#coverWidth: 16
-#coverHeight: 9
+  - 'default'
+#coverImage: "image.jpg"
 excerpt: This is a placeholder article
 ---
 
-# Hello
+## Subtitle
+
+Hello world!

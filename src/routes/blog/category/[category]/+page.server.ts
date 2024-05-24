@@ -1,13 +1,6 @@
-import fetchPosts from '$lib/assets/fetchPosts'
+import { redirect } from '@sveltejs/kit'
+import type { PageServerLoad } from './$types'
 
-export const load = async ({ params }) => {
-	const category = params.category
-	const options = { category, limit: -1 }
-	const { posts } = await fetchPosts(options)
-
-	return {
-		posts,
-		category,
-		total: posts.length,
-	}
+export const load: PageServerLoad = async ({ params }) => {
+	redirect(301, `/blog/category/${params.category}/page/1`)
 }

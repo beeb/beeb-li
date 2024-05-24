@@ -1,25 +1,15 @@
-export const load = async ({ url, fetch }) => {
-	const res = await fetch(`${url.origin}/api/posts.json`)
-	const posts = await res.json()
+import fetchPosts from '$lib/assets/fetchPosts'
+import type { PageServerLoad } from './$types'
 
-	const uniqueCategories = {}
+export const load: PageServerLoad = async () => {
+	const { posts } = await fetchPosts()
 
-	for (const post of posts) {
-		for (const category of post.categories) {
-			if (Object.hasOwn(uniqueCategories, category)) {
-				uniqueCategories[category].count += 1
-			} else {
-				uniqueCategories[category] = {
-					title: category,
-					count: 1,
-				}
-			}
-		}
-	}
-
-	const sortedUniqueCategories = Object.values(uniqueCategories).sort((a, b) => a.title > b.title)
+	const categories = posts
+		.flatMap((post) => post.categories)
+		.toSorted((a, b) => a.localeCompare(b))
+		.reduce((acc, category) => acc.set(category, (acc.get(category) || 0) + 1), new Map())
 
 	return {
-		uniqueCategories: sortedUniqueCategories,
+		categories,
 	}
 }

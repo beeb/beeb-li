@@ -1,3 +1,4 @@
+import fetchPosts from '$lib/assets/fetchPosts'
 import { siteDescription, siteTitle } from '$lib/config'
 import type { RequestHandler } from '@sveltejs/kit'
 
@@ -8,18 +9,9 @@ interface PostData extends PostPrelude {
 }
 
 export const GET: RequestHandler = async ({ url }) => {
-	const baseUrl = url.toString().replace('/api/rss.xml', '')
-	const data = await Promise.all(
-		Object.entries(import.meta.glob<Post>('$lib/posts/*.md')).map(async ([path, resolver]) => {
-			const { metadata } = await resolver()
-			const slug = path.split('/').pop()?.split('.').shift() ?? 'undefined'
-			return { ...metadata, slug }
-		}),
-	).then((posts) => {
-		return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-	})
+	const { posts } = await fetchPosts({ limit: -1 })
 
-	const body = render(baseUrl, data)
+	const body = render(url.origin, posts)
 	const headers = {
 		'Cache-Control': `max-age=0, s-max-age=${600}`,
 		'Content-Type': 'application/xml',

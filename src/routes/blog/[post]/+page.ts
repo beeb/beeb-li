@@ -1,8 +1,9 @@
 import { error } from '@sveltejs/kit'
+import type { PageLoad } from './$types'
 
-export const load = async ({ params }) => {
+export const load: PageLoad = async ({ params }) => {
 	try {
-		const post = await import(`../../../lib/posts/${params.post}.md`)
+		const post: Post = await import(`../../../lib/posts/${params.post}.md`)
 
 		return {
 			PostContent: post.default,
