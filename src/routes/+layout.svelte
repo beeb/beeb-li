@@ -1,6 +1,7 @@
 <!-- This is the global layout file; it "wraps" every page on the site. (Or more accurately: is the parent component to every page component on the site.) -->
 <script lang="ts">
   import '../app.css'
+  import '../prism.css'
   import Header from '$lib/components/Header.svelte'
   import Footer from '$lib/components/Footer.svelte'
   import { currentPage, isMenuOpen } from '../lib/assets/store'
