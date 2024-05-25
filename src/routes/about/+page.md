@@ -7,6 +7,8 @@
   <title>{siteTitle} - About</title>
 </svelte:head>
 
+<div class="prose">
+
 # About
 
 ```rust
@@ -29,3 +31,7 @@ assert_eq!(results, vec![
     ("path/to/baz", 3, "It's a Trap!"),
 ]);
 ```
+
+Let's try some `inline code` too!
+
+</div>
