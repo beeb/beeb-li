@@ -1,5 +1,6 @@
 <!-- This file renders each individual blog post for reading. Be sure to update the svelte:head below -->
 <script lang="ts">
+  import { siteTitle } from '$lib/config'
   import type { PageData } from './$types'
 
   export let data: PageData
@@ -9,7 +10,7 @@
 </script>
 
 <svelte:head>
-  <title>{title}</title>
+  <title>{siteTitle} - {title}</title>
   <meta data-key="description" name="description" content={excerpt} />
   <meta property="og:type" content="article" />
   <meta property="og:title" content={title} />
