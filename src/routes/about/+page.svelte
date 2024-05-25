@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-  <title>{siteTitle} - Contact</title>
+  <title>{siteTitle} - About</title>
 </svelte:head>
 
-<h1>Contact</h1>
+<h1>About</h1>

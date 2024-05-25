@@ -1,19 +1,21 @@
-<script>
-  export let data
-  const { categories } = data
+<script lang="ts">
+  import { siteTitle } from '$lib/config.js'
+  import type { PageData } from './$types'
+
+  export let data: PageData
 </script>
 
 <svelte:head>
-  <title>Blog | Categories</title>
+  <title>{siteTitle} - Blog Categories</title>
 </svelte:head>
 
 <div>
   <h1>All blog categories</h1>
 
   <ul>
-    {#each categories as [category, count]}
+    {#each data.categories as [category, count]}
       <li>
-        <a href="/blog/category/{category}">
+        <a href="/blog/category/{category}/page/1">
           {category}
         </a>
         ({count})

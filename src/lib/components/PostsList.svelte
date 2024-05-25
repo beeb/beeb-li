@@ -2,12 +2,14 @@
   export let posts: PostData[] = []
 </script>
 
-<ul class="posts-list">
+<ul>
   {#each posts as post}
     <li>
       <article>
         <a href="/blog/{post.slug}">
-          <img src={post.coverImage} alt="" />
+          {#if post.coverImage}
+            <img src={post.coverImage} alt="" />
+          {/if}
           <h2>
             {post.title}
           </h2>

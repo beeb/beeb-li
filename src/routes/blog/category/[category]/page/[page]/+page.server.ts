@@ -11,6 +11,10 @@ export const load: PageServerLoad = async ({ params }) => {
 	const category = params.category
 	const { posts, total } = await fetchPosts({ offset: (page - 1) * postsPerPage, category })
 
+	if (page > Math.ceil(total / postsPerPage)) {
+		error(404, `Invalid page number: ${page}`)
+	}
+
 	return {
 		posts,
 		category,

@@ -29,7 +29,7 @@ const render = (baseUrl: string, posts: PostData[]) => `<?xml version="1.0" enco
 <title>${siteTitle}</title>
 <description>${siteDescription}</description>
 <link>${baseUrl}</link>
-<atom:link href="${baseUrl}/api/rss.xml" rel="self" type="application/rss+xml"/>
+<atom:link href="${baseUrl}/rss.xml" rel="self" type="application/rss+xml"/>
 ${posts
 	.map(
 		(post) => `<item>

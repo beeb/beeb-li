@@ -1,6 +1,8 @@
 <!-- This file renders each individual blog post for reading. Be sure to update the svelte:head below -->
-<script>
-  export let data
+<script lang="ts">
+  import type { PageData } from './$types'
+
+  export let data: PageData
 
   const { title, excerpt, date, updated, coverImage, categories } = data.meta
   const { PostContent } = data

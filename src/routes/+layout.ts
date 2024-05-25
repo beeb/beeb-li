@@ -8,12 +8,8 @@ export const prerender = true
 export const csr = true
 
 export const load: LayoutLoad = async ({ url }) => {
-	try {
-		return {
-			path: url.pathname,
-			host: url.host,
-		}
-	} catch (err) {
-		error(500, err)
+	return {
+		path: url.pathname,
+		baseUrl: url.origin,
 	}
 }

@@ -1,24 +1,19 @@
-<script>
-	import { currentPage, isMenuOpen } from "../assets/store";
+<script lang="ts">
+  import { currentPage, isMenuOpen } from '$lib/assets/store'
 
-	export let href;
+  export let href: string
 
-	$: isCurrentPage = $currentPage.startsWith(href);
+  $: isCurrentPage = $currentPage.startsWith(href)
 
-	const maybeCloseMenu = () => {
-		if (href != $currentPage) {
-			isMenuOpen.set(false);
-		}
-	};
+  const maybeCloseMenu = () => {
+    if (href !== $currentPage) {
+      isMenuOpen.set(false)
+    }
+  }
 </script>
 
 <li>
-	<a
-		{href}
-		on:click={maybeCloseMenu}
-		class:active={isCurrentPage}
-		aria-current={isCurrentPage ? "page" : false}
-	>
-		<slot />
-	</a>
+  <a {href} on:click={maybeCloseMenu} aria-current={isCurrentPage ? 'page' : false}>
+    <slot />
+  </a>
 </li>

@@ -1,24 +1,24 @@
 import fetchPosts from '$lib/assets/fetchPosts'
 import { postsPerPage } from '$lib/config'
-import { redirect } from '@sveltejs/kit'
+import { error, redirect } from '@sveltejs/kit'
+import type { PageServerLoad } from './$types'
 
-export const load = async ({ url, params, fetch }) => {
+export const load: PageServerLoad = async ({ params }) => {
 	const page = Number.parseInt(params.page ?? '1')
+	if (page < 1) {
+		error(404, `Invalid page number: ${page}`)
+	}
 
 	// Keeps from duplicating the blog index route as page 1
-	if (page <= 1) {
+	if (page === 1) {
 		redirect(301, '/blog')
 	}
 
-	const offset = page * postsPerPage - postsPerPage
-
-	const totalPostsRes = await fetch(`${url.origin}/api/posts/count`)
-	const total = await totalPostsRes.json()
-	const { posts } = await fetchPosts({ offset })
+	const { posts, total } = await fetchPosts({ offset: (page - 1) * postsPerPage })
 
 	return {
 		posts,
 		page,
-		totalPosts: total,
+		total,
 	}
 }
