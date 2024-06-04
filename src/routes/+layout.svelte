@@ -5,13 +5,9 @@
   import Header from "$lib/components/Header.svelte";
   import Footer from "$lib/components/Footer.svelte";
   import { siteTitle } from "$lib/config";
-  import { fade } from "svelte/transition";
   import type { LayoutData } from "./$types";
 
   export let data: LayoutData;
-
-  const transitionIn = { delay: 150, duration: 150 };
-  const transitionOut = { duration: 100 };
 </script>
 
 <svelte:head>
@@ -26,12 +22,7 @@
 <div class="container mx-auto px-4">
   <Header />
   {#key data.path}
-    <main
-      id="main"
-      tabindex="-1"
-      in:fade|global={transitionIn}
-      out:fade|global={transitionOut}
-    >
+    <main id="main" tabindex="-1">
       <slot />
     </main>
   {/key}
