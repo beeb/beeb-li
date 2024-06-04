@@ -4,7 +4,8 @@ date: '2024-05-19T21:47:00Z'
 updated: ''
 categories:
   - 'default'
-coverImage: "images/test.jpg"
+coverImage: "/images/test.jpg"
+coverAlt: "An abstract photograph of a building"
 excerpt: This is a placeholder article
 ---
 

@@ -4,7 +4,8 @@
 
   export let data: PageData;
 
-  const { title, excerpt, date, updated, coverImage, categories } = data.meta;
+  const { title, excerpt, date, updated, coverImage, coverAlt, categories } =
+    data.meta;
   const { PostContent } = data;
 </script>
 
@@ -25,39 +26,58 @@
 
 <article>
   {#if coverImage}
-    <img src={coverImage} alt="" />
+    <figure class="mb-8 flex justify-center">
+      <img
+        class="rounded-lg max-h-96 w-full object-cover"
+        src={coverImage}
+        alt={coverAlt ?? ""}
+      />
+    </figure>
   {/if}
 
-  <div class="prose">
-    <h1 class="">{title}</h1>
-  </div>
+  <h1 class="text-4xl font-bold mb-6">{title}</h1>
 
-  <div>
-    <b>Published:</b>
-    {new Date(date).toLocaleDateString()}
-    {#if updated}
-      <br />
-      <b>Updated:</b>
-      {new Date(updated).toLocaleDateString()}
-    {/if}
-  </div>
+  <aside
+    class="flow-root rounded-lg border border-gray-100 py-3 shadow-sm dark:border-gray-700 mb-8"
+  >
+    <dl class="-my-3 divide-y divide-gray-100 text-sm dark:divide-gray-700">
+      <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
+        <dt class="font-medium text-gray-900 dark:text-white">Published</dt>
+        <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+          {new Date(date).toLocaleDateString()}
+        </dd>
+      </div>
+      {#if updated}
+        <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
+          <dt class="font-medium text-gray-900 dark:text-white">Updated</dt>
+          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+            {new Date(updated).toLocaleDateString()}
+          </dd>
+        </div>
+      {/if}
+      {#if categories}
+        <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
+          <dt class="font-medium text-gray-900 dark:text-white">Posted in</dt>
+          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+            <ul class="flex gap-2">
+              {#each categories as category}
+                <li>
+                  <a
+                    class="badge badge-neutral"
+                    href="/blog/category/{category}/"
+                  >
+                    {category}
+                  </a>
+                </li>
+              {/each}
+            </ul>
+          </dd>
+        </div>
+      {/if}
+    </dl>
+  </aside>
 
-  <div class="prose">
+  <div class="prose w-full max-w-full">
     <svelte:component this={PostContent} />
   </div>
-
-  {#if categories}
-    <aside>
-      <h2>Posted in:</h2>
-      <ul>
-        {#each categories as category}
-          <li>
-            <a href="/blog/category/{category}/">
-              {category}
-            </a>
-          </li>
-        {/each}
-      </ul>
-    </aside>
-  {/if}
 </article>

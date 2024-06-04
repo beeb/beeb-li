@@ -9,6 +9,7 @@ interface PostPrelude {
 	updated?: string
 	categories: string[]
 	coverImage?: string
+	coverAlt?: string
 	excerpt: string
 }
 

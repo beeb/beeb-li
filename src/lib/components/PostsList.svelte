@@ -9,7 +9,7 @@
         <article class="card md:card-side bg-base-200 shadow">
           {#if post.coverImage}
             <figure class="max-h-72 md:max-w-[50%]">
-              <img src={post.coverImage} alt="" />
+              <img src={post.coverImage} alt={post.coverAlt ?? ""} />
             </figure>
           {/if}
           <div class="card-body">
