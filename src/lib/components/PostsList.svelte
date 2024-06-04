@@ -5,19 +5,37 @@
 <ul class="flex flex-col gap-6">
   {#each posts as post}
     <li>
-      <a href="/blog/{post.slug}">
-        <article class="card md:card-side bg-base-200 shadow">
-          {#if post.coverImage}
-            <figure class="max-h-72 md:max-w-[50%]">
+      <article class="card md:card-side bg-base-200 shadow">
+        {#if post.coverImage}
+          <figure class="max-h-72 md:max-w-[50%]">
+            <a href="/blog/{post.slug}">
               <img src={post.coverImage} alt={post.coverAlt ?? ""} />
-            </figure>
-          {/if}
-          <div class="card-body">
+            </a>
+          </figure>
+        {/if}
+        <div class="card-body">
+          <a href="/blog/{post.slug}">
             <h2 class="card-title">{post.title}</h2>
-            <p>{post.excerpt}</p>
+          </a>
+          <span class="text-sm">
+            {new Date(post.date).toLocaleDateString()}
+          </span>
+          <p>{post.excerpt}</p>
+          <div class="card-actions justify-between items-end">
+            <div class="flex gap-2">
+              {#each post.categories as category}
+                <a
+                  class="badge badge-neutral"
+                  href="/blog/category/{category}/"
+                >
+                  {category}
+                </a>
+              {/each}
+            </div>
+            <a class="btn btn-neutral" href="/blog/{post.slug}">Read more</a>
           </div>
-        </article>
-      </a>
+        </div>
+      </article>
     </li>
   {/each}
 </ul>
