@@ -17,7 +17,7 @@
           <a href="/blog/{post.slug}">
             <h2 class="card-title">{post.title}</h2>
           </a>
-          <span class="text-sm">
+          <span class="text-sm opacity-80">
             {new Date(post.date).toLocaleDateString()}
           </span>
           <p>{post.excerpt}</p>
