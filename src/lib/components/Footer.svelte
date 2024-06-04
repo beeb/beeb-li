@@ -2,17 +2,6 @@
   import { siteAuthor } from "$lib/config";
 </script>
 
-<footer>
-  <nav>
-    <ul>
-      <li>
-        <a href="/rss.xml" data-sveltekit-reload>RSS</a>
-      </li>
-      <li>
-        <a href="/">Home</a>
-      </li>
-    </ul>
-  </nav>
-
+<footer class="text-center mt-6">
   <p>&copy; {new Date().getFullYear()} {siteAuthor}</p>
 </footer>

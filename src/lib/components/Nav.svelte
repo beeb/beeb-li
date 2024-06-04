@@ -15,4 +15,7 @@
 			>
 		</li>
 	{/each}
+	<li>
+		<a href="/rss.xml" data-sveltekit-reload>RSS</a>
+	</li>
 </ul>

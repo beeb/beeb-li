@@ -1,4 +1,3 @@
-<!-- This is the global layout file; it "wraps" every page on the site. (Or more accurately: is the parent component to every page component on the site.) -->
 <script lang="ts">
   import "../app.css";
   import "../prism.css";
@@ -19,12 +18,10 @@
   />
 </svelte:head>
 
-<div class="container mx-auto px-4">
+<div class="max-w-screen-lg mx-auto px-6">
   <Header />
-  {#key data.path}
-    <main id="main" tabindex="-1">
-      <slot />
-    </main>
-  {/key}
+  <main id="main" tabindex="-1">
+    <slot />
+  </main>
   <Footer />
 </div>
