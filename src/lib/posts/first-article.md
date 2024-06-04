@@ -4,7 +4,7 @@ date: '2024-05-19T21:47:00Z'
 updated: ''
 categories:
   - 'default'
-#coverImage: "image.jpg"
+coverImage: "images/test.jpg"
 excerpt: This is a placeholder article
 ---
 

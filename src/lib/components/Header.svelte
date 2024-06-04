@@ -17,7 +17,7 @@
     Skip to main content
   </a>
 </div>
-<header class="navbar mb-6">
+<header class="navbar mb-8">
   <div class="navbar-start">
     <div class="dropdown">
       <div tabindex="0" role="button" class="btn btn-ghost sm:hidden">HB</div>
