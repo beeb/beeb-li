@@ -16,7 +16,6 @@
     <div class="dropdown">
       <div tabindex="0" role="button" class="btn btn-ghost md:hidden">HB</div>
       <Nav
-        tabindex={0}
         cl="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
       />
     </div>

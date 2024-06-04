@@ -1,12 +1,11 @@
-<!-- This file renders each individual blog post for reading. Be sure to update the svelte:head below -->
 <script lang="ts">
-  import { siteTitle } from '$lib/config'
-  import type { PageData } from './$types'
+  import { siteTitle } from "$lib/config";
+  import type { PageData } from "./$types";
 
-  export let data: PageData
+  export let data: PageData;
 
-  const { title, excerpt, date, updated, coverImage, categories } = data.meta
-  const { PostContent } = data
+  const { title, excerpt, date, updated, coverImage, categories } = data.meta;
+  const { PostContent } = data;
 </script>
 
 <svelte:head>

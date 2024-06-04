@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { siteAuthor } from '$lib/config'
-  import NavItems from './NavItems.svelte'
+  import { siteAuthor } from "$lib/config";
 </script>
 
 <footer>
@@ -14,9 +13,6 @@
       </li>
     </ul>
   </nav>
-  <nav>
-    <NavItems />
-  </nav>
 
-  <p>&copy;{new Date().getFullYear()} {siteAuthor}</p>
+  <p>&copy; {new Date().getFullYear()} {siteAuthor}</p>
 </footer>

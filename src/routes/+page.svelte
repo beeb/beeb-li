@@ -1,9 +1,12 @@
 <script lang="ts">
-  import { siteTitle } from '$lib/config'
+  import { siteTitle } from "$lib/config";
 </script>
 
 <svelte:head>
   <title>{siteTitle}</title>
 </svelte:head>
 
-<h1>Hello</h1>
+<div class="prose">
+  <h1>Hi there</h1>
+  <p>I'm Val, a software developer out of Switzerland...</p>
+</div>

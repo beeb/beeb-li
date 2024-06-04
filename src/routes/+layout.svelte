@@ -4,7 +4,6 @@
   import "../prism.css";
   import Header from "$lib/components/Header.svelte";
   import Footer from "$lib/components/Footer.svelte";
-  import { currentPage } from "$lib/assets/store";
   import { siteTitle } from "$lib/config";
   import { fade } from "svelte/transition";
   import type { LayoutData } from "./$types";
@@ -13,8 +12,6 @@
 
   const transitionIn = { delay: 150, duration: 150 };
   const transitionOut = { duration: 100 };
-
-  $: currentPage.set(data.path);
 </script>
 
 <svelte:head>

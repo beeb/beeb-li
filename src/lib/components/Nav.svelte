@@ -1,16 +1,17 @@
 <script lang="ts">
 	import { navItems } from "$lib/config";
-	import { currentPage } from "$lib/assets/store";
+	import { page } from "$app/stores";
 
 	export let cl: string;
-	export let tabindex: number | undefined = undefined;
 </script>
 
-<ul class={cl} {tabindex}>
-	{#each navItems as page}
+<ul class={cl}>
+	{#each navItems as p}
 		<li>
-			<a href={page.route} class={$currentPage === page.route ? "active" : ""}
-				>{page.title}</a
+			<a
+				href={p.route}
+				class={($page.route.id ?? "").startsWith(p.route) ? "active" : ""}
+				>{p.title}</a
 			>
 		</li>
 	{/each}
