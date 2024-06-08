@@ -23,7 +23,12 @@
       <Github />
       Github
     </a>
-    <a class="btn text-lg btn-ghost" href="/rss.xml" rel="alternate">
+    <a
+      class="btn text-lg btn-ghost"
+      href="/rss.xml"
+      rel="alternate"
+      data-sveltekit-reload
+    >
       <Rss />
       RSS
     </a>

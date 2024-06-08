@@ -4,7 +4,12 @@
 </script>
 
 <label class="flex items-center cursor-pointer gap-2">
-  <Moon />
-  <input type="checkbox" value="light" class="toggle theme-controller" />
   <Sun />
+  <input
+    type="checkbox"
+    value="dark"
+    class="toggle theme-controller"
+    id="theme-controller"
+  />
+  <Moon />
 </label>

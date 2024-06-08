@@ -4,9 +4,9 @@
 
   export let data: PageData;
 
-  const { title, excerpt, date, updated, coverAlt, categories, enhancedImage } =
-    data.meta;
-  const { PostContent } = data;
+  $: ({ title, excerpt, date, updated, coverAlt, categories, enhancedImage } =
+    data.meta);
+  $: ({ PostContent } = data);
 </script>
 
 <svelte:head>

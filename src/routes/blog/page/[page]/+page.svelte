@@ -5,7 +5,7 @@
   import type { PageData } from "./$types";
 
   export let data: PageData;
-  const { page, total, posts } = data;
+  $: ({ page, total, posts } = data);
 
   $: lowerBound = (page - 1) * postsPerPage + 1;
   $: upperBound = Math.min(page * postsPerPage, total);

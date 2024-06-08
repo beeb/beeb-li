@@ -6,7 +6,7 @@
 
   export let data: PageData;
 
-  const { posts, category, total, page } = data;
+  $: ({ posts, category, total, page } = data);
 
   $: lowerBound = (page - 1) * postsPerPage + 1;
   $: upperBound = Math.min(page * postsPerPage, total);
