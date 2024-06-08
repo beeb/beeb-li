@@ -5,7 +5,7 @@
   import Rss from "virtual:icons/mingcute/rss-fill";
 </script>
 
-<footer class="text-center mt-8">
+<footer class="text-center mt-8 pb-8">
   <p>
     <a
       class="btn text-lg btn-ghost"
