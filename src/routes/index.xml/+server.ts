@@ -41,7 +41,7 @@ ${posts
 <title>${post.title}</title>
 <link>${baseUrl}/blog/${post.slug}</link>
 <summary type="html">${post.excerpt}</summary>
-<updated>${new Date(post.date).toUTCString()}</updated>
+<updated>${post.updated ? new Date(post.updated).toISOString() : new Date(post.date).toISOString()}</updated>
 ${post.categories.map((category) => `<category term="${category}" />`).join('')}
 </entry>`,
 	)
