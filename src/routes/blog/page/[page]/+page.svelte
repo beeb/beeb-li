@@ -1,15 +1,14 @@
-<!-- This file handles any /blog/page/x route for pagination -->
 <script lang="ts">
-  import PostsList from '$lib/components/PostsList.svelte'
-  import Pagination from '$lib/components/Pagination.svelte'
-  import { postsPerPage, siteDescription, siteTitle } from '$lib/config'
-  import type { PageData } from './$types'
+  import PostsList from "$lib/components/PostsList.svelte";
+  import Pagination from "$lib/components/Pagination.svelte";
+  import { postsPerPage, siteDescription, siteTitle } from "$lib/config";
+  import type { PageData } from "./$types";
 
-  export let data: PageData
-  const { page, total, posts } = data
+  export let data: PageData;
+  const { page, total, posts } = data;
 
-  $: lowerBound = (page - 1) * postsPerPage + 1
-  $: upperBound = Math.min(page * postsPerPage, total)
+  $: lowerBound = (page - 1) * postsPerPage + 1;
+  $: upperBound = Math.min(page * postsPerPage, total);
 </script>
 
 <svelte:head>
@@ -18,13 +17,16 @@
 </svelte:head>
 
 {#if posts.length}
-  <h1>Blog</h1>
-  <small>Posts {lowerBound}-{upperBound} of {total}</small>
-  <Pagination currentPage={page} totalPosts={total} />
+  <div class="prose mb-8">
+    <h1 class="mb-1">Blog</h1>
+    <small>Posts {lowerBound}-{upperBound} of {total}</small>
+  </div>
+  <Pagination currentPage={page} {total} perPage={postsPerPage} />
   <PostsList {posts} />
-  <Pagination currentPage={page} totalPosts={total} />
+  <Pagination currentPage={page} {total} perPage={postsPerPage} />
 {:else}
-  <p><strong>Oops!</strong> Sorry, no posts to show.</p>
-
-  <p><a href="/blog">Back to blog</a></p>
+  <div class="flex flex-col items-center gap-2 text-xl">
+    <p><strong>Oops!</strong> Sorry, no posts to show.</p>
+    <p><a class="link" href="/blog">Back to the blog</a></p>
+  </div>
 {/if}

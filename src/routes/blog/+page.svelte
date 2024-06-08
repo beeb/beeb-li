@@ -1,7 +1,7 @@
 <script lang="ts">
   import PostsList from "$lib/components/PostsList.svelte";
   import Pagination from "$lib/components/Pagination.svelte";
-  import { siteDescription, siteTitle } from "$lib/config";
+  import { siteDescription, siteTitle, postsPerPage } from "$lib/config";
   import type { PageData } from "./$types";
 
   export let data: PageData;
@@ -12,8 +12,10 @@
   <meta data-key="description" name="description" content={siteDescription} />
 </svelte:head>
 
-<h1 class="text-4xl font-bold mb-8">Blog</h1>
+<div class="prose mb-8">
+  <h1>Blog</h1>
+</div>
 
 <PostsList posts={data.posts} />
 
-<Pagination currentPage={1} totalPosts={data.total} />
+<Pagination currentPage={1} total={data.total} perPage={postsPerPage} />
