@@ -4,7 +4,7 @@
 
   export let data: PageData;
 
-  const { title, excerpt, date, updated, coverImage, coverAlt, categories } =
+  const { title, excerpt, date, updated, coverAlt, categories, enhancedImage } =
     data.meta;
   const { PostContent } = data;
 </script>
@@ -25,11 +25,11 @@
 </svelte:head>
 
 <article>
-  {#if coverImage}
+  {#if enhancedImage}
     <figure class="mb-8 flex justify-center">
-      <img
+      <enhanced:img
         class="rounded-lg max-h-96 w-full object-cover"
-        src={coverImage}
+        src={enhancedImage}
         alt={coverAlt ?? ""}
       />
     </figure>

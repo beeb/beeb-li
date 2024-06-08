@@ -5,9 +5,13 @@ export const load: PageLoad = async ({ params }) => {
 	try {
 		const post: Post = await import(`../../../lib/posts/${params.post}.md`)
 
+		const enhancedImage = post.metadata.coverImage
+			? (await import(`../../../lib/assets/images/${params.post}.jpg?enhanced`)).default
+			: null
+
 		return {
 			PostContent: post.default,
-			meta: { ...post.metadata, slug: params.post },
+			meta: { ...post.metadata, slug: params.post, enhancedImage },
 		}
 	} catch (err) {
 		console.error(err)

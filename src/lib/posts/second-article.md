@@ -5,7 +5,7 @@ updated: ''
 categories:
   - default
   - test
-coverImage: "/images/test2.jpg"
+coverImage: true
 coverAlt: "A photograph of various overlaid neon signs"
 excerpt: This is a placeholder article 2
 ---

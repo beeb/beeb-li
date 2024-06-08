@@ -8,11 +8,12 @@ interface PostPrelude {
 	date: string
 	updated?: string
 	categories: string[]
-	coverImage?: string
+	coverImage?: bool
 	coverAlt?: string
 	excerpt: string
 }
 
 interface PostData extends PostPrelude {
 	slug: string
+	enhancedImage?: Picture
 }

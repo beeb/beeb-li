@@ -9,7 +9,10 @@
         {#if post.coverImage}
           <figure class="max-h-72 md:max-w-[50%]">
             <a href="/blog/{post.slug}">
-              <img src={post.coverImage} alt={post.coverAlt ?? ""} />
+              <enhanced:img
+                src={post.enhancedImage}
+                alt={post.coverAlt ?? ""}
+              />
             </a>
           </figure>
         {/if}
