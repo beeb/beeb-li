@@ -51,70 +51,67 @@
   $: range = Array.from({ length: numberOfLinks }, (_, i) => i + startNumber);
 </script>
 
-{#key currentPage}
-  {#if lastPage > 1}
-    <div class="my-8 flex flex-wrap items-center justify-center">
-      <div class="join">
+{#if lastPage > 1}
+  <div class="my-8 flex flex-wrap items-center justify-center">
+    <div class="join">
+      <a
+        class="btn-outline join-item btn"
+        class:btn-disabled={currentPage === 1 || loading}
+        href="{path}/1"
+        aria-label="Go to first page"
+      >
+        «
+      </a>
+      <a
+        class="btn-outline join-item btn"
+        class:btn-disabled={currentPage === 1 || loading}
+        href="{path}/{Math.max(currentPage - 1, 1)}"
+        aria-label="Go to previous page"
+        rel={currentPage !== 1 ? "prev" : undefined}
+      >
+        ‹
+      </a>
+      {#if showFirstDots}
+        <btn class="btn-disabled btn-outline join-item btn">...</btn>
+      {/if}
+      {#each range as page}
         <a
-          class="btn-outline join-item btn"
-          class:btn-disabled={currentPage === 1 || loading}
-          href="{path}/1"
-          aria-label="Go to first page"
+          class="btn-outline join-item btn btn-outline"
+          class:btn-disabled={loading}
+          class:btn-primary={page === currentPage}
+          aria-current={page === currentPage}
+          href="{path}/{page}"
         >
-          «
+          <span class="sr-only">
+            {#if page === currentPage}
+              Current page:
+            {:else}
+              Go to page
+            {/if}
+          </span>
+          {page}
         </a>
-        <a
-          class="btn-outline join-item btn"
-          class:btn-disabled={currentPage === 1 || loading}
-          href="{path}/{Math.max(currentPage - 1, 1)}"
-          aria-label="Go to previous page"
-          rel={currentPage !== 1 ? "prev" : undefined}
-        >
-          ‹
-        </a>
-        {#if showFirstDots}
-          <btn class="btn-disabled btn-outline join-item btn">...</btn>
-        {/if}
-        {#each range as page}
-          <a
-            class="btn-outline join-item btn"
-            class:btn-disabled={loading}
-            class:btn-outline={page !== currentPage}
-            class:btn-primary={page === currentPage}
-            aria-current={page === currentPage}
-            href="{path}/{page}"
-          >
-            <span class="sr-only">
-              {#if page === currentPage}
-                Current page:
-              {:else}
-                Go to page
-              {/if}
-            </span>
-            {page}
-          </a>
-        {/each}
-        {#if showLastDots}
-          <btn class="btn-disabled btn-outline join-item btn">...</btn>
-        {/if}
-        <a
-          class="btn-outline join-item btn"
-          class:btn-disabled={currentPage === lastPage || loading}
-          href="{path}/{Math.min(currentPage + 1, lastPage)}"
-          aria-label="Go to next page"
-          rel={currentPage !== lastPage ? "next" : undefined}
-        >
-          ›
-        </a>
-        <a
-          class="btn-outline join-item btn"
-          class:btn-disabled={currentPage === lastPage || loading}
-          href="{path}/{lastPage}"
-          aria-label="Go to last page"
-        >
-          »
-        </a>
-      </div>
+      {/each}
+      {#if showLastDots}
+        <btn class="btn-disabled btn-outline join-item btn">...</btn>
+      {/if}
+      <a
+        class="btn-outline join-item btn"
+        class:btn-disabled={currentPage === lastPage || loading}
+        href="{path}/{Math.min(currentPage + 1, lastPage)}"
+        aria-label="Go to next page"
+        rel={currentPage !== lastPage ? "next" : undefined}
+      >
+        ›
+      </a>
+      <a
+        class="btn-outline join-item btn"
+        class:btn-disabled={currentPage === lastPage || loading}
+        href="{path}/{lastPage}"
+        aria-label="Go to last page"
+      >
+        »
+      </a>
     </div>
-  {/if}
-{/key}
+  </div>
+{/if}
