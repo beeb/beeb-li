@@ -15,5 +15,5 @@ my developer endeavours, focusing on the
 [Rust](https://www.rust-lang.org) programming language,
 blockchain development (my current day job), web development and more.
 
-Have a look at my [open-source projects](https://github.com/beeb) or get in touch by having a look at the [contact](/contact) page!
+Have a look at my [open-source projects](https://github.com/beeb) or get in touch by visiting the [contact](/contact) page!
 
