@@ -1,7 +1,7 @@
 <script lang="ts">
   import Nav from "./Nav.svelte";
   import { siteTitle } from "$lib/config";
-  import Hamburger from "virtual:icons/mingcute/menu-line";
+  import Hamburger from "virtual:icons/mingcute/menu-fill";
 
   const focusMain = () => {
     const main = document.querySelector("main");
