@@ -26,11 +26,17 @@
 
 <article>
   {#if enhancedImage}
-    <figure class="mb-8 flex justify-center">
+    <figure
+      class="mb-8 flex justify-center items-center max-h-96 overflow-hidden rounded-lg"
+    >
       <enhanced:img
-        class="rounded-lg max-h-96 w-full object-cover"
+        class="object-cover"
         src={enhancedImage}
         alt={coverAlt ?? ""}
+        sizes="
+          (min-width: 1024px) 976px,
+          calc(100vw - 48px)
+        "
       />
     </figure>
   {/if}

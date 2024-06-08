@@ -8,7 +8,10 @@
       <article class="card md:card-side bg-base-200 shadow">
         {#if post.coverImage}
           <figure class="max-h-72 md:max-w-[50%]">
-            <a href="/blog/{post.slug}">
+            <a
+              href="/blog/{post.slug}"
+              class="flex justify-center items-center"
+            >
               <enhanced:img
                 src={post.enhancedImage}
                 alt={post.coverAlt ?? ""}
