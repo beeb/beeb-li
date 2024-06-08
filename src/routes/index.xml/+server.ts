@@ -42,7 +42,11 @@ ${posts
 <link rel="alternate" type="text/html" href="${baseUrl}/blog/${post.slug}" />
 <summary>${post.excerpt}</summary>
 <published>${new Date(post.date).toISOString()}</published>
-${post.updated ? `<updated>${new Date(post.updated).toISOString()}</updated>` : ''}
+${
+	post.updated
+		? `<updated>${new Date(post.updated).toISOString()}</updated>`
+		: `<updated>${new Date(post.date).toISOString()}</updated>`
+}
 ${post.categories.map((category) => `<category term="${category}" />`).join('')}
 </entry>`,
 	)
