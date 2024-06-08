@@ -13,9 +13,9 @@
                 src={post.enhancedImage}
                 alt={post.coverAlt ?? ""}
                 sizes="
-                  (max-width: 1024px) calc((100vw - 3rem) / 2)
-                  (max-width: 768px) calc(100vw - 3rem)
-                  calc((1024px - 3rem) / 2)
+                  (min-width: 1024px) 488px,
+                  (min-width: 768px) calc(50vw - 24px),
+                  calc(100vw - 48px)
                 "
               />
             </a>
