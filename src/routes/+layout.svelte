@@ -3,7 +3,7 @@
   import "../prism.css";
   import Header from "$lib/components/Header.svelte";
   import Footer from "$lib/components/Footer.svelte";
-  import { siteTitle, siteDescription } from "$lib/config";
+  import { siteDescription } from "$lib/config";
   import type { LayoutData } from "./$types";
 
   export let data: LayoutData;
@@ -13,7 +13,7 @@
   <link
     rel="alternate"
     type="application/atom+xml"
-    title={siteTitle}
+    title="Sitewide Atom Feed"
     href={`${data.baseUrl}/index.xml`}
   />
   <meta data-key="description" name="description" content={siteDescription} />

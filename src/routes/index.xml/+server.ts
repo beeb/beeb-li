@@ -26,8 +26,8 @@ const render = (baseUrl: string, posts: PostData[]) => `<?xml version="1.0" enco
 <feed xmlns:atom="http://www.w3.org/2005/Atom">
 <title>${siteTitle}</title>
 <subtitle>${siteDescription}</subtitle>
-<link>${baseUrl}</link>
-<link href="${baseUrl}/index.xml" rel="self" type="application/atom+xml"/>
+<link href="${baseUrl}" />
+<link href="${baseUrl}/index.xml" rel="self" />
 <id>${baseUrl}</id>
 <updated>${new Date().toISOString()}</updated>
 <author>
@@ -39,9 +39,10 @@ ${posts
 		(post) => `<entry>
 <id>${baseUrl}/blog/${post.slug}</id>
 <title>${post.title}</title>
-<link>${baseUrl}/blog/${post.slug}</link>
-<summary type="html">${post.excerpt}</summary>
-<updated>${post.updated ? new Date(post.updated).toISOString() : new Date(post.date).toISOString()}</updated>
+<link rel="alternate" type="text/html" href="${baseUrl}/blog/${post.slug}" />
+<summary>${post.excerpt}</summary>
+<published>${new Date(post.date).toISOString()}</published>
+${post.updated ? `<updated>${new Date(post.updated).toISOString()}</updated>` : ''}
 ${post.categories.map((category) => `<category term="${category}" />`).join('')}
 </entry>`,
 	)
