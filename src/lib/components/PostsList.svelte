@@ -12,6 +12,11 @@
               <enhanced:img
                 src={post.enhancedImage}
                 alt={post.coverAlt ?? ""}
+                sizes="
+                  (max-width: 1024px) calc((100vw - 3rem) / 2)
+                  (max-width: 768px) calc(100vw - 3rem)
+                  calc((1024px - 3rem) / 2)
+                "
               />
             </a>
           </figure>
