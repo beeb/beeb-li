@@ -58,7 +58,7 @@ const config = {
 		prerender: {
 			entries: ['*', '/blog/page/1', '/blog/category/[category]'],
 			handleHttpError: 'warn',
-			origin: `http://${prodUrl}`,
+			origin: `https://${prodUrl}`,
 		},
 	},
 }
