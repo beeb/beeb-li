@@ -20,8 +20,8 @@
 </div>
 <header class="navbar mb-8">
   <div class="navbar-start gap-2 w-full sm:w-1/3">
-    <div class="dropdown">
-      <div tabindex="0" role="button" class="btn btn-ghost sm:hidden">
+    <div class="dropdown sm:hidden">
+      <div tabindex="0" role="button" class="btn btn-ghost">
         <Hamburger />
       </div>
       <Nav

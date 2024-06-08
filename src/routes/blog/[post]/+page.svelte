@@ -41,7 +41,9 @@
     </figure>
   {/if}
 
-  <h1 class="text-4xl font-bold mb-6">{title}</h1>
+  <div class="prose mb-8">
+    <h1>{title}</h1>
+  </div>
 
   <aside
     class="flow-root rounded-lg border border-gray-100 py-3 shadow-sm dark:border-gray-700 mb-8"
