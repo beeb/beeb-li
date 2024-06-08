@@ -68,6 +68,7 @@
           class:btn-disabled={currentPage === 1 || loading}
           href="{path}/{Math.max(currentPage - 1, 1)}"
           aria-label="Go to previous page"
+          rel={currentPage !== 1 ? "prev" : undefined}
         >
           ‹
         </a>
@@ -101,6 +102,7 @@
           class:btn-disabled={currentPage === lastPage || loading}
           href="{path}/{Math.min(currentPage + 1, lastPage)}"
           aria-label="Go to next page"
+          rel={currentPage !== lastPage ? "next" : undefined}
         >
           ›
         </a>
