@@ -23,7 +23,7 @@ const config = {
 	kit: {
 		adapter: adapter(),
 		prerender: {
-			entries: ['*', '/blog/category/'],
+			entries: ['*'],
 			handleHttpError: 'warn',
 		},
 	},

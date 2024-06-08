@@ -17,9 +17,12 @@
 </svelte:head>
 
 {#if posts.length}
-  <div class="prose mb-8">
-    <h1 class="mb-1">Blog</h1>
-    <small>Posts {lowerBound}-{upperBound} of {total}</small>
+  <div class="flex justify-between items-center mb-12">
+    <div class="prose">
+      <h1 class="mb-1">Blog</h1>
+      <small>Posts {lowerBound}-{upperBound} of {total}</small>
+    </div>
+    <a class="link text-lg" href="/blog/category">All blog categories</a>
   </div>
   <Pagination currentPage={page} {total} perPage={postsPerPage} />
   <PostsList {posts} />

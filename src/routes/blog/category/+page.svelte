@@ -10,16 +10,17 @@
 </svelte:head>
 
 <div>
-  <h1>All blog categories</h1>
-
-  <ul>
-    {#each data.categories as [category, count]}
-      <li>
-        <a href="/blog/category/{category}/page">
-          {category}
-        </a>
-        ({count})
-      </li>
-    {/each}
-  </ul>
+  <div class="prose mb-8">
+    <h1>All blog categories</h1>
+    <ul>
+      {#each data.categories as [category, count]}
+        <li>
+          <a href="/blog/category/{category}/page">
+            {category}
+          </a>
+          ({count})
+        </li>
+      {/each}
+    </ul>
+  </div>
 </div>

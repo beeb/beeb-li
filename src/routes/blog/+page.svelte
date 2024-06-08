@@ -12,8 +12,11 @@
   <meta data-key="description" name="description" content={siteDescription} />
 </svelte:head>
 
-<div class="prose mb-8">
-  <h1>Blog</h1>
+<div class="flex justify-between items-center mb-12">
+  <div class="prose">
+    <h1>Blog</h1>
+  </div>
+  <a class="link text-lg" href="/blog/category">All blog categories</a>
 </div>
 
 <PostsList posts={data.posts} />
