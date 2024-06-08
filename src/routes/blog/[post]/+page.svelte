@@ -85,7 +85,7 @@
     </dl>
   </aside>
 
-  <div class="prose w-full max-w-full">
+  <div class="prose-lg w-full max-w-full">
     <svelte:component this={PostContent} />
   </div>
 </article>

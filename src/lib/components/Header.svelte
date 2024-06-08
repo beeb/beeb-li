@@ -29,7 +29,7 @@
         class="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52"
       />
     </div>
-    <a href="/" class="text-2xl text-primary font-bold">{siteTitle}</a>
+    <a href="/" class="text-2xl text-primary font-black">{siteTitle}</a>
   </div>
   <div class="navbar-end w-2/3 gap-4">
     <ThemeSwitcher />

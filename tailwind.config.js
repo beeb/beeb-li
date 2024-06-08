@@ -5,7 +5,7 @@ export default {
 	content: ['./src/**/*.{html,js,svelte,ts,md}'],
 	theme: {
 		fontFamily: {
-			sans: ['Noto Sans', ...defaultTheme.fontFamily.sans],
+			sans: ['TASA Orbiter', ...defaultTheme.fontFamily.sans],
 			mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
 		},
 		extend: {},
