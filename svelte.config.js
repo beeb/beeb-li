@@ -4,6 +4,8 @@ import { mdsvex } from 'mdsvex'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeSlug from 'rehype-slug'
 
+const prodUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL || 'beeb.li'
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	// Ensures both .svelte and .md files are treated as components (can be imported and used anywhere, or used as pages)
@@ -25,6 +27,7 @@ const config = {
 		prerender: {
 			entries: ['*', '/blog/page/1'],
 			handleHttpError: 'warn',
+			origin: `http://${prodUrl}`,
 		},
 	},
 }
