@@ -29,7 +29,7 @@
             <h2 class="card-title">{post.title}</h2>
           </a>
           <span class="text-sm opacity-80">
-            {new Date(post.date).toLocaleDateString()}
+            {new Date(post.date).toISOString().slice(0, 10)}
           </span>
           <p>{post.excerpt}</p>
           <div class="card-actions justify-between items-end">

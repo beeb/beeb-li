@@ -50,14 +50,14 @@
       <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
         <dt class="font-medium text-gray-900 dark:text-white">Published</dt>
         <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
-          {new Date(date).toLocaleDateString()}
+          {new Date(date).toISOString().slice(0, 10)}
         </dd>
       </div>
       {#if updated}
         <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">Updated</dt>
           <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
-            {new Date(updated).toLocaleDateString()}
+            {new Date(updated).toISOString().slice(0, 10)}
           </dd>
         </div>
       {/if}
