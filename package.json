@@ -11,7 +11,6 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.7.3",
-		"@iconify-json/logos": "^1.1.43",
 		"@iconify-json/mingcute": "^1.1.17",
 		"@sveltejs/adapter-static": "^3.0.1",
 		"@sveltejs/enhanced-img": "^0.2.1",
