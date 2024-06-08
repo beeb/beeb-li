@@ -6,7 +6,7 @@ const fetchPosts = async ({ offset = 0, limit = postsPerPage, category = '' } = 
 			const { metadata } = await resolver()
 			const slug = path.split('/').pop()?.slice(0, -3) ?? 'undefined'
 			const enhancedImage = metadata.coverImage
-				? (await import(`../posts/${slug}/title.jpg?enhanced&w=2560;1280;1024;768;512;256`)).default
+				? (await import(`../posts/${slug}/title.jpg?enhanced&w=2048;1280;1024;768;512;256`)).default
 				: null
 			return { ...metadata, slug, enhancedImage }
 		}),

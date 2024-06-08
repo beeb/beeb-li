@@ -6,7 +6,7 @@ export const load: PageLoad = async ({ params }) => {
 		const post: Post = await import(`../../../lib/posts/${params.post}.md`)
 
 		const enhancedImage = post.metadata.coverImage
-			? (await import(`../../../lib/posts/${params.post}/title.jpg?enhanced&w=2560;1280;1024;768;512;256`)).default
+			? (await import(`../../../lib/posts/${params.post}/title.jpg?enhanced&w=2048;1280;1024;768;512;256`)).default
 			: null
 
 		return {
