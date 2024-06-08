@@ -66,7 +66,7 @@
         <a
           class="btn-outline join-item btn"
           class:btn-disabled={currentPage === 1 || loading}
-          href="{path}/{currentPage - 1}"
+          href="{path}/{Math.max(currentPage - 1, 1)}"
           aria-label="Go to previous page"
         >
           ‹
@@ -99,7 +99,7 @@
         <a
           class="btn-outline join-item btn"
           class:btn-disabled={currentPage === lastPage || loading}
-          href="{path}/{currentPage + 1}"
+          href="{path}/{Math.min(currentPage + 1, lastPage)}"
           aria-label="Go to next page"
         >
           ›
