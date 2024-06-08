@@ -25,7 +25,7 @@ const config = {
 	kit: {
 		adapter: adapter(),
 		prerender: {
-			entries: ['*', '/blog/page/1'],
+			entries: ['*', '/blog/page/1', '/blog/category/[category]'],
 			handleHttpError: 'warn',
 			origin: `http://${prodUrl}`,
 		},
