@@ -1,7 +1,8 @@
-:not(pre) > code[class*='language-'],
+:not(pre)>code[class*='language-'],
 pre[class*='language-'] {
   color: #cdd6f4;
   background: #1e1e2e;
+  border-radius: var(--rounded-box, 1rem);
 }
 
 .token.comment,
@@ -69,6 +70,7 @@ pre[class*='language-'] {
 .token.bold {
   font-weight: bold;
 }
+
 .token.italic {
   font-style: italic;
 }
