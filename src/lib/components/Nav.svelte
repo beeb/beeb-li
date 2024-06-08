@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { navItems } from "$lib/config";
 	import { page } from "$app/stores";
-
-	export let cl: string;
 </script>
 
-<ul class={cl}>
+<ul {...$$props}>
 	{#each navItems as p}
 		<li>
 			<a
