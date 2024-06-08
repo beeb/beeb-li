@@ -3,7 +3,7 @@
   import "../prism.css";
   import Header from "$lib/components/Header.svelte";
   import Footer from "$lib/components/Footer.svelte";
-  import { siteTitle } from "$lib/config";
+  import { siteTitle, siteDescription } from "$lib/config";
   import type { LayoutData } from "./$types";
 
   export let data: LayoutData;
@@ -16,6 +16,7 @@
     title={siteTitle}
     href={`${data.baseUrl}/rss.xml`}
   />
+  <meta data-key="description" name="description" content={siteDescription} />
 </svelte:head>
 
 <div class="max-w-screen-lg mx-auto px-6">

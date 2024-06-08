@@ -10,6 +10,11 @@ h2#contents+ul ul {
   @apply list-none;
 }
 
+.prose a,
+.prose-lg a {
+  @apply link-primary;
+}
+
 /* re-style to override tailwind's styling */
 .mockup-code pre {
   padding: 0;
