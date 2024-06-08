@@ -37,7 +37,7 @@
               {#each post.categories as category}
                 <a
                   class="badge badge-neutral"
-                  href="/blog/category/{category}/"
+                  href="/blog/category/{category}/page/1"
                 >
                   {category}
                 </a>
