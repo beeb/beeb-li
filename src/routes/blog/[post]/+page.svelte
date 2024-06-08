@@ -46,27 +46,27 @@
   </div>
 
   <aside
-    class="flow-root rounded-lg border border-gray-100 py-3 shadow-sm dark:border-gray-700 mb-8"
+    class="flow-root rounded-lg border border-base-300 py-3 shadow mb-8 max-w-lg"
   >
-    <dl class="-my-3 divide-y divide-gray-100 text-sm dark:divide-gray-700">
+    <dl class="-my-3 divide-y divide-base-300 text-sm">
       <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
-        <dt class="font-medium text-gray-900 dark:text-white">Published</dt>
-        <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+        <dt class="font-medium">Published</dt>
+        <dd class="sm:col-span-2 opacity-80">
           {new Date(date).toISOString().slice(0, 10)}
         </dd>
       </div>
       {#if updated}
         <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
-          <dt class="font-medium text-gray-900 dark:text-white">Updated</dt>
-          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+          <dt class="font-medium">Updated</dt>
+          <dd class="sm:col-span-2 opacity-80">
             {new Date(updated).toISOString().slice(0, 10)}
           </dd>
         </div>
       {/if}
       {#if categories}
         <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
-          <dt class="font-medium text-gray-900 dark:text-white">Posted in</dt>
-          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+          <dt class="font-medium">Posted in</dt>
+          <dd class="sm:col-span-2">
             <ul class="flex gap-2">
               {#each categories as category}
                 <li>

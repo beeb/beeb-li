@@ -1,5 +1,6 @@
 <script lang="ts">
-  import Nav from "./Nav.svelte";
+  import Nav from "$lib/components/Nav.svelte";
+  import ThemeSwitcher from "$lib/components/ThemeSwitcher.svelte";
   import { siteTitle } from "$lib/config";
   import Hamburger from "virtual:icons/mingcute/menu-fill";
 
@@ -30,7 +31,8 @@
     </div>
     <a href="/" class="text-2xl text-primary font-bold">{siteTitle}</a>
   </div>
-  <div class="navbar-end hidden sm:flex w-2/3">
-    <Nav class="menu menu-lg menu-horizontal px-2 gap-2" />
+  <div class="navbar-end w-2/3 gap-4">
+    <ThemeSwitcher />
+    <Nav class="hidden sm:flex menu text-lg menu-horizontal px-2 gap-2" />
   </div>
 </header>
