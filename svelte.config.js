@@ -1,10 +1,12 @@
 import adapter from '@sveltejs/adapter-static'
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 import { mdsvex } from 'mdsvex'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import rehypeSlug from 'rehype-slug'
+import remarkAbbr from 'remark-abbr'
+import remarkToc from 'remark-toc'
 import rehypeExternalLinks from 'rehype-external-links'
+import rehypeSlug from 'rehype-slug'
 import { h } from 'hastscript'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 
 const prodUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL || 'beeb.li'
 
@@ -18,6 +20,8 @@ const config = {
 		mdsvex({
 			// The default mdsvex extension is .svx; this overrides that.
 			extensions: ['.md'],
+
+			remarkPlugins: [remarkAbbr, remarkToc],
 
 			// Adds IDs to headings, and anchor links to those IDs. Note: must stay in this order to work.
 			rehypePlugins: [
@@ -35,7 +39,7 @@ const config = {
 							]
 						},
 						headingProperties: {
-							style: 'display: inline-flex; align-items: center; gap: 0.5rem',
+							style: 'display: inline-flex; align-items: center; column-gap: 0.5rem',
 						},
 						properties: {
 							ariaHidden: true,

@@ -9,14 +9,18 @@ coverAlt: "An abstract photograph of a building"
 excerpt: This is a placeholder article
 ---
 
+## Contents
+
 ## Subtitle
 
 Hello world!
 
 ## Subtitle2
 
-Something more
+Something more about DNS.
 
 ### Sub-Subtitle
 
 This is a link to an external website: [link](https://proton.me)
+
+*[DNS]: Domain Name System
