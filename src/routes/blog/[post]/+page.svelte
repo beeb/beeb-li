@@ -22,6 +22,12 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <!-- <meta name="twitter:image" content="https://yourdomain.com/image_path" /> -->
+  {#if categories}
+    {#each categories as category}
+      <meta name="article:tag" content={category} />
+    {/each}
+  {/if}
+  <meta property="article:published_time" content={date} />
 </svelte:head>
 
 <article>

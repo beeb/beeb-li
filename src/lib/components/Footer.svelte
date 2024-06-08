@@ -25,7 +25,7 @@
     </a>
     <a
       class="btn text-lg btn-ghost"
-      href="/rss.xml"
+      href="/index.xml"
       rel="alternate"
       data-sveltekit-reload
     >

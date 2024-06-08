@@ -12,11 +12,12 @@
 <svelte:head>
   <link
     rel="alternate"
-    type="application/rss+xml"
+    type="application/atom+xml"
     title={siteTitle}
-    href={`${data.baseUrl}/rss.xml`}
+    href={`${data.baseUrl}/index.xml`}
   />
   <meta data-key="description" name="description" content={siteDescription} />
+  <meta name="author" content="Valentin Bersier" />
 </svelte:head>
 
 <div class="max-w-screen-lg mx-auto px-6">
