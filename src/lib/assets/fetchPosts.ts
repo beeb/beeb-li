@@ -5,7 +5,7 @@ const fetchPosts = async ({ offset = 0, limit = postsPerPage, category = '' } = 
 		Object.entries(import.meta.glob<Post>('/src/lib/posts/*.md')).map(async ([path, resolver]) => {
 			const { metadata } = await resolver()
 			const slug = path.split('/').pop()?.slice(0, -3) ?? 'undefined'
-			const enhancedImage = metadata.coverImage ? (await import(`./images/${slug}.jpg?enhanced`)).default : null
+			const enhancedImage = metadata.coverImage ? (await import(`../posts/${slug}/title.jpg?enhanced`)).default : null
 			return { ...metadata, slug, enhancedImage }
 		}),
 	)
