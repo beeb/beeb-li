@@ -3,7 +3,7 @@ Switzerland.
 
 Having studied Materials Science and Engineering at EPFL in Lausanne, I was
 however always passionate about software and have been writing code since
-about 2004.
+about 2005.
 
 I am known as 'Krizzli' in some circles and have a plethora of passions
 ranging from electronic music production & DJing, to electronics, drone
