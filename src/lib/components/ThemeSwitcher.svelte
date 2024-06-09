@@ -17,9 +17,7 @@
     } else if (window.matchMedia) {
       if (window.matchMedia("(prefers-color-scheme: light)").matches) {
         light = true;
-        localStorage.setItem(KEY_NAME, JSON.stringify(true));
-      } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        localStorage.setItem(KEY_NAME, JSON.stringify(false));
+        // localStorage.setItem(KEY_NAME, JSON.stringify(true));
       }
     }
   });
