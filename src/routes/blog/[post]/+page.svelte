@@ -52,7 +52,7 @@
   </div>
 
   <aside
-    class="flow-root rounded-lg border border-base-300 py-3 shadow mb-8 max-w-lg"
+    class="flow-root rounded-lg bg-base-200 border border-base-300 py-3 shadow mb-8 max-w-lg"
   >
     <dl class="-my-3 divide-y divide-base-300 text-sm">
       <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
