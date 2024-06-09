@@ -19,17 +19,17 @@
     Skip to main content
   </a>
 </div>
-<header class="navbar mb-8">
-  <div class="navbar-start gap-2 w-full sm:w-1/3">
-    <div class="dropdown sm:hidden">
-      <div tabindex="0" role="button" class="btn btn-ghost">
+<header class="navbar mb-8 px-0">
+  <div class="navbar-start w-full sm:w-1/3">
+    <div class="dropdown sm:hidden relative -left-4">
+      <div tabindex="0" role="button" class="btn btn-ghost text-lg">
         <Hamburger />
       </div>
       <Nav
         class="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52"
       />
     </div>
-    <a href="/" class="text-2xl text-primary font-black">{siteTitle}</a>
+    <a href="/" class="text-3xl text-primary font-extrabold">{siteTitle}</a>
   </div>
   <div class="navbar-end w-2/3 gap-4">
     <ThemeSwitcher />
