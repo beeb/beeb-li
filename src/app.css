@@ -2,21 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* links in text */
+
+.prose :not(h1, h2, h3, h4, h5, h6) a,
+.prose-lg :not(h1, h2, h3, h4, h5, h6) a {
+  @apply link-primary;
+}
+
 /* table of contents */
 
 h2#contents+ul {
-  @apply card bg-base-200 shadow max-w-lg p-4 list-none;
+  @apply card bg-base-200 shadow max-w-lg px-3 py-0 list-none;
+}
+
+h2#contents+ul a {
+  @apply text-base-content;
 }
 
 h2#contents+ul ul {
   @apply list-none;
-}
-
-/* links in text */
-
-.prose :not(h1, h2, h3, h4, h5, h6)>a,
-.prose-lg :not(h1, h2, h3, h4, h5, h6)>a {
-  @apply link-primary;
 }
 
 /* re-style to override tailwind's styling */
