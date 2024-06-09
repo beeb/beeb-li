@@ -14,8 +14,8 @@ h2#contents+ul ul {
 
 /* links in text */
 
-.prose a,
-.prose-lg a {
+.prose :not(h1, h2, h3, h4, h5, h6)>a,
+.prose-lg :not(h1, h2, h3, h4, h5, h6)>a {
   @apply link-primary;
 }
 
