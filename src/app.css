@@ -9,6 +9,12 @@
   @apply link-primary;
 }
 
+
+.prose :not(h1, h2, h3, h4, h5, h6) a:visited,
+.prose-lg :not(h1, h2, h3, h4, h5, h6) a:visited {
+  @apply link-secondary;
+}
+
 /* table of contents */
 
 h2#contents+ul {

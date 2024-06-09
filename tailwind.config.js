@@ -10,5 +10,21 @@ export default {
 		},
 		extend: {},
 	},
+	daisyui: {
+		themes: [
+			{
+				dark: {
+					...require('daisyui/src/theming/themes').dark,
+					primary: '#00ffbc',
+					secondary: '#847de8',
+					accent: '#fc4404',
+					info: '#0ea5e9',
+					success: '#84cc16',
+					warning: '#eab308',
+					error: '#ec5f5f',
+				},
+			},
+		],
+	},
 	plugins: [require('@tailwindcss/typography'), require('daisyui')],
 }
