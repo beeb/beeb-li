@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* table of contents */
+
 h2#contents+ul {
   @apply card bg-base-200 shadow max-w-lg p-4 list-none;
 }
@@ -9,6 +11,8 @@ h2#contents+ul {
 h2#contents+ul ul {
   @apply list-none;
 }
+
+/* links in text */
 
 .prose a,
 .prose-lg a {
@@ -21,6 +25,25 @@ h2#contents+ul ul {
   margin: 0;
   padding-right: 1.25rem;
 }
+
+/* abbreviations */
+
+abbr[title] {
+  position: relative;
+}
+
+abbr[title]:hover::after,
+abbr[title]:focus::after {
+  content: attr(title);
+  position: absolute;
+  left: 0;
+  top: -2.5rem;
+  width: auto;
+  white-space: nowrap;
+  @apply bg-base-300 rounded-box shadow-sm py-1 px-2;
+}
+
+/* fonts */
 
 @font-face {
   font-display: swap;
