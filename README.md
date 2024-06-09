@@ -4,7 +4,7 @@ Having studied Materials Science and Engineering at EPFL in Lausanne, I was howe
 and have been writing code since about 2005.
 
 I am known as 'Krizzli' in some circles and have a plethora of passions ranging from electronic music production &
-DJing to mountaineering, electronics, drone racing, 3d-printing, cryptocurrencies and more.
+DJing to mountaineering, electronics, drone racing, 3d-printing, and more.
 
 My main passion however, is computer programming. With this [blog](/blog), I hope to share some thoughts and insights 
 about my developer endeavours, focusing on the [Rust](https://www.rust-lang.org) programming language, blockchain 
