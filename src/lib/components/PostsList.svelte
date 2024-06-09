@@ -43,7 +43,9 @@
                 </a>
               {/each}
             </div>
-            <a class="btn btn-neutral" href="/blog/{post.slug}">Read more</a>
+            <a class="btn btn-primary btn-outline" href="/blog/{post.slug}"
+              >Read more</a
+            >
           </div>
         </div>
       </article>
