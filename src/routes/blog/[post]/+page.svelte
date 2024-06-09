@@ -33,7 +33,7 @@
 <article>
   {#if enhancedImage}
     <figure
-      class="mb-8 flex justify-center items-center max-h-96 overflow-hidden rounded-lg"
+      class="mb-8 flex justify-center items-center max-h-96 overflow-hidden rounded-box"
     >
       <enhanced:img
         class="object-cover"
