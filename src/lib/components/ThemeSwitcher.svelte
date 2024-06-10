@@ -33,7 +33,7 @@
     value="light"
     bind:checked={light}
     on:change={handleChange}
-    class="toggle theme-controller"
+    class="toggle toggle-sm theme-controller"
     id="theme-controller"
   />
   <Sun />

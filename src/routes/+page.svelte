@@ -8,7 +8,7 @@
   <title>{siteTitle}</title>
 </svelte:head>
 
-<div class="prose prose-lg w-full max-w-full">
+<div class="prose sm:prose-lg w-full max-w-full">
   <h1>Hi there!</h1>
   <svelte:component this={data.Readme} />
 </div>

@@ -17,7 +17,7 @@
 
 {#if posts.length}
   <div class="flex justify-between items-center mb-12">
-    <div class="prose prose-lg">
+    <div class="prose sm:prose-lg">
       <h1 class="mb-1">Blog</h1>
       <small>Posts {lowerBound}-{upperBound} of {total}</small>
     </div>

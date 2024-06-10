@@ -32,9 +32,9 @@
     </div>
     <a
       href="/"
-      class="text-3xl text-primary font-extrabold inline-flex gap-2 items-center"
+      class="text-2xl sm:text-3xl text-primary font-extrabold inline-flex gap-2 items-center"
     >
-      <Logo class="w-10 shrink-0" />
+      <Logo class="w-8 sm:w-10 shrink-0" />
       {siteTitle}
     </a>
   </div>

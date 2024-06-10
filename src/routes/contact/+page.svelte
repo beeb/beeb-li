@@ -6,7 +6,7 @@
   <title>{siteTitle} - Contact</title>
 </svelte:head>
 
-<div class="prose prose-lg w-full max-w-full">
+<div class="prose sm:prose-lg w-full max-w-full">
   <h1>Contact 👋</h1>
 
   <p>Want to get in touch? Great!</p>

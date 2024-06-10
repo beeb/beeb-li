@@ -47,7 +47,7 @@
     </figure>
   {/if}
 
-  <div class="prose prose-lg mb-8">
+  <div class="prose sm:prose-lg mb-8">
     <h1>{title}</h1>
   </div>
 
@@ -91,7 +91,7 @@
     </dl>
   </aside>
 
-  <div class="prose prose-lg w-full max-w-full">
+  <div class="prose sm:prose-lg w-full max-w-full">
     <svelte:component this={PostContent} />
   </div>
 </article>
