@@ -10,7 +10,7 @@
 </svelte:head>
 
 <div>
-  <div class="prose mb-8">
+  <div class="prose prose-lg mb-8">
     <h1>All blog categories</h1>
     <ul>
       {#each data.categories as [category, count]}

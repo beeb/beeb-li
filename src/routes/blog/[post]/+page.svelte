@@ -47,7 +47,7 @@
     </figure>
   {/if}
 
-  <div class="prose mb-8">
+  <div class="prose prose-lg mb-8">
     <h1>{title}</h1>
   </div>
 

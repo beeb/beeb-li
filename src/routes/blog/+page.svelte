@@ -12,7 +12,7 @@
 </svelte:head>
 
 <div class="flex justify-between items-center mb-12">
-  <div class="prose">
+  <div class="prose prose-lg">
     <h1>Blog</h1>
   </div>
   <a class="link text-lg" href="/blog/category">All blog categories</a>

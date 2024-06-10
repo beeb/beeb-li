@@ -17,7 +17,7 @@
 </svelte:head>
 
 {#if posts.length}
-  <div class="prose mb-8">
+  <div class="prose prose-lg mb-8">
     <h1 class="mb-1">Blog category: {category}</h1>
     <small>Posts {lowerBound}-{upperBound} of {total}</small>
   </div>
