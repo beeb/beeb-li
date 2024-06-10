@@ -20,8 +20,8 @@
     Skip to main content
   </a>
 </div>
-<header class="navbar mb-8 px-0">
-  <div class="navbar-start w-full sm:w-1/3">
+<header class="navbar mb-8 px-0 min-h-20">
+  <div class="navbar-start grow w-auto">
     <div class="dropdown sm:hidden relative -left-4">
       <div tabindex="0" role="button" class="btn btn-ghost text-lg">
         <Hamburger />
@@ -34,12 +34,12 @@
       href="/"
       class="text-3xl text-primary font-extrabold inline-flex gap-2 items-center"
     >
-      <Logo class="w-10" />
+      <Logo class="w-10 shrink-0" />
       {siteTitle}
     </a>
   </div>
-  <div class="navbar-end w-2/3 gap-4">
+  <div class="navbar-end gap-4 w-auto">
     <ThemeSwitcher />
-    <Nav class="hidden sm:flex menu text-lg menu-horizontal px-2 gap-2" />
+    <Nav class="hidden sm:flex menu text-lg menu-horizontal p-0" />
   </div>
 </header>
