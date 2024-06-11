@@ -33,5 +33,8 @@
       RSS
     </a>
   </p>
-  <p>&copy; {new Date().getFullYear()} {siteAuthor}</p>
+  <p>
+    &copy; {new Date().getFullYear()}
+    {siteAuthor}. No cookies are used by this website =)
+  </p>
 </footer>
