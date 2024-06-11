@@ -25,6 +25,7 @@ const render = (baseUrl: string, posts: PostData[]) => `<?xml version="1.0" enco
 <link href="${baseUrl}" />
 <link href="${baseUrl}/index.xml" rel="self" />
 <id>${baseUrl}</id>
+<icon>${baseUrl}/apple-touch-icon.png</icon>
 <updated>${new Date().toISOString()}</updated>
 <author>
 <name>Valentin Bersier</name>

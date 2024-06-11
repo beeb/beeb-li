@@ -24,7 +24,13 @@ const render = (baseUrl: string, posts: PostData[]) => `<?xml version="1.0" enco
 <title>${siteTitle}</title>
 <link>${baseUrl}</link>
 <description>${siteDescription}</description>
+<image>
+<url>${baseUrl}/apple-touch-icon.png</url>
+<title>${siteTitle}</title>
+<link>${baseUrl}</link>
+</image>
 <atom:link href="${baseUrl}/rss.xml" rel="self" type="application/rss+xml" />
+<lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
 ${posts
 	.map(
 		(post) => `<item>
@@ -33,6 +39,7 @@ ${posts
 <description>${post.excerpt}</description>
 <guid isPermaLink="true">${baseUrl}/blog/${post.slug}</guid>
 <pubDate>${new Date(post.date).toUTCString()}</pubDate>
+${post.categories.map((category) => `<category>${category}"</category>`).join('')}
 </item>`,
 	)
 	.join('')}
