@@ -4,10 +4,6 @@ import type { RequestHandler } from '@sveltejs/kit'
 
 export const prerender = true
 
-interface PostData extends PostPrelude {
-	slug: string
-}
-
 export const GET: RequestHandler = async ({ url }) => {
 	const { posts } = await fetchPosts({ limit: -1 })
 

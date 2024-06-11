@@ -16,6 +16,12 @@
     title="Sitewide Atom Feed"
     href={`${data.baseUrl}/index.xml`}
   />
+  <link
+    rel="alternate"
+    type="application/rss+xml"
+    title="RSS Feed"
+    href={`${data.baseUrl}/rss.xml`}
+  />
   <meta data-key="description" name="description" content={siteDescription} />
   <meta name="author" content="Valentin Bersier" />
 </svelte:head>
