@@ -19,12 +19,12 @@ export const GET: RequestHandler = async ({ url }) => {
 }
 
 const render = (baseUrl: string, posts: PostData[]) => `<?xml version="1.0" encoding="UTF-8" ?>
-<feed xmlns:atom="http://www.w3.org/2005/Atom">
+<feed xmlns="http://www.w3.org/2005/Atom">
 <title>${siteTitle}</title>
 <subtitle>${siteDescription}</subtitle>
 <link href="${baseUrl}" />
 <link href="${baseUrl}/index.xml" rel="self" />
-<id>${baseUrl}</id>
+<id>${baseUrl}/</id>
 <icon>${baseUrl}/apple-touch-icon.png</icon>
 <updated>${new Date().toISOString()}</updated>
 <author>
