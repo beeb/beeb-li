@@ -1,4 +1,4 @@
-import fetchPosts from '$lib/assets/fetchPosts'
+import fetchPosts from '$lib/fetchPosts'
 import type { PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async () => {
