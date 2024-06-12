@@ -19,10 +19,6 @@ const logoData = btoa(logo)
 export const GET: RequestHandler = async ({ url, params }) => {
 	const post: Post = await import(`../../../../lib/posts/${params.post}.md`)
 
-	const image = post.metadata.coverImage
-		? (await import(`../../../../lib/posts/${params.post}/title.jpg?enhanced&w=1200`)).default
-		: null
-
 	let imageData = null
 	// if (post.metadata.coverImage) {
 	// 	const buffer = (await import(`../../../../lib/posts/${params.post}/title.jpg?arraybuffer`)).default
