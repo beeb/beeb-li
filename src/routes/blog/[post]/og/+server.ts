@@ -1,4 +1,5 @@
 import satori from 'satori'
+import { Resvg } from '@resvg/resvg-js'
 import type { RequestHandler } from './$types'
 import font from '../../../../../static/fonts/tasa-orbiter-display-semibold.otf?arraybuffer'
 import fontBlack from '../../../../../static/fonts/tasa-orbiter-display-black.otf?arraybuffer'
@@ -88,11 +89,23 @@ export const GET: RequestHandler = async ({ url, params }) => {
 		},
 	)
 
-	return new Response(svg, {
+	const resvg = new Resvg(svg, {
+		fitTo: {
+			mode: 'width' as const,
+			value: 1200,
+		},
+		font: {
+			loadSystemFonts: false,
+		},
+	})
+	const pngData = resvg.render()
+	const pngBuffer = pngData.asPng()
+
+	return new Response(pngBuffer, {
 		status: 200,
 		headers: {
 			'cache-control': 'public, immutable, no-transform, max-age=31536000',
-			'content-type': 'image/svg+xml',
+			'content-type': 'image/png',
 		},
 	})
 }

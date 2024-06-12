@@ -12,6 +12,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "^1.8.0",
 		"@iconify-json/mingcute": "^1.1.17",
+		"@resvg/resvg-js": "^2.6.2",
 		"@sveltejs/adapter-static": "^3.0.1",
 		"@sveltejs/enhanced-img": "^0.2.1",
 		"@sveltejs/kit": "^2.5.10",
