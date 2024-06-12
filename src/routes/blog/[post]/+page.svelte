@@ -4,8 +4,16 @@
 
   export let data: PageData;
 
-  $: ({ title, excerpt, date, updated, coverAlt, categories, enhancedImage } =
-    data.meta);
+  $: ({
+    title,
+    excerpt,
+    date,
+    updated,
+    coverAlt,
+    categories,
+    enhancedImage,
+    slug,
+  } = data.meta);
   $: ({ PostContent } = data);
 </script>
 
@@ -17,11 +25,16 @@
   <meta name="twitter:title" content={title} />
   <meta property="og:description" content={excerpt} />
   <meta name="twitter:description" content={excerpt} />
-  <!-- TODO: generate automatically? -->
-  <!-- <meta property="og:image" content="https://yourdomain.com/image_path" /> -->
+  <meta
+    property="og:image"
+    content={`${data.baseUrl}/blog/${slug}/og?modified=${new Date(updated ?? date).toISOString()}`}
+  />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <!-- <meta name="twitter:image" content="https://yourdomain.com/image_path" /> -->
+  <meta
+    property="twitter:image"
+    content={`${data.baseUrl}/blog/${slug}/og?modified=${new Date(updated ?? date).toISOString()}`}
+  />
   {#if categories}
     {#each categories as category}
       <meta name="article:tag" content={category} />
