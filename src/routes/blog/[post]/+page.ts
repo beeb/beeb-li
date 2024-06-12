@@ -1,5 +1,11 @@
 import { error } from '@sveltejs/kit'
 import type { PageLoad } from './$types'
+import fetchPosts from '$lib/fetchPosts'
+
+export const entries = async () => {
+	const { posts } = await fetchPosts({ limit: -1 })
+	return posts.map((p) => ({ post: p.slug }))
+}
 
 export const load: PageLoad = async ({ params }) => {
 	try {

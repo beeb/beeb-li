@@ -15,7 +15,7 @@
     slug,
   } = data.meta);
   $: ({ PostContent } = data);
-  $: ogDate = new Date(updated ?? date).toISOString();
+  $: ogDate = (updated ? new Date(updated) : new Date(date)).toISOString();
 </script>
 
 <svelte:head>

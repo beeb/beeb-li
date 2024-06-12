@@ -10,4 +10,9 @@ declare global {
 	}
 }
 
+declare module '*.jpg?arraybuffer' {
+	const content: ArrayBuffer
+	export default content
+}
+
 export {}
