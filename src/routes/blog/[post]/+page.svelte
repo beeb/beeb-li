@@ -28,13 +28,13 @@
   <meta name="twitter:description" content={excerpt} />
   <meta
     property="og:image"
-    content={`${data.baseUrl}/blog/${slug}/og?modified=${ogDate}`}
+    content={`${data.baseUrl}/blog/${slug}/og.png?modified=${ogDate}`}
   />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta
     property="twitter:image"
-    content={`${data.baseUrl}/blog/${slug}/og?modified=${ogDate}`}
+    content={`${data.baseUrl}/blog/${slug}/og.png?modified=${ogDate}`}
   />
   {#if categories}
     {#each categories as category}
