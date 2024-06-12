@@ -86,6 +86,9 @@ devDependencies:
   vite:
     specifier: ^5.2.13
     version: 5.2.13
+  vite-imagetools:
+    specifier: ^7.0.2
+    version: 7.0.2
   vite-plugin-arraybuffer:
     specifier: ^0.0.7
     version: 0.0.7
