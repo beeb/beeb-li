@@ -15,6 +15,7 @@
     slug,
   } = data.meta);
   $: ({ PostContent } = data);
+  $: ogDate = new Date(updated ?? date).toISOString();
 </script>
 
 <svelte:head>
@@ -27,13 +28,13 @@
   <meta name="twitter:description" content={excerpt} />
   <meta
     property="og:image"
-    content={`${data.baseUrl}/blog/${slug}/og?modified=${new Date(updated ?? date).toISOString()}`}
+    content={`${data.baseUrl}/blog/${slug}/og?modified=${ogDate}`}
   />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta
     property="twitter:image"
-    content={`${data.baseUrl}/blog/${slug}/og?modified=${new Date(updated ?? date).toISOString()}`}
+    content={`${data.baseUrl}/blog/${slug}/og?modified=${ogDate}`}
   />
   {#if categories}
     {#each categories as category}
