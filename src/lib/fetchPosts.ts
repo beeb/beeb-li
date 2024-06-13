@@ -35,7 +35,7 @@ export const fetchPosts = async ({ offset = 0, limit = postsPerPage, category = 
 }
 
 export const fetchCategories = async (opts: { sort?: boolean } = {}) => {
-	const { posts } = await fetchPosts()
+	const { posts } = await fetchPosts({ limit: -1 })
 
 	// get unique categories, sorted by name and including the count of articles in each
 	// `Map` preserves insertion sort order
