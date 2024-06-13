@@ -4,6 +4,11 @@
 </script>
 
 <ul {...$$props}>
+	<li>
+		<a href="/" class={($page.route.id ?? "") === "/" ? "active" : ""}>
+			Home
+		</a>
+	</li>
 	{#each navItems as p}
 		<li>
 			<a
