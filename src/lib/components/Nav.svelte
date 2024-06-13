@@ -14,6 +14,6 @@
 		</li>
 	{/each}
 	<li>
-		<a href="/index.xml" rel="alternate" data-sveltekit-reload>RSS</a>
+		<a href="/rss.xml" rel="alternate" data-sveltekit-reload>RSS</a>
 	</li>
 </ul>

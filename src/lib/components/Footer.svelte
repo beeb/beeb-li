@@ -25,12 +25,21 @@
     </a>
     <a
       class="btn text-lg btn-ghost"
-      href="/index.xml"
+      href="/rss.xml"
       rel="alternate"
       data-sveltekit-reload
     >
       <Rss />
       RSS
+    </a>
+    <a
+      class="btn text-lg btn-ghost"
+      href="/index.xml"
+      rel="alternate"
+      data-sveltekit-reload
+    >
+      <Rss />
+      Atom
     </a>
   </p>
   <p>
