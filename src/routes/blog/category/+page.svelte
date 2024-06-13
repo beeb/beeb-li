@@ -17,7 +17,7 @@
     <ul>
       {#each data.categories as [category, count]}
         <li>
-          <a href="/blog/category/{category}/page">
+          <a href="/blog/category/{category}/page/1">
             {category}
           </a>
           ({count})

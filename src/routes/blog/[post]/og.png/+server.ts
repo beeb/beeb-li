@@ -5,7 +5,7 @@ import logo from '../../../../../static/favicon.svg?raw'
 import font from '../../../../../static/fonts/tasa-orbiter-display-semibold.otf?arraybuffer'
 import fontBlack from '../../../../../static/fonts/tasa-orbiter-display-black.otf?arraybuffer'
 import { siteTitle } from '$lib/config'
-import fetchPosts from '$lib/fetchPosts'
+import { fetchPosts } from '$lib/fetchPosts'
 
 export const prerender = true
 

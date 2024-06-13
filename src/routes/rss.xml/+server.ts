@@ -1,4 +1,4 @@
-import fetchPosts from '$lib/fetchPosts'
+import { fetchPosts } from '$lib/fetchPosts'
 import { siteDescription, siteTitle } from '$lib/config'
 import type { RequestHandler } from '@sveltejs/kit'
 

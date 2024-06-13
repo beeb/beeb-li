@@ -1,7 +1,13 @@
-import fetchPosts from '$lib/fetchPosts'
+import { fetchPosts } from '$lib/fetchPosts'
 import { postsPerPage } from '$lib/config'
 import { error, redirect } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
+
+export const entries = async () => {
+	const { total } = await fetchPosts({ limit: -1 })
+	const totalPages = Math.ceil(total / postsPerPage)
+	return Array.from({ length: totalPages }, (_, i) => ({ page: `${i + 1}` }))
+}
 
 export const load: PageServerLoad = async ({ params }) => {
 	const page = Number.parseInt(params.page ?? '1')

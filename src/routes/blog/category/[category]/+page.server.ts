@@ -1,12 +1,9 @@
 import { redirect } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
-import fetchPosts from '$lib/fetchPosts'
+import { fetchCategories } from '$lib/fetchPosts'
 
 export const entries = async () => {
-	const { posts } = await fetchPosts({ limit: -1 })
-	const categories = posts
-		.flatMap((post) => post.categories)
-		.reduce((acc, category) => acc.set(category, (acc.get(category) ?? 0) + 1), new Map<string, number>())
+	const categories = await fetchCategories()
 	return [...categories].map(([c, _]) => ({ category: c }))
 }
 
