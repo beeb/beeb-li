@@ -51,14 +51,43 @@ If only we could compare algorithms in diff-testing between different languages.
 ## Enter FFI
 
 The [Foundry](https://github.com/foundry-rs/foundry/) development toolkit has transformed the developer experience
-of blockchain programmers since its inception, as seen by the wide adoption it got over the last few months.
-The ability to use the Solidity language across the full development cycle, from testing to deploying contracts is
+of blockchain programmers since its inception in 2021, as seen by the wide adoption it got over the last couple of
+years. The ability to use the Solidity language across the full development cycle, from testing to deploying contracts is
 surely to thank for that.
 
-<Image src={stars} maxWidth={500} alt="A chart of the evolution of GitHub stars for the Foundry and Hardhat projects. The Foundry line shows a rapid increase in stars count while the Hardhat line shows that its slope is decreasing since 2023. The Foundry project overtook the Hardhat project in terms of stars around the beginning of 2023." caption="The popularity of Foundry can be seen by comparing the number of stars it has on GitHub, compared to the previously popular toolkit Hardhat." />
+<Image
+  src={stars}
+  maxWidth={500}
+  alt="A chart of the evolution of GitHub stars for the Foundry and Hardhat projects. The Foundry line shows a rapid increase in stars count while the Hardhat line shows that its slope is decreasing since 2023. The Foundry project overtook the Hardhat project in terms of stars around the beginning of 2023."
+  caption="The popularity of Foundry can be seen by comparing the number of stars it has on GitHub, compared to the previously popular toolkit Hardhat."
+/>
 
 One extremely powerful feature of the Foundry test utilities is its ability to call external binaries through a
-Foreign Function Interface.
+Foreign Function Interface with the `vm.ffi` [cheatcode](https://book.getfoundry.sh/cheatcodes/ffi).
+
+```solidity
+// inside a foundry test
+string[] memory inputs = new string[](3);
+inputs[0] = "echo";
+inputs[1] = "-n";
+inputs[2] = "0x42";
+
+bytes memory res = vm.ffi(inputs);
+assertEq(res, hex"42");
+```
+
+This opens up so many possibilities, from interaction with off-chain APIs to retrieve test data, to the topic of today:
+diff-testing against an implementation in another programming language.
+
+
+## A Wild "Rust" Appears
+
+It will come to no suprise to those who know me personally that my language of choice for implementing FFI test
+utilities (well, realisticly, for implementing anything!) is Rust.
+
+In the context of today however, Rust is particularly interesting because, it being a compiled language with a focus on
+correctness and performance, the **startup times and memory footprint** are relatively small, and the expansive crate
+ecosystem makes it a breeze to find good quality alternative implementations for many things.
 
 
 *[FFI]: Foreign Function Interface
