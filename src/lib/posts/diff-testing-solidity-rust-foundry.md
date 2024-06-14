@@ -97,7 +97,7 @@ ecosystem makes it a breeze to find good quality alternative implementations for
 Since diff-testing often relies of fuzzing the inputs to a particular function (_i.e._ generating random values), the
 test will be run many thousands of times. Each time, the Foundry suite needs to call our test utility once, to retrieve
 the output of the reference implementation. If the executable were to have a slow startup time, this would dramatically
-reduce the time spent running our test.
+increase the time spent running our test.
 
 *[FFI]: Foreign Function Interface
 *[EVM]: Ethereum Virtual Machine
