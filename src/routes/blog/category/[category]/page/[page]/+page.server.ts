@@ -1,4 +1,4 @@
-import { fetchPosts } from '$lib/fetchPosts'
+import { fetchPosts } from '$lib/posts'
 import { postsPerPage } from '$lib/config'
 import { error } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'

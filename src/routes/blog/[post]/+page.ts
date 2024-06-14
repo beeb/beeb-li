@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit'
 import type { PageLoad } from './$types'
-import { fetchPosts } from '$lib/fetchPosts'
+import { fetchPosts } from '$lib/posts'
 
 export const entries = async () => {
 	const { posts } = await fetchPosts({ limit: -1 })

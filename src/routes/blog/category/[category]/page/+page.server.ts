@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
-import { fetchCategories } from '$lib/fetchPosts'
+import { fetchCategories } from '$lib/posts'
 
 export const entries = async () => {
 	const categories = await fetchCategories()

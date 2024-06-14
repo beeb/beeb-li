@@ -1,4 +1,4 @@
-import { fetchCategories } from '$lib/fetchPosts'
+import { fetchCategories } from '$lib/posts'
 import type { PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async () => {
