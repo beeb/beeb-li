@@ -96,5 +96,5 @@ times. Each time, the Foundry suite needs to call our test utility once, to retr
 implementation. If the executable were to have a slow startup time, this would dramatically reduce the time spent
 running our test.
 
-_[FFI]: Foreign Function Interface
-_[EVM]: Ethereum Virtual Machine
+*[FFI]: Foreign Function Interface
+*[EVM]: Ethereum Virtual Machine
