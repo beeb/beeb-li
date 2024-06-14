@@ -91,10 +91,10 @@ In the context of today however, Rust is particularly interesting because, it be
 correctness and performance, the **startup times and memory footprint** are relatively small, and the expansive crate
 ecosystem makes it a breeze to find good quality alternative implementations for many things.
 
-Since diff-testing often relies of fuzzing the inputs to a particular function, the test will be run many thousands of
-times. Each time, the Foundry suite needs to call our test utility once, to retrieve the output of the reference
-implementation. If the executable were to have a slow startup time, this would dramatically reduce the time spent
-running our test.
+Since diff-testing often relies of fuzzing the inputs to a particular function (_i.e._ generating random values), the
+test will be run many thousands of times. Each time, the Foundry suite needs to call our test utility once, to retrieve
+the output of the reference implementation. If the executable were to have a slow startup time, this would dramatically
+reduce the time spent running our test.
 
 *[FFI]: Foreign Function Interface
 *[EVM]: Ethereum Virtual Machine
