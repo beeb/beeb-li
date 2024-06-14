@@ -76,7 +76,7 @@ inputs[1] = "-n";
 // hex string representation of integer 42 in big endian
 inputs[2] = vm.toString(bytes32(uint256(42)));
 
-// command output is parsed as hexadecimal into bytes
+// command output (hexadecimal string) is parsed into bytes
 bytes memory res = vm.ffi(inputs);
 uint256 val = abi.decode(res, (uint256));
 assertEq(val, 42);
