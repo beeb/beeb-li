@@ -73,10 +73,13 @@ Foreign Function Interface with the `vm.ffi` [cheatcode](https://book.getfoundry
 string[] memory inputs = new string[](3);
 inputs[0] = "echo";
 inputs[1] = "-n";
-inputs[2] = "0x42";
+// hex string representation of integer 42 in big endian
+inputs[2] = vm.toString(bytes32(uint256(42)));
 
+// command output is parsed as hexadecimal into bytes
 bytes memory res = vm.ffi(inputs);
-assertEq(res, hex"42");
+uint256 val = abi.decode(res, (uint256));
+assertEq(val, 42);
 ```
 
 This opens up so many possibilities, from interaction with off-chain APIs to retrieve test data, to the topic of today:
