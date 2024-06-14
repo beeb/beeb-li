@@ -61,7 +61,7 @@
     </figure>
   {/if}
 
-  <div class="prose sm:prose-lg mb-8">
+  <div class="prose sm:prose-lg w-full max-w-full mb-8">
     <h1>{title}</h1>
   </div>
 
