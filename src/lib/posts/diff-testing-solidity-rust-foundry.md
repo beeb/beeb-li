@@ -18,6 +18,7 @@ excerpt: >
 <script lang="ts">
   import stars from './diff-testing-solidity-rust-foundry/star-history-2024614.png?enhanced&imgSizes=true'
   import Image from '$lib/components/Image.svelte'
+  import ShellCmd from '$lib/components/ShellCmd.svelte'
 </script>
 
 ## Contents
@@ -102,10 +103,46 @@ increase the time spent running our test.
 
 ### Testing Overhead
 
-The above example calling the `echo` command takes **192ms** on my machine for 256 fuzzing runs. Compared to this, the same
-test which doesn't call `echo` (but performs otherwise all the same operations of building the array in memory and the
-assert) takes **9ms**. The FFI test is a noticeably slower of course, which is why we have to make our executable as
-fast as possible.
+The above example calling the `echo` command takes **192ms** on my machine for 256 fuzzing runs. Compared to this,
+the same test which doesn't call `echo` (but performs otherwise all the same operations of building the array in memory
+and the assert) takes **9ms**. The FFI test is a noticeably slower of course, which is why we have to make our
+executable as fast as possible.
+
+## Project Setup
+
+Let's setup a project to demonstrate some basic uses of the techniques described above.
+
+First, we create a new Foundry project and initiate a Rust project inside:
+
+<ShellCmd>
+<svelte:fragment slot="1">forge init diff-testing</svelte:fragment>
+<svelte:fragment slot="2">cd diff-testing</svelte:fragment>
+<svelte:fragment slot="3">cargo new utils</svelte:fragment>
+</ShellCmd>
+
+Since we want to be able to invoke `cargo` commands directly from the root of the `diff-testing` project and have the
+built binary reside inside the `./target/release` folder, we will add a `Cargo.toml` file at the root:
+
+```toml
+[workspace]
+resolver = "2"
+members = ["utils"]
+
+[profile.release]
+strip = true
+lto = true
+panic = "abort"
+```
+
+The release profile has been slightly tweaked to produce a smaller binary, and should already be optimized for speed.
+
+Now, running the following inside our project should run the hello-world Rust binary:
+
+<ShellCmd>
+<svelte:fragment slot="1">cargo run --release -q
+    Hello, world!</svelte:fragment>
+</ShellCmd>
+
 
 *[FFI]: Foreign Function Interface
 *[EVM]: Ethereum Virtual Machine
