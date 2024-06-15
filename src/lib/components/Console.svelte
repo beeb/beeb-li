@@ -1,19 +1,12 @@
 <script lang="ts">
-  type Entry = { text: string; prefix?: string; cl?: string } | string
-
+  import ConsoleLine from '$lib/components/ConsoleLine.svelte'
   export let entries: Entry[] = []
 </script>
 
 <div class="flex justify-center">
   <div class="mockup-code">
     {#each entries as entry}
-      {#if typeof entry === 'string'}
-        <pre data-prefix="$"><code>{entry}</code></pre>
-      {:else if entry.prefix === ''}
-        <pre class="before:!mr-0 !ml-6 {entry.cl}"><code>{entry.text}</code></pre>
-      {:else}
-        <pre data-prefix={entry.prefix ?? '$'} class={entry.cl}><code>{entry.text}</code></pre>
-      {/if}
+      <ConsoleLine {entry} />
     {/each}
   </div>
 </div>
