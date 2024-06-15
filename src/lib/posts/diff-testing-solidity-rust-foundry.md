@@ -136,11 +136,11 @@ panic = "abort"
 
 The release profile has been slightly tweaked to produce a smaller binary, and should already be optimized for speed.
 
-Now, running the following inside our project should run the hello-world Rust binary:
+Now, running the following inside our project should compile and run the Rust binary in release mode:
 
 
 <Console entries={[
-"cargo run --release -q",
+"cargo run -qr",
 { text: "Hello, world!", prefix: "", cl: "text-info" }
 ]} />
 
