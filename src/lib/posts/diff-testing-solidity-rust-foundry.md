@@ -61,25 +61,26 @@ is surely to thank for that.
   alt="A chart of the evolution of GitHub stars for the Foundry and Hardhat projects. The Foundry line shows a rapid
   increase in stars count while the Hardhat line shows that its slope is decreasing since 2023. The Foundry project
   overtook Hardhat in terms of stars around the beginning of 2023."
-  caption="The popularity of Foundry can be seen by comparing the number of stars it has on GitHub, compared to the
-  previously popular toolkit Hardhat."
+  caption="Although arguably not the best metric of popularity, the number of stars Foundry has on GitHub, compared to
+  the previously popular toolkit Hardhat, demonstrates the shifting preference of the Solidity ecosystem."
 />
 
 One extremely powerful feature of the Foundry test utilities is its ability to call external binaries through a
 Foreign Function Interface with the `vm.ffi` [cheatcode](https://book.getfoundry.sh/cheatcodes/ffi).
 
 ```solidity
-// inside a foundry test
-string[] memory inputs = new string[](3);
-inputs[0] = "echo";
-inputs[1] = "-n";
-// hex string representation of integer 42 in big endian
-inputs[2] = vm.toString(bytes32(uint256(42)));
+function testFuzz_echo(uint256 rand) public {
+    string[] memory inputs = new string[](3);
+    inputs[0] = "echo";
+    inputs[1] = "-n";
+    // hex string representation of the random input in big endian
+    inputs[2] = vm.toString(bytes32(rand));
 
-// command output (hexadecimal string) is parsed into bytes
-bytes memory res = vm.ffi(inputs);
-uint256 val = abi.decode(res, (uint256));
-assertEq(val, 42);
+    // command output (hexadecimal string) is parsed into bytes
+    bytes memory res = vm.ffi(inputs);
+    uint256 val = abi.decode(res, (uint256));
+    assertEq(val, rand, "comparing input and output");
+}
 ```
 
 This opens up so many possibilities, from interaction with off-chain APIs to retrieve test data, to the topic of today:
@@ -98,6 +99,13 @@ Since diff-testing often relies of fuzzing the inputs to a particular function (
 test will be run many thousands of times. Each time, the Foundry suite needs to call our test utility once, to retrieve
 the output of the reference implementation. If the executable were to have a slow startup time, this would dramatically
 increase the time spent running our test.
+
+### Testing Overhead
+
+The above example calling the `echo` command takes **192ms** on my machine for 256 fuzzing runs. Compared to this, the same
+test which doesn't call `echo` (but performs otherwise all the same operations of building the array in memory and the
+assert) takes **9ms**. The FFI test is a noticeably slower of course, which is why we have to make our executable as
+fast as possible.
 
 *[FFI]: Foreign Function Interface
 *[EVM]: Ethereum Virtual Machine
