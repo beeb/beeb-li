@@ -84,8 +84,8 @@ function testFuzz_echo(uint256 rand) public {
 }
 ```
 
-This opens up so many possibilities, from interaction with off-chain APIs to retrieve test data, to the topic of today:
-diff-testing against an implementation in another programming language.
+This opens up so many possibilities, from interaction with off-chain APIs, to the topic of today: diff-testing against
+an implementation in another programming language.
 
 ## A Wild "Rust" Appears
 
@@ -119,20 +119,14 @@ Let's setup a project to demonstrate some basic uses of the techniques described
 ]} />
 
 Since we want to be able to invoke `cargo` commands directly from the root of the `diff-testing` project and have the
-built binary reside inside the `./target/release` folder, we will add a `Cargo.toml` file at the root:
+built binary reside inside the `target/release` folder, we will add a `Cargo.toml` file at the root:
 
 ```toml
 [workspace]
 resolver = "2"
 members = ["utils"]
-
-[profile.release]
-strip = true
-lto = true
-panic = "abort"
 ```
 
-The release profile has been slightly tweaked to produce a smaller binary, and should already be optimized for speed.
 Now, running the following inside our project should compile and run the Rust binary in release mode:
 
 <Console entries={[
@@ -207,7 +201,7 @@ When we invoke our binary, we should see the following:
 
 <Console entries={[
 "cargo build -r",
-"./target/release/utils timestamp_to_date 1717200000",
+"target/release/utils timestamp_to_date 1717200000",
 {
   text: "0x00000000000000000000000000000000000000000000000000000000000007e800000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000001",
   prefix: "", cl: "text-info" }
@@ -256,6 +250,17 @@ And here's the result. Seems our test is even faster than the `echo` example we'
 text: "Ran 1 test for test/Diff.t.sol:DiffTest\n[PASS] testFuzz_soladyTimestampToDate(uint256) (runs: 257, μ: 13136, ~: 12816)\nSuite result: ok. 1 passed; 0 failed; 0 skipped; finished in 131.61ms (131.39ms CPU time)\n\nRan 1 test suite in 135.05ms (131.61ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)",
 prefix: "", cl: "text-info"}
 ]} />
+
+Note that we added the `--ffi` argument to `forge test` to enable the feature. This could also be enabled by default
+via the `foundry.toml` configuration file:
+
+```toml
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+ffi = true
+```
 
 ## Conclusion
 
