@@ -19,6 +19,7 @@ excerpt: >
   import stars from './diff-testing-solidity-rust-foundry/star-history-2024614.png?enhanced&imgSizes=true'
   import Image from '$lib/components/Image.svelte'
   import Console from '$lib/components/Console.svelte'
+  import ChatNote from '$lib/components/ChatNote.svelte'
 </script>
 
 ## Contents
@@ -241,6 +242,12 @@ function testFuzz_soladyTimestampToDate(uint256 timestamp) public {
     assertEq(day, refDay, "day");
 }
 ```
+
+<ChatNote>
+<strong>Note</strong>: to keep the Rust implementation simple and for the sake of demonstration, we limit the timestamp
+range to a maximum value that is much smaller than what Solady supports, so that we can use the <code>chrono</code> crate. In
+practice however, it would be good to test the full range of acceptable values according to Solady's own limitations.
+</ChatNote>
 
 And here's the result. Seems our test is even faster than the `echo` example we've seen before! 🎉
 
