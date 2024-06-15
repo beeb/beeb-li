@@ -180,8 +180,6 @@ fn main() {
 }
 
 fn timestamp_to_date(timestamp_str: &str) {
-    // the chrono library only handles i64 for timestamps,
-    // but Solady's max supported timestamp is smaller than i64::MAX
     let timestamp: i64 = timestamp_str.parse().expect("timestamp should be i64");
     // parse timestamp
     let datetime = DateTime::from_timestamp(timestamp, 0).expect("timestamp should be valid");
@@ -214,6 +212,41 @@ When we invoke our binary, we should see the following:
   text: "0x00000000000000000000000000000000000000000000000000000000000007e800000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000001",
   prefix: "", cl: "text-info" }
 ]} />
+
+Benchmarking this command with [hyperfine](https://github.com/sharkdp/hyperfine) gives us an average execution time
+of **298μs** on my system. Not too bad! For 256 fuzzing runs, this would translate to a total time of roughly 76ms, not
+accounting for the overhead of the `vm.ffi` call.
+
+### Foundry Test
+
+Let's now create the fuzzing test in the Foundry project which will call the Solady implementation, the Rust binary, and
+compare the results.
+
+```solidity
+function testFuzz_soladyTimestampToDate(uint256 timestamp) public {
+    // the `chrono` rust crate is limited to this maximum timestamp
+    timestamp = bound(timestamp, 0, 8210266876799);
+
+    string[] memory inputs = new string[](3);
+    inputs[0] = "target/release/utils";
+    inputs[1] = "timestamp_to_date";
+    // base-10 numeric representation of the timestamp
+    // i.e. if the timestamp were 42, then this would be "42"
+    inputs[2] = vm.toString(timestamp);
+
+    // get the reference result
+    bytes memory res = vm.ffi(inputs);
+    (uint256 refYear, uint256 refMonth, uint256 refDay) = abi.decode(res, (uint256, uint256, uint256));
+
+    // Solady's result
+    (uint256 year, uint256 month, uint256 day) = DateTimeLib.timestampToDate(timestamp);
+
+    // they should be equal
+    assertEq(year, refYear, "year");
+    assertEq(month, refMonth, "month");
+    assertEq(day, refDay, "day");
+}
+```
 
 *[FFI]: Foreign Function Interface
 *[EVM]: Ethereum Virtual Machine
