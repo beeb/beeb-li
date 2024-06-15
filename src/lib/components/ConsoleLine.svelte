@@ -1,6 +1,8 @@
 <script lang="ts">
   import { building } from '$app/environment'
-  import ClipboardIcon from 'virtual:icons/mingcute/clipboard-line'
+  import ClipboardIcon from 'virtual:icons/lucide/clipboard-copy'
+  import ClipboardSuccess from 'virtual:icons/lucide/clipboard-check'
+  import ClipboardError from 'virtual:icons/lucide/clipboard-x'
 
   export let entry: Entry
 
@@ -46,7 +48,13 @@
       aria-label="Copy to clipboard"
       on:click={() => copyToClipboard(entryText)}
     >
-      <ClipboardIcon />
+      {#if clipboardIcon === 'default'}
+        <ClipboardIcon />
+      {:else if clipboardIcon === 'success'}
+        <ClipboardSuccess />
+      {:else}
+        <ClipboardError />
+      {/if}
     </button>
   {/if}
 </div>
