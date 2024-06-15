@@ -248,6 +248,19 @@ function testFuzz_soladyTimestampToDate(uint256 timestamp) public {
 }
 ```
 
+And here's the result. Seems our test is even faster than the `echo` example we've seen before! 🎉
+
+<Console entries={[
+"forge test --ffi",
+{
+text: "Ran 1 test for test/Diff.t.sol:DiffTest\n[PASS] testFuzz_soladyTimestampToDate(uint256) (runs: 257, μ: 13136, ~: 12816)\nSuite result: ok. 1 passed; 0 failed; 0 skipped; finished in 131.61ms (131.39ms CPU time)\n\nRan 1 test suite in 135.05ms (131.61ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)",
+prefix: "", cl: "text-info"}
+]} />
+
+## Conclusion
+
+
+
 *[FFI]: Foreign Function Interface
 *[EVM]: Ethereum Virtual Machine
 *[ABI]: Application Binary Interface
