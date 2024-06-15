@@ -1,33 +1,11 @@
 <script lang="ts">
   import { building } from '$app/environment'
-  import ClipboardIcon from 'virtual:icons/lucide/clipboard-copy'
-  import ClipboardSuccess from 'virtual:icons/lucide/clipboard-check'
-  import ClipboardError from 'virtual:icons/lucide/clipboard-x'
+  import CopyButton from '$lib/components/CopyButton.svelte'
 
   export let entry: Entry
 
-  let clipboardIcon: 'default' | 'success' | 'error' = 'default'
-
   $: entryText = typeof entry === 'string' ? entry : entry.text
   $: copy = typeof entry === 'string' ? true : entry.copy
-
-  const copyToClipboard = (text: string) => {
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(
-        () => {
-          clipboardIcon = 'success'
-        },
-        () => {
-          clipboardIcon = 'error'
-        }
-      )
-    } else {
-      clipboardIcon = 'error'
-    }
-    setTimeout(() => {
-      clipboardIcon = 'default'
-    }, 3000)
-  }
 </script>
 
 <div class="flex no-wrap items-center">
@@ -40,21 +18,6 @@
   {/if}
 
   {#if copy && !building}
-    <button
-      class="btn-link btn-sm btn text-neutral-content"
-      class:!text-success={clipboardIcon === 'success'}
-      class:!text-error={clipboardIcon === 'error'}
-      title="Copy to clipboard"
-      aria-label="Copy to clipboard"
-      on:click={() => copyToClipboard(entryText)}
-    >
-      {#if clipboardIcon === 'default'}
-        <ClipboardIcon />
-      {:else if clipboardIcon === 'success'}
-        <ClipboardSuccess />
-      {:else}
-        <ClipboardError />
-      {/if}
-    </button>
+    <CopyButton content={entryText} />
   {/if}
 </div>

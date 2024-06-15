@@ -1,12 +1,29 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
   import { siteTitle } from '$lib/config'
   import type { PageData } from './$types'
+  import CopyButton from '$lib/components/CopyButton.svelte'
 
   export let data: PageData
+
+  let article: HTMLDivElement
 
   $: ({ title, excerpt, date, updated, coverAlt, coverCredits, categories, enhancedImage, slug } = data.meta)
   $: ({ PostContent } = data)
   $: ogDate = (updated ? new Date(updated) : new Date(date)).toISOString()
+
+  onMount(() => {
+    for (const node of article.querySelectorAll("pre[class*='language-'] > code")) {
+      new CopyButton({
+        // use whatever Svelte component you like here
+        target: node,
+        props: {
+          content: node.textContent ?? '',
+          cl: 'absolute top-1 right-1' // requires <pre> to have position: relative;
+        }
+      })
+    }
+  })
 </script>
 
 <svelte:head>
@@ -29,7 +46,7 @@
   <meta property="article:published_time" content={date} />
 </svelte:head>
 
-<article>
+<article bind:this={article}>
   {#if enhancedImage}
     <div class="mb-8 flex flex-col items-end gap-1">
       <figure
