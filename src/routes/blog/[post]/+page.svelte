@@ -6,7 +6,7 @@
 
   export let data: PageData
 
-  let article: HTMLDivElement
+  let article: HTMLElement
 
   $: ({ title, excerpt, date, updated, coverAlt, coverCredits, categories, enhancedImage, slug } = data.meta)
   $: ({ PostContent } = data)
@@ -93,7 +93,7 @@
         <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium">Posted in</dt>
           <dd class="sm:col-span-2">
-            <ul class="flex gap-2">
+            <ul class="flex gap-2 flex-wrap">
               {#each categories as category}
                 <li>
                   <a class="badge badge-neutral" href="/blog/category/{category}/page/1">

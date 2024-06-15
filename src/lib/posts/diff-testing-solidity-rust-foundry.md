@@ -7,6 +7,7 @@ categories:
   - solidity
   - foundry
   - testing
+  - tutorial
 coverImage: true
 coverCredits: "Photo by yasin hemmati on Unsplash"
 coverAlt: "A picture of molten metal exiting the spout of a foundry into a vat"
