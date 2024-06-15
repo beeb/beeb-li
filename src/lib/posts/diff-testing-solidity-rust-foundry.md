@@ -110,9 +110,7 @@ executable as fast as possible.
 
 ## Project Setup
 
-Let's setup a project to demonstrate some basic uses of the techniques described above.
-
-First, we create a new Foundry project and initiate a Rust project inside:
+Let's setup a project to demonstrate some basic uses of the techniques described above. First, we create a new Foundry project and initiate a Rust project inside:
 
 <Console entries={[
 "forge init diff-testing",
@@ -135,14 +133,71 @@ panic = "abort"
 ```
 
 The release profile has been slightly tweaked to produce a smaller binary, and should already be optimized for speed.
-
 Now, running the following inside our project should compile and run the Rust binary in release mode:
-
 
 <Console entries={[
 "cargo run -qr",
 { text: "Hello, world!", prefix: "", cl: "text-info" }
 ]} />
+
+## Example: Solady's `DateTimeLib`
+
+As a practical exercise, we will differentially test the `timestampToDate` function implemented by
+[Solady's `DateTimeLib` library](https://github.com/Vectorized/solady/blob/678c9163550810b08f0ffb09624c9f7532392303/src/utils/DateTimeLib.sol#L118C14-L124).
+We add the Solady dependency to the project:
+
+<Console entries={["forge install Vectorized/solady"]} />
+
+### Rust reference implementation
+
+Let's start by creating our reference implementation in Rust. We first add a dependency on `alloy-core` for
+Solidity types and ABI encoding, and `chrono` for date/time manipulations:
+
+<Console entries={["cargo add -p utils chrono alloy-core -F alloy-core/sol-types"]} />
+
+We then add the following to our `utils/src/main.rs`:
+
+```rust
+use std::env;
+
+use alloy_core::{
+    primitives::{Bytes, U256},
+    sol_types::SolValue,
+};
+use chrono::{DateTime, Datelike};
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+
+    // the first argument (after binary name) is a command name
+    // this allows us to implement multiple test helpers in the same binary
+    match args[1].as_str() {
+        "timestamp_to_date" => timestamp_to_date(&args[2]),
+        _ => {
+            panic!("invalid command")
+        }
+    }
+}
+
+fn timestamp_to_date(timestamp_str: &str) {
+    // the chrono library only handles i64 for timestamps,
+    // but Solady's max supported timestamp is smaller than i64::MAX
+    let timestamp: i64 = timestamp_str.parse().expect("timestamp should be i64");
+    // parse timestamp
+    let datetime = DateTime::from_timestamp(timestamp, 0).expect("timestamp should be valid");
+    // retrieve year, month and day
+    let data = (
+        U256::from(datetime.year()),
+        U256::from(datetime.month()),
+        U256::from(datetime.day()),
+    );
+    // ABI-encode
+    let bytes = data.abi_encode_params();
+    let bytes: Bytes = bytes.into();
+    // Print abi-encoded data as hex string without a line return at the end
+    print!("{bytes}");
+}
+```
 
 *[FFI]: Foreign Function Interface
 *[EVM]: Ethereum Virtual Machine
