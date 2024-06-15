@@ -7,8 +7,9 @@ categories:
   - solidity
   - foundry
   - testing
-coverImage: false
-# coverAlt: ""
+coverImage: true
+coverCredits: "Photo by yasin hemmati on Unsplash"
+coverAlt: ""
 excerpt: >
   Differential testing allows to compare implementations and is especially useful in Solidity, where optimizations are
   frequently made by replacing code with low-level YUL instructions. By leverage the fast startup times and low

@@ -10,6 +10,7 @@ interface PostPrelude {
 	categories: string[]
 	coverImage?: bool
 	coverAlt?: string
+	coverCredits?: string
 	excerpt: string
 }
 

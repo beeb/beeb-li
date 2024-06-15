@@ -1,21 +1,12 @@
 <script lang="ts">
-  import { siteTitle } from "$lib/config";
-  import type { PageData } from "./$types";
+  import { siteTitle } from '$lib/config'
+  import type { PageData } from './$types'
 
-  export let data: PageData;
+  export let data: PageData
 
-  $: ({
-    title,
-    excerpt,
-    date,
-    updated,
-    coverAlt,
-    categories,
-    enhancedImage,
-    slug,
-  } = data.meta);
-  $: ({ PostContent } = data);
-  $: ogDate = (updated ? new Date(updated) : new Date(date)).toISOString();
+  $: ({ title, excerpt, date, updated, coverAlt, coverCredits, categories, enhancedImage, slug } = data.meta)
+  $: ({ PostContent } = data)
+  $: ogDate = (updated ? new Date(updated) : new Date(date)).toISOString()
 </script>
 
 <svelte:head>
@@ -26,16 +17,10 @@
   <meta name="twitter:title" content={title} />
   <meta property="og:description" content={excerpt} />
   <meta name="twitter:description" content={excerpt} />
-  <meta
-    property="og:image"
-    content={`${data.baseUrl}/blog/${slug}/og.png?modified=${ogDate}`}
-  />
+  <meta property="og:image" content={`${data.baseUrl}/blog/${slug}/og.png?modified=${ogDate}`} />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta
-    property="twitter:image"
-    content={`${data.baseUrl}/blog/${slug}/og.png?modified=${ogDate}`}
-  />
+  <meta property="twitter:image" content={`${data.baseUrl}/blog/${slug}/og.png?modified=${ogDate}`} />
   {#if categories}
     {#each categories as category}
       <meta name="article:tag" content={category} />
@@ -46,28 +31,32 @@
 
 <article>
   {#if enhancedImage}
-    <figure
-      class="mb-8 flex justify-center items-center max-h-96 overflow-hidden rounded-box"
-    >
-      <enhanced:img
-        class="object-cover"
-        src={enhancedImage}
-        alt={coverAlt ?? ""}
-        sizes="
+    <div class="mb-8 flex flex-col items-end gap-1">
+      <figure
+        class="flex justify-center items-center max-h-96 overflow-hidden rounded-box"
+        aria-describedby="cover-image-credits"
+      >
+        <enhanced:img
+          class="object-cover"
+          src={enhancedImage}
+          alt={coverAlt ?? ''}
+          sizes="
           (min-width: 1024px) 976px,
           calc(100vw - 48px)
         "
-      />
-    </figure>
+        />
+      </figure>
+      {#if coverCredits}
+        <small id="cover-image-credits" class="opacity-50">{coverCredits}</small>
+      {/if}
+    </div>
   {/if}
 
   <div class="prose sm:prose-lg w-full max-w-full mb-8">
     <h1>{title}</h1>
   </div>
 
-  <aside
-    class="flow-root rounded-lg bg-base-200 border border-base-300 py-3 shadow mb-8 max-w-lg"
-  >
+  <aside class="flow-root rounded-lg bg-base-200 border border-base-300 py-3 shadow mb-8 max-w-lg">
     <dl class="-my-3 divide-y divide-base-300 text-sm">
       <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
         <dt class="font-medium">Published</dt>
@@ -90,10 +79,7 @@
             <ul class="flex gap-2">
               {#each categories as category}
                 <li>
-                  <a
-                    class="badge badge-neutral"
-                    href="/blog/category/{category}/page/1"
-                  >
+                  <a class="badge badge-neutral" href="/blog/category/{category}/page/1">
                     {category}
                   </a>
                 </li>
