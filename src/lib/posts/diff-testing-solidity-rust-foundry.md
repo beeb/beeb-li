@@ -18,7 +18,7 @@ excerpt: >
 <script lang="ts">
   import stars from './diff-testing-solidity-rust-foundry/star-history-2024614.png?enhanced&imgSizes=true'
   import Image from '$lib/components/Image.svelte'
-  import ShellCmd from '$lib/components/ShellCmd.svelte'
+  import Console from '$lib/components/Console.svelte'
 </script>
 
 ## Contents
@@ -114,11 +114,11 @@ Let's setup a project to demonstrate some basic uses of the techniques described
 
 First, we create a new Foundry project and initiate a Rust project inside:
 
-<ShellCmd>
-<svelte:fragment slot="1">forge init diff-testing</svelte:fragment>
-<svelte:fragment slot="2">cd diff-testing</svelte:fragment>
-<svelte:fragment slot="3">cargo new utils</svelte:fragment>
-</ShellCmd>
+<Console entries={[
+"forge init diff-testing",
+"cd diff-testing",
+"cargo new utils",
+]} />
 
 Since we want to be able to invoke `cargo` commands directly from the root of the `diff-testing` project and have the
 built binary reside inside the `./target/release` folder, we will add a `Cargo.toml` file at the root:
@@ -138,11 +138,11 @@ The release profile has been slightly tweaked to produce a smaller binary, and s
 
 Now, running the following inside our project should run the hello-world Rust binary:
 
-<ShellCmd>
-<svelte:fragment slot="1">cargo run --release -q
-    Hello, world!</svelte:fragment>
-</ShellCmd>
 
+<Console entries={[
+"cargo run --release -q",
+{ text: "Hello, world!", prefix: "", cl: "text-info" }
+]} />
 
 *[FFI]: Foreign Function Interface
 *[EVM]: Ethereum Virtual Machine
