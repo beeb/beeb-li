@@ -199,5 +199,22 @@ fn timestamp_to_date(timestamp_str: &str) {
 }
 ```
 
+A few remarks about the code above. First, we parse the command-line arguments and discard the first one (0th index),
+then use the next one as a command name, which allows to implement multiple helpers in the same binary. The next
+argument will be a string representation of a signed 64-bit integer. The timestamp gets parsed as a `DateTime` and the
+year, month and day are then ABI-encoded into a tuple of 3 unsigned 256-bit integers.
+
+
+When we invoke our binary, we should see the following:
+
+<Console entries={[
+"cargo build -r",
+"./target/release/utils timestamp_to_date 1717200000",
+{
+  text: "0x00000000000000000000000000000000000000000000000000000000000007e800000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000001",
+  prefix: "", cl: "text-info" }
+]} />
+
 *[FFI]: Foreign Function Interface
 *[EVM]: Ethereum Virtual Machine
+*[ABI]: Application Binary Interface
