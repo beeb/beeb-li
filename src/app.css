@@ -17,7 +17,7 @@
 /* table of contents */
 
 h2#contents + ul {
-  @apply card bg-base-200 shadow max-w-lg px-3 py-0 list-none;
+  @apply card bg-base-200 shadow max-w-lg px-3 py-2 list-none;
 }
 
 h2#contents + ul a {
