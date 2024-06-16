@@ -10,13 +10,15 @@
 
 <div class="flex flex-nowrap items-center">
   {#if typeof entry === 'string'}
-    <pre data-prefix="$" class="grow text-wrap !pl-8 -indent-8 break-words"><code>{entry}</code></pre>
+    <pre data-theme="dark" data-prefix="$" class="grow text-wrap !pl-8 -indent-8 break-words"><code>{entry}</code></pre>
   {:else if entry.prefix === ''}
-    <pre class="before:!mr-0 !ml-6 grow text-wrap break-words {entry.cl}"><code>{entry.text}</code></pre>
-  {:else}
-    <pre data-prefix={entry.prefix ?? '$'} class="grow text-wrap !pl-8 -indent-8 break-words {entry.cl}"><code
-        >{entry.text}</code
+    <pre data-theme="dark" class="before:!mr-0 !ml-6 grow text-wrap break-words {entry.cl}"><code>{entry.text}</code
       ></pre>
+  {:else}
+    <pre
+      data-theme="dark"
+      data-prefix={entry.prefix ?? '$'}
+      class="grow text-wrap !pl-8 -indent-8 break-words {entry.cl}"><code>{entry.text}</code></pre>
   {/if}
 
   {#if copy && !building}
