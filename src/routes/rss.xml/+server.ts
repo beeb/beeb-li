@@ -1,5 +1,5 @@
-import { fetchPosts } from '$lib/posts'
 import { siteDescription, siteTitle } from '$lib/config'
+import { fetchPosts } from '$lib/posts'
 import type { RequestHandler } from '@sveltejs/kit'
 
 export const prerender = true
@@ -39,7 +39,7 @@ ${posts
 <description>${post.excerpt}</description>
 <guid isPermaLink="true">${baseUrl}/blog/${post.slug}</guid>
 <pubDate>${new Date(post.date).toUTCString()}</pubDate>
-${post.categories.map((category) => `<category>${category}"</category>`).join('')}
+${post.categories.map((category) => `<category>${category}</category>`).join('')}
 </item>`,
 	)
 	.join('')}
