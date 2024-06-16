@@ -1,18 +1,26 @@
 <script lang="ts">
-  import PostsList from "$lib/components/PostsList.svelte";
-  import Pagination from "$lib/components/Pagination.svelte";
-  import { postsPerPage, siteTitle } from "$lib/config";
-  import type { PageData } from "./$types";
+  import PostsList from '$lib/components/PostsList.svelte'
+  import Pagination from '$lib/components/Pagination.svelte'
+  import { postsPerPage, siteTitle, siteDescription } from '$lib/config'
+  import type { PageData } from './$types'
 
-  export let data: PageData;
-  $: ({ page, total, posts } = data);
+  export let data: PageData
+  $: ({ page, total, posts } = data)
 
-  $: lowerBound = (page - 1) * postsPerPage + 1;
-  $: upperBound = Math.min(page * postsPerPage, total);
+  $: lowerBound = (page - 1) * postsPerPage + 1
+  $: upperBound = Math.min(page * postsPerPage, total)
 </script>
 
 <svelte:head>
   <title>{siteTitle} - Blog - Page {page}</title>
+  <meta property="og:title" content="{siteTitle} - Blog" />
+  <meta property="og:description" content={siteDescription} />
+  <meta property="og:image" content="{data.baseUrl}/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:title" content="{siteTitle} - Blog" />
+  <meta name="twitter:description" content={siteDescription} />
+  <meta property="twitter:image" content="{data.baseUrl}/og.png" />
 </svelte:head>
 
 {#if posts.length}
