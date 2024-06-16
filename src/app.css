@@ -43,11 +43,6 @@ h2#contents + ul ul > li:last-child {
   padding-right: 1.25rem;
 }
 
-.prose pre[class*='language-'],
-.prose-lg pre[class*='language-'] {
-  @apply relative;
-}
-
 /* abbreviations */
 
 abbr[title] {

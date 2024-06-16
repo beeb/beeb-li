@@ -13,13 +13,17 @@
   $: ogDate = (updated ? new Date(updated) : new Date(date)).toISOString()
 
   onMount(() => {
-    for (const node of article.querySelectorAll("pre[class*='language-'] > code")) {
+    for (const node of article.querySelectorAll("pre[class*='language-']")) {
+      const wrapper = document.createElement('div')
+      wrapper.className = 'relative'
+      node.parentNode?.insertBefore(wrapper, node)
+      wrapper.appendChild(node)
       new CopyButton({
         // use whatever Svelte component you like here
-        target: node,
+        target: wrapper,
         props: {
           content: node.textContent ?? '',
-          cl: 'absolute top-1 right-1' // requires <pre> to have position: relative;
+          cl: 'absolute top-2 right-2 btn-outline btn-square' // requires <pre> to have position: relative;
         }
       })
     }
