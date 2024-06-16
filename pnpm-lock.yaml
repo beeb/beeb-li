@@ -8,6 +8,9 @@ devDependencies:
   '@biomejs/biome':
     specifier: ^1.8.0
     version: 1.8.0
+  '@iconify-json/lucide':
+    specifier: ^1.1.192
+    version: 1.1.192
   '@iconify-json/mingcute':
     specifier: ^1.1.17
     version: 1.1.17
@@ -86,6 +89,9 @@ devDependencies:
   vite:
     specifier: ^5.2.13
     version: 5.2.13
+  vite-imagetools:
+    specifier: ^7.0.2
+    version: 7.0.2
   vite-plugin-arraybuffer:
     specifier: ^0.0.7
     version: 0.0.7
@@ -427,6 +433,12 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@iconify-json/lucide@1.1.192:
+    resolution: {integrity: sha512-ulKR9JoaAT1pvsutNQe6jN4F3+9SNrXNp369LfZJUb8F368abgwiQapuNkN9UjVtU5dfn7g2uvuWisOYPMESdQ==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
 
   /@iconify-json/mingcute@1.1.17:
     resolution: {integrity: sha512-WTKnn5OicUo18dE3rkJs00sUjOIAui8Ut9yZSXamRfjzmLxuX9FKqYQAbFXaV6lw0T4QwBQ8/y4ftaWl/1Entg==}

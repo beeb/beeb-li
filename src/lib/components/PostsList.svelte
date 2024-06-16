@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let posts: PostData[] = [];
+  export let posts: PostData[] = []
 </script>
 
 <ul class="flex flex-col gap-6">
@@ -8,13 +8,10 @@
       <article class="card md:card-side bg-base-200 shadow">
         {#if post.coverImage}
           <figure class="max-h-72 md:max-w-[50%]">
-            <a
-              href="/blog/{post.slug}"
-              class="flex justify-center items-center"
-            >
+            <a href="/blog/{post.slug}" class="flex justify-center items-center">
               <enhanced:img
                 src={post.enhancedImage}
-                alt={post.coverAlt ?? ""}
+                alt={post.coverAlt ?? ''}
                 sizes="
                   (min-width: 1024px) 488px,
                   (min-width: 768px) calc(50vw - 24px),
@@ -32,20 +29,15 @@
             {new Date(post.date).toISOString().slice(0, 10)}
           </span>
           <p>{post.excerpt}</p>
-          <div class="card-actions justify-between items-end">
-            <div class="flex gap-2">
+          <div class="card-actions justify-between items-end flex-nowrap">
+            <div class="flex gap-2 flex-wrap">
               {#each post.categories as category}
-                <a
-                  class="badge badge-neutral"
-                  href="/blog/category/{category}/page/1"
-                >
+                <a class="badge badge-neutral" href="/blog/category/{category}/page/1">
                   {category}
                 </a>
               {/each}
             </div>
-            <a class="btn btn-primary btn-outline" href="/blog/{post.slug}"
-              >Read more</a
-            >
+            <a class="btn btn-primary btn-outline" href="/blog/{post.slug}">Read more</a>
           </div>
         </div>
       </article>

@@ -9,7 +9,6 @@
   @apply link-primary;
 }
 
-
 .prose :not(h1, h2, h3, h4, h5, h6) a:visited,
 .prose-lg :not(h1, h2, h3, h4, h5, h6) a:visited {
   @apply link-secondary;
@@ -17,16 +16,41 @@
 
 /* table of contents */
 
-h2#contents+ul {
-  @apply card bg-base-200 shadow max-w-lg px-3 py-0 list-none;
+h2#contents + ul {
+  @apply card bg-base-200 shadow max-w-lg px-3 py-2 list-none;
 }
 
-h2#contents+ul a {
+h2#contents + ul a {
   @apply text-base-content;
 }
 
-h2#contents+ul ul {
-  @apply list-none;
+h2#contents + ul ul {
+  @apply list-none my-0;
+}
+
+h2#contents + ul li {
+  @apply my-1;
+}
+
+h2#contents + ul ul > li:last-child {
+  @apply mb-0;
+}
+
+/* prose headers */
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6,
+.prose-lg h1,
+.prose-lg h2,
+.prose-lg h3,
+.prose-lg h4,
+.prose-lg h5,
+.prose-lg h6 {
+  @apply text-balance;
 }
 
 /* re-style to override tailwind's styling */

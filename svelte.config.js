@@ -1,12 +1,12 @@
 import adapter from '@sveltejs/adapter-static'
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
+import { h } from 'hastscript'
 import { mdsvex } from 'mdsvex'
-import remarkAbbr from 'remark-abbr'
-import remarkToc from 'remark-toc'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSlug from 'rehype-slug'
-import { h } from 'hastscript'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import remarkAbbr from 'remark-abbr'
+import remarkToc from 'remark-toc'
 
 const prodUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL || 'beeb.li'
 
@@ -39,7 +39,7 @@ const config = {
 							]
 						},
 						headingProperties: {
-							style: 'display: inline-flex; align-items: center; column-gap: 0.5rem',
+							style: 'display: flex; flex-wrap: wrap; align-items: center; column-gap: 0.5rem',
 						},
 						properties: {
 							ariaHidden: true,
