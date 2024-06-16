@@ -170,6 +170,7 @@ fn main() {
     // this allows us to implement multiple test helpers in the same binary
     match args[1].as_str() {
         "timestamp_to_date" => timestamp_to_date(&args[2]),
+        // "another_command" => another_function(&args[2], &args[3]),
         _ => {
             panic!("invalid command")
         }
@@ -198,7 +199,6 @@ A few remarks about the code above. First, we parse the command-line arguments a
 then use the next one as a command name, which allows to implement multiple helpers in the same binary. The next
 argument will be a string representation of a signed 64-bit integer. The timestamp gets parsed as a `DateTime` and the
 year, month and day are then ABI-encoded into a tuple of 3 unsigned 256-bit integers.
-
 
 When we invoke our binary, we should see the following:
 
