@@ -1,6 +1,6 @@
 ---
 title: Diff-Testing Solidity with Rust and Foundry
-date: 2024-06-14T12:21:00Z
+date: 2024-06-16T15:52:00Z
 # updated:
 categories:
   - rust
@@ -273,7 +273,11 @@ ffi = true
 
 ## Conclusion
 
+In this short article, we've seen how we can use Foundry's FFI feature to perform differential testing with a reference
+implementation in Rust. This allowed us to verify the correctness of a low-level implementation without adding too much
+overhead to the test suite execution.
 
+I hope you found something useful in this piece and that you'll come back for more articles! Thanks for reading.
 
 *[FFI]: Foreign Function Interface
 *[EVM]: Ethereum Virtual Machine
