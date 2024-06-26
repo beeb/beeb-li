@@ -7,7 +7,7 @@
     <li>
       <article class="card md:card-side bg-base-200 shadow">
         {#if post.coverImage}
-          <figure class="max-h-72 md:max-w-[50%]">
+          <figure class="max-h-72 md:max-h-none">
             <a
               href="/blog/{post.slug}"
               class="flex justify-center items-center"
@@ -15,6 +15,7 @@
               <enhanced:img
                 src={post.enhancedImage}
                 alt={post.coverAlt ?? ""}
+                class="object-cover w-full h-full"
                 sizes="
                   (min-width: 1024px) 488px,
                   (min-width: 768px) calc(50vw - 24px),
@@ -24,7 +25,7 @@
             </a>
           </figure>
         {/if}
-        <div class="card-body">
+        <div class="card-body md:basis-2/3">
           <a href="/blog/{post.slug}">
             <h2 class="card-title text-balance">{post.title}</h2>
           </a>
@@ -52,3 +53,10 @@
     </li>
   {/each}
 </ul>
+
+<style>
+  figure > a > picture {
+    width: 100%;
+    height: 100%;
+  }
+</style>
