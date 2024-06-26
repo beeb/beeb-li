@@ -6,10 +6,10 @@
   <title>{siteTitle} - Contact</title>
 </svelte:head>
 
-<div class="prose sm:prose-lg w-full max-w-full mb-4">
+<div class="prose sm:prose-lg max-w-none mb-4">
   <h1>Contact 👋</h1>
 </div>
-<div class="prose prose-lg w-full max-w-full">
+<div class="prose prose-lg max-w-none">
   <p>Want to get in touch? Great!</p>
 
   <p>
