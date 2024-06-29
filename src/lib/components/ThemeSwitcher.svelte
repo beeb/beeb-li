@@ -1,28 +1,28 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import Sun from "virtual:icons/mingcute/sun-fill";
-  import Moon from "virtual:icons/mingcute/moon-fill";
+  import Sun from 'virtual:icons/mingcute/sun-fill'
+  import Moon from 'virtual:icons/mingcute/moon-fill'
+  import type { ChangeEventHandler } from 'svelte/elements'
 
-  const KEY_NAME = "light-theme-enabled";
+  const KEY_NAME = 'light-theme-enabled'
 
-  let light = false;
-
-  onMount(() => {
-    const value = localStorage.getItem(KEY_NAME);
+  let light = $state(false)
+  $effect(() => {
+    const value = localStorage.getItem(KEY_NAME)
     if (value) {
-      const checked = JSON.parse(value);
+      const checked = JSON.parse(value)
       if (checked === true) {
-        light = true;
+        light = true
       }
     } else if (window.matchMedia) {
-      if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-        light = true;
+      if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+        light = true
         // localStorage.setItem(KEY_NAME, JSON.stringify(true));
       }
     }
-  });
-  function handleChange() {
-    localStorage.setItem(KEY_NAME, JSON.stringify(light));
+  })
+
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    localStorage.setItem(KEY_NAME, JSON.stringify(e.currentTarget.checked))
   }
 </script>
 
@@ -32,7 +32,7 @@
     type="checkbox"
     value="light"
     bind:checked={light}
-    on:change={handleChange}
+    onclick={handleChange}
     class="toggle toggle-sm theme-controller"
     id="theme-controller"
   />

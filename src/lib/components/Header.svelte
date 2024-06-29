@@ -1,18 +1,20 @@
 <script lang="ts">
+  import type { MouseEventHandler } from 'svelte/elements'
   import Nav from '$lib/components/Nav.svelte'
   import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte'
   import Logo from '$lib/components/Logo.svelte'
   import { siteTitle } from '$lib/config'
   import Hamburger from 'virtual:icons/mingcute/menu-fill'
 
-  const focusMain = () => {
+  const focusMain: MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault()
     const main = document.querySelector('main')
     main?.focus()
   }
 </script>
 
 <div class="text-center">
-  <a on:click|preventDefault={focusMain} href="#main" class="link absolute left-[-1000%] top-[-1000%] focus:static">
+  <a onclick={focusMain} href="#main" class="link absolute left-[-1000%] top-[-1000%] focus:static">
     Skip to main content
   </a>
 </div>

@@ -3,10 +3,13 @@
   import ClipboardSuccess from 'virtual:icons/lucide/clipboard-check'
   import ClipboardError from 'virtual:icons/lucide/clipboard-x'
 
-  export let content = ''
-  export let cl = ''
+  interface Props {
+    content: string
+    class?: string
+  }
 
-  let clipboardIcon: 'default' | 'success' | 'error' = 'default'
+  const { content = '', class: additionalClasses = '' }: Props = $props()
+  let clipboardIcon = $state<'default' | 'success' | 'error'>('default')
 
   const copyToClipboard = (text: string) => {
     if (navigator.clipboard && window.isSecureContext) {
@@ -28,12 +31,12 @@
 </script>
 
 <button
-  class="btn-link btn-sm btn text-neutral-content {cl}"
+  class="btn-link btn-sm btn text-neutral-content {additionalClasses}"
   class:!text-success={clipboardIcon === 'success'}
   class:!text-error={clipboardIcon === 'error'}
   title="Copy to clipboard"
   aria-label="Copy to clipboard"
-  on:click={() => copyToClipboard(content)}
+  onclick={() => copyToClipboard(content)}
 >
   {#if clipboardIcon === 'default'}
     <ClipboardIcon />
