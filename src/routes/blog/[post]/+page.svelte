@@ -4,11 +4,10 @@
   import CopyButton from '$lib/components/CopyButton.svelte'
 
   const { data } = $props()
-  const { updated, date, title, excerpt, slug, categories, enhancedImage, coverAlt, coverCredits } = $derived(data.meta)
 
   let article: HTMLElement
 
-  const ogDate = $derived((updated ? new Date(updated) : new Date(date)).toISOString())
+  const ogDate = $derived((data.meta.updated ? new Date(data.meta.updated) : new Date(data.meta.date)).toISOString())
 
   $effect(() => {
     for (const node of article.querySelectorAll("pre[class*='language-']")) {
@@ -28,27 +27,27 @@
 </script>
 
 <svelte:head>
-  <title>{siteTitle} - {title}</title>
-  <meta data-key="description" name="description" content={excerpt} />
+  <title>{siteTitle} - {data.meta.title}</title>
+  <meta data-key="description" name="description" content={data.meta.excerpt} />
   <meta property="og:type" content="article" />
-  <meta property="og:title" content={title} />
-  <meta name="twitter:title" content={title} />
-  <meta property="og:description" content={excerpt} />
-  <meta name="twitter:description" content={excerpt} />
-  <meta property="og:image" content={`${data.baseUrl}/blog/${slug}/og.png?modified=${ogDate}`} />
+  <meta property="og:title" content={data.meta.title} />
+  <meta name="twitter:title" content={data.meta.title} />
+  <meta property="og:description" content={data.meta.excerpt} />
+  <meta name="twitter:description" content={data.meta.excerpt} />
+  <meta property="og:image" content={`${data.baseUrl}/blog/${data.meta.slug}/og.png?modified=${ogDate}`} />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="twitter:image" content={`${data.baseUrl}/blog/${slug}/og.png?modified=${ogDate}`} />
-  {#if categories}
-    {#each categories as category}
+  <meta property="twitter:image" content={`${data.baseUrl}/blog/${data.meta.slug}/og.png?modified=${ogDate}`} />
+  {#if data.meta.categories}
+    {#each data.meta.categories as category}
       <meta name="article:tag" content={category} />
     {/each}
   {/if}
-  <meta property="article:published_time" content={date} />
+  <meta property="article:published_time" content={data.meta.date} />
 </svelte:head>
 
 <article bind:this={article}>
-  {#if enhancedImage}
+  {#if data.meta.enhancedImage}
     <div class="mb-8 flex flex-col items-end gap-1">
       <figure
         class="flex justify-center items-center max-h-96 overflow-hidden rounded-box"
@@ -56,22 +55,22 @@
       >
         <enhanced:img
           class="object-cover"
-          src={enhancedImage}
-          alt={coverAlt ?? ''}
+          src={data.meta.enhancedImage}
+          alt={data.meta.coverAlt ?? ''}
           sizes="
           (min-width: 1024px) 976px,
           calc(100vw - 48px)
         "
         ></enhanced:img>
       </figure>
-      {#if coverCredits}
-        <small id="cover-image-credits" class="opacity-50">{coverCredits}</small>
+      {#if data.meta.coverCredits}
+        <small id="cover-image-credits" class="opacity-50">{data.meta.coverCredits}</small>
       {/if}
     </div>
   {/if}
 
   <div class="prose sm:prose-lg max-w-none mb-8">
-    <h1>{title}</h1>
+    <h1>{data.meta.title}</h1>
   </div>
 
   <aside class="flow-root rounded-lg bg-base-200 border border-base-300 py-3 shadow mb-8 max-w-lg">
@@ -79,23 +78,23 @@
       <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
         <dt class="font-medium">Published</dt>
         <dd class="sm:col-span-2 opacity-80">
-          {new Date(date).toISOString().slice(0, 10)}
+          {new Date(data.meta.date).toISOString().slice(0, 10)}
         </dd>
       </div>
-      {#if updated}
+      {#if data.meta.updated}
         <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium">Updated</dt>
           <dd class="sm:col-span-2 opacity-80">
-            {new Date(updated).toISOString().slice(0, 10)}
+            {new Date(data.meta.updated).toISOString().slice(0, 10)}
           </dd>
         </div>
       {/if}
-      {#if categories}
+      {#if data.meta.categories}
         <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium">Posted in</dt>
           <dd class="sm:col-span-2">
             <ul class="flex gap-2 flex-wrap">
-              {#each categories as category}
+              {#each data.meta.categories as category}
                 <li>
                   <a class="badge badge-neutral" href="/blog/category/{category}/page/1">
                     {category}
