@@ -1,36 +1,35 @@
 <script lang="ts">
   import type { Picture } from 'vite-imagetools'
 
-  export let src: Picture
-  export let caption: string | undefined
-  export let alt: string
-  export let maxWidth: number | undefined
-  export let link = true
+  interface Props {
+    src: Picture
+    caption?: string
+    alt: string
+    maxWidth?: number
+    link?: boolean
+  }
 
-  $: sizes = maxWidth
-    ? `(min-width: ${maxWidth + 48}px) ${maxWidth}px, calc(100vw - 48px)`
-    : '(min-width: 1024px) 976px, calc(100vw - 48px)'
+  const { src, caption, alt, maxWidth, link = true, ...restProps }: Props = $props()
+
+  const sizes = $derived(
+    maxWidth
+      ? `(min-width: ${maxWidth + 48}px) ${maxWidth}px, calc(100vw - 48px)`
+      : '(min-width: 1024px) 976px, calc(100vw - 48px)'
+  )
 </script>
+
+{#snippet image()}
+  <enhanced:img {src} {sizes} {alt} {...restProps} style={maxWidth ? `width: 100%; max-width: ${maxWidth}px` : ''}
+  ></enhanced:img>
+{/snippet}
 
 <figure class="flex flex-col items-center">
   {#if link}
     <a href={src.img.src}>
-      <enhanced:img
-        {src}
-        {sizes}
-        {alt}
-        {...$$restProps}
-        style={maxWidth ? `width: 100%; max-width: ${maxWidth}px` : ''}
-      />
+      {@render image()}
     </a>
   {:else}
-    <enhanced:img
-      {src}
-      {sizes}
-      {alt}
-      {...$$restProps}
-      style={maxWidth ? `width: 100%; max-width: ${maxWidth}px` : ''}
-    />
+    {@render image()}
   {/if}
 
   {#if caption}

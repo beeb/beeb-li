@@ -1,43 +1,30 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { siteTitle } from "$lib/config";
-  import type { PageData } from "./$types";
-  import CopyButton from "$lib/components/CopyButton.svelte";
+  import { mount } from 'svelte'
+  import { siteTitle } from '$lib/config'
+  import CopyButton from '$lib/components/CopyButton.svelte'
 
-  export let data: PageData;
+  const { data } = $props()
+  const { updated, date, title, excerpt, slug, categories, enhancedImage, coverAlt, coverCredits } = $derived(data.meta)
 
-  let article: HTMLElement;
+  let article: HTMLElement
 
-  $: ({
-    title,
-    excerpt,
-    date,
-    updated,
-    coverAlt,
-    coverCredits,
-    categories,
-    enhancedImage,
-    slug,
-  } = data.meta);
-  $: ({ PostContent } = data);
-  $: ogDate = (updated ? new Date(updated) : new Date(date)).toISOString();
+  const ogDate = $derived((updated ? new Date(updated) : new Date(date)).toISOString())
 
-  onMount(() => {
+  $effect(() => {
     for (const node of article.querySelectorAll("pre[class*='language-']")) {
-      const wrapper = document.createElement("div");
-      wrapper.className = "relative";
-      node.parentNode?.insertBefore(wrapper, node);
-      wrapper.appendChild(node);
-      new CopyButton({
-        // use whatever Svelte component you like here
+      const wrapper = document.createElement('div')
+      wrapper.className = 'relative'
+      node.parentNode?.insertBefore(wrapper, node)
+      wrapper.appendChild(node)
+      mount(CopyButton, {
         target: wrapper,
         props: {
-          content: node.textContent ?? "",
-          cl: "absolute top-2 right-2 btn-outline btn-square", // requires <pre> to have position: relative;
-        },
-      });
+          content: node.textContent ?? '',
+          class: 'absolute top-2 right-2 btn-outline btn-square' // requires <pre> to have position: relative;
+        }
+      })
     }
-  });
+  })
 </script>
 
 <svelte:head>
@@ -48,16 +35,10 @@
   <meta name="twitter:title" content={title} />
   <meta property="og:description" content={excerpt} />
   <meta name="twitter:description" content={excerpt} />
-  <meta
-    property="og:image"
-    content={`${data.baseUrl}/blog/${slug}/og.png?modified=${ogDate}`}
-  />
+  <meta property="og:image" content={`${data.baseUrl}/blog/${slug}/og.png?modified=${ogDate}`} />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta
-    property="twitter:image"
-    content={`${data.baseUrl}/blog/${slug}/og.png?modified=${ogDate}`}
-  />
+  <meta property="twitter:image" content={`${data.baseUrl}/blog/${slug}/og.png?modified=${ogDate}`} />
   {#if categories}
     {#each categories as category}
       <meta name="article:tag" content={category} />
@@ -76,16 +57,15 @@
         <enhanced:img
           class="object-cover"
           src={enhancedImage}
-          alt={coverAlt ?? ""}
+          alt={coverAlt ?? ''}
           sizes="
           (min-width: 1024px) 976px,
           calc(100vw - 48px)
         "
-        />
+        ></enhanced:img>
       </figure>
       {#if coverCredits}
-        <small id="cover-image-credits" class="opacity-50">{coverCredits}</small
-        >
+        <small id="cover-image-credits" class="opacity-50">{coverCredits}</small>
       {/if}
     </div>
   {/if}
@@ -94,9 +74,7 @@
     <h1>{title}</h1>
   </div>
 
-  <aside
-    class="flow-root rounded-lg bg-base-200 border border-base-300 py-3 shadow mb-8 max-w-lg"
-  >
+  <aside class="flow-root rounded-lg bg-base-200 border border-base-300 py-3 shadow mb-8 max-w-lg">
     <dl class="-my-3 divide-y divide-base-300 text-sm">
       <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
         <dt class="font-medium">Published</dt>
@@ -119,10 +97,7 @@
             <ul class="flex gap-2 flex-wrap">
               {#each categories as category}
                 <li>
-                  <a
-                    class="badge badge-neutral"
-                    href="/blog/category/{category}/page/1"
-                  >
+                  <a class="badge badge-neutral" href="/blog/category/{category}/page/1">
                     {category}
                   </a>
                 </li>
@@ -134,9 +109,7 @@
     </dl>
   </aside>
 
-  <div
-    class="prose prose-lg max-w-none prose-p:text-justify prose-headings:text-balance"
-  >
-    <svelte:component this={PostContent} />
+  <div class="prose prose-lg max-w-none prose-p:text-justify prose-headings:text-balance">
+    <svelte:component this={data.PostContent} />
   </div>
 </article>

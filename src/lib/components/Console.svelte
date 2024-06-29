@@ -1,6 +1,11 @@
 <script lang="ts">
   import ConsoleLine from '$lib/components/ConsoleLine.svelte'
-  export let entries: Entry[] = []
+
+  interface Props {
+    entries: Entry[]
+  }
+
+  const { entries }: Props = $props()
 </script>
 
 <div class="flex justify-center">

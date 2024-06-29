@@ -2,9 +2,8 @@
   import PostsList from '$lib/components/PostsList.svelte'
   import Pagination from '$lib/components/Pagination.svelte'
   import { siteTitle, siteDescription, postsPerPage } from '$lib/config'
-  import type { PageData } from './$types'
 
-  export let data: PageData
+  const { data } = $props()
 </script>
 
 <svelte:head>

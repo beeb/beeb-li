@@ -2,10 +2,14 @@
   import { building } from '$app/environment'
   import CopyButton from '$lib/components/CopyButton.svelte'
 
-  export let entry: Entry
+  interface Props {
+    entry: Entry | string
+  }
 
-  $: entryText = typeof entry === 'string' ? entry : entry.text
-  $: copy = typeof entry === 'string' ? true : entry.copy
+  const { entry }: Props = $props()
+
+  const entryText = $derived(typeof entry === 'string' ? entry : entry.text)
+  const copy = $derived(typeof entry === 'string' ? true : entry.copy)
 </script>
 
 <div class="flex flex-nowrap items-center">

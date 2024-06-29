@@ -1,5 +1,9 @@
 <script lang="ts">
-  export let posts: PostData[] = [];
+  interface Props {
+    posts: PostData[]
+  }
+
+  const { posts = [] }: Props = $props()
 </script>
 
 <ul class="flex flex-col gap-6">
@@ -8,20 +12,18 @@
       <article class="card md:card-side bg-base-200 shadow">
         {#if post.coverImage}
           <figure class="max-h-72 md:max-h-none">
-            <a
-              href="/blog/{post.slug}"
-              class="flex justify-center items-center"
-            >
+            <a href="/blog/{post.slug}" class="flex justify-center items-center">
+              <!-- TODO: fix sizes taking aspect ratio into account (cover) -->
               <enhanced:img
                 src={post.enhancedImage}
-                alt={post.coverAlt ?? ""}
+                alt={post.coverAlt ?? ''}
                 class="object-cover w-full h-full"
                 sizes="
-                  (min-width: 1024px) 488px,
-                  (min-width: 768px) calc(50vw - 24px),
+                  (min-width: 1024px) 415px,
+                  (min-width: 768px) calc(33vw - 24px),
                   calc(100vw - 48px)
                 "
-              />
+              ></enhanced:img>
             </a>
           </figure>
         {/if}
@@ -36,17 +38,12 @@
           <div class="card-actions justify-between items-end flex-nowrap">
             <div class="flex gap-2 flex-wrap">
               {#each post.categories as category}
-                <a
-                  class="badge badge-neutral"
-                  href="/blog/category/{category}/page/1"
-                >
+                <a class="badge badge-neutral" href="/blog/category/{category}/page/1">
                   {category}
                 </a>
               {/each}
             </div>
-            <a class="btn btn-primary btn-outline" href="/blog/{post.slug}"
-              >Read more</a
-            >
+            <a class="btn btn-primary btn-outline" href="/blog/{post.slug}">Read more</a>
           </div>
         </div>
       </article>
@@ -55,7 +52,7 @@
 </ul>
 
 <style>
-  figure > a > picture {
+  :global(figure > a > picture) {
     width: 100%;
     height: 100%;
   }

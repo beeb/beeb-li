@@ -1,11 +1,11 @@
-import satori from 'satori'
-import { Resvg } from '@resvg/resvg-js'
-import type { RequestHandler } from './$types'
-import logo from '../../../../../static/favicon.svg?raw'
-import font from '../../../../../static/fonts/tasa-orbiter-display-semibold.otf?arraybuffer'
-import fontBlack from '../../../../../static/fonts/tasa-orbiter-display-black.otf?arraybuffer'
 import { siteTitle } from '$lib/config'
 import { fetchPosts } from '$lib/posts'
+import { Resvg } from '@resvg/resvg-js'
+import satori from 'satori'
+import logo from '../../../../../static/favicon.svg?raw'
+import fontBlack from '../../../../../static/fonts/tasa-orbiter-display-black.otf?arraybuffer'
+import font from '../../../../../static/fonts/tasa-orbiter-display-semibold.otf?arraybuffer'
+import type { RequestHandler } from './$types'
 
 export const prerender = true
 
@@ -19,27 +19,14 @@ const logoData = btoa(logo)
 export const GET: RequestHandler = async ({ url, params }) => {
 	const post: Post = await import(`../../../../lib/posts/${params.post}.md`)
 
-	let imageData = null
-	// if (post.metadata.coverImage) {
-	// 	const buffer = (await import(`../../../../lib/posts/${params.post}/title.jpg?arraybuffer`)).default
-	// 	const bytes = new Uint8Array(buffer)
-	// 	imageData = btoa(String.fromCharCode(...bytes))
-	// }
-
-	const divStyle = imageData
-		? {
-				backgroundImage: `linear-gradient(to bottom, #00000088, #000000cc), url("data:image/jpeg;base64,")`,
-			}
-		: {
-				backgroundColor: '#1d232a',
-			}
-
 	const svg = await satori(
 		{
 			type: 'div',
 			props: {
 				tw: 'flex flex-col justify-end items-start p-16 pb-28 w-full h-full text-7xl text-white',
-				style: divStyle,
+				style: {
+					backgroundColor: '#1d232a',
+				},
 				children: [
 					{
 						type: 'div',

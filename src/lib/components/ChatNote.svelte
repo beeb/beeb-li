@@ -1,3 +1,13 @@
+<script lang="ts">
+  import type { Snippet } from "svelte"
+
+  interface Props {
+    children: Snippet;
+  }
+
+  const { children }: Props = $props();
+</script>
+
 <div class="chat chat-end">
   <div class="chat-image avatar">
     <div class="w-24">
@@ -5,6 +15,6 @@
     </div>
   </div>
   <div class="chat-bubble prose-invert">
-    <slot />
+    {@render children()}
   </div>
 </div>
