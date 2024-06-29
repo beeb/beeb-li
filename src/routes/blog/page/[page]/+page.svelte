@@ -2,13 +2,13 @@
   import PostsList from '$lib/components/PostsList.svelte'
   import Pagination from '$lib/components/Pagination.svelte'
   import { postsPerPage, siteTitle, siteDescription } from '$lib/config'
-  import type { PageData } from './$types'
 
-  export let data: PageData
-  $: ({ page, total, posts } = data)
+  const { data } = $props()
 
-  $: lowerBound = (page - 1) * postsPerPage + 1
-  $: upperBound = Math.min(page * postsPerPage, total)
+  const { posts, total, page } = $derived(data)
+
+  const lowerBound = $derived((page - 1) * postsPerPage + 1)
+  const upperBound = $derived(Math.min(page * postsPerPage, total))
 </script>
 
 <svelte:head>
