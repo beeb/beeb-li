@@ -13,7 +13,7 @@ coverCredits: "Photo by yasin hemmati on Unsplash"
 coverAlt: "A picture of molten metal exiting the spout of a foundry into a vat"
 excerpt: >
   Differential testing allows to compare implementations and is especially useful in Solidity, where optimizations are
-  frequently made by replacing code with low-level YUL instructions. By leverage the fast startup times and low
+  frequently made by replacing code with low-level YUL instructions. By leveraging the fast startup times and low
   footprint of Rust binaries via FFI, Foundry allows to efficiently integrate diff testing in Solidity projects.
 ---
 
