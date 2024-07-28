@@ -72,34 +72,36 @@
   }
 </script>
 
-<div class="flex mx-auto w-full max-w-lg flex-col gap-4 border rounded-box border-neutral p-4">
-  <div class="flex w-full flex-nowrap text-center text-xl capitalize items-center">
-    <div>
-      <button class="btn-ghost btn text-xl font-normal" onclick={() => prevMonth()} aria-label="Go to previous month">
-        &lt;
-      </button>
+<div class="w-full mx-auto max-w-lg overflow-x-scroll rounded-box border border-neutral p-4">
+  <div class="flex min-w-80 flex-col gap-4">
+    <div class="flex w-full flex-nowrap text-center sm:text-xl items-center">
+      <div>
+        <button class="btn btn-ghost text-xl font-normal" onclick={() => prevMonth()} aria-label="See previous month">
+          &lt;
+        </button>
+      </div>
+      <h2 class="grow whitespace-nowrap text-forest-text">
+        {monthTitle}
+      </h2>
+      <div>
+        <button class="btn btn-ghost text-xl font-normal" onclick={() => nextMonth()} aria-label="See next month">
+          &gt;
+        </button>
+      </div>
     </div>
-    <h2 class="grow whitespace-nowrap text-forest-text">
-      {monthTitle}
-    </h2>
-    <div>
-      <button class="btn-ghost btn text-xl font-normal" onclick={() => nextMonth()} aria-label="Go to next month">
-        &gt;
-      </button>
-    </div>
-  </div>
-  <div class="grid grid-cols-7 justify-items-center opacity-80">
-    {#each dayNames as dayName}
-      <div>{dayName}</div>
-    {/each}
-  </div>
-  <div class="flex w-full flex-nowrap">
-    <div class="grid w-full grid-cols-7 justify-items-center gap-y-4 text-lg">
-      {#each range(1, lastDay) as day}
-        <div class={`flex h-9 w-9 items-center justify-center rounded-full first:col-start-${firstDayColumn}`}>
-          {day}
-        </div>
+    <div class="grid grid-cols-7 justify-items-center text-sm sm:text-base opacity-80">
+      {#each dayNames as dayName}
+        <div>{dayName}</div>
       {/each}
+    </div>
+    <div class="flex w-full flex-nowrap">
+      <div class="grid w-full grid-cols-7 justify-items-center gap-y-4">
+        {#each range(1, lastDay) as day}
+          <div class={`text-base sm:text-lg first:col-start-${firstDayColumn}`}>
+            {day}
+          </div>
+        {/each}
+      </div>
     </div>
   </div>
 </div>

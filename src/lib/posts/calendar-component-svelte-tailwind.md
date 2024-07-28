@@ -38,9 +38,12 @@ surprisingly easy to achieve a satisfactory result that works for most locales w
 
 ## The Result
 
-Here's the final result after implementing all the things discussed in this article. The [full component source code](https://github.com/beeb/beeb-li/tree/main/src/lib/posts/) is available on GitHub.
+Here's the final result after implementing all the things discussed in this article. The [full component source code](https://github.com/beeb/beeb-li/blob/main/src/lib/posts/calendar-component-svelte-tailwind/Calendar.svelte) is available on GitHub. Bear in mind some of the styles come from [DaisyUI](https://daisyui.com/).
 
 <div class="not-prose w-full">
   <LocalePicker {handler} />
   <Calendar {locale} />
 </div>
+
+## Conclusion
+
