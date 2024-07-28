@@ -70,7 +70,7 @@
   {/if}
 
   <div class="prose sm:prose-lg max-w-none mb-8">
-    <h1>{data.meta.title}</h1>
+    <h1 class="text-balance">{data.meta.title}</h1>
   </div>
 
   <aside class="flow-root rounded-lg bg-base-200 border border-base-300 py-3 shadow mb-8 max-w-lg">
