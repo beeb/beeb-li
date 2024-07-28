@@ -80,7 +80,7 @@
           &lt;
         </button>
       </div>
-      <h2 class="grow whitespace-nowrap text-forest-text">
+      <h2 class="grow whitespace-nowrap">
         {monthTitle}
       </h2>
       <div>
