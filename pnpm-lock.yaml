@@ -8,6 +8,9 @@ devDependencies:
   '@biomejs/biome':
     specifier: ^1.8.3
     version: 1.8.3
+  '@formatjs/intl-locale':
+    specifier: ^4.0.0
+    version: 4.0.0
   '@iconify-json/lucide':
     specifier: ^1.1.200
     version: 1.1.200
@@ -433,6 +436,40 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@formatjs/ecma402-abstract@2.0.0:
+    resolution: {integrity: sha512-rRqXOqdFmk7RYvj4khklyqzcfQl9vEL/usogncBHRZfZBDOwMGuSRNFl02fu5KGHXdbinju+YXyuR+Nk8xlr/g==}
+    dependencies:
+      '@formatjs/intl-localematcher': 0.5.4
+      tslib: 2.6.3
+    dev: true
+
+  /@formatjs/intl-enumerator@1.4.7:
+    resolution: {integrity: sha512-03RHnFqfpB4H/jwCwlzC+wkTDk2Fi24JmVIY2PVGvTUpikN2bSr9+8oTXfOC+y7B7VxjCArUnqWXVoctkmy85w==}
+    dependencies:
+      tslib: 2.6.3
+    dev: true
+
+  /@formatjs/intl-getcanonicallocales@2.3.0:
+    resolution: {integrity: sha512-BOXbLwqQ7nKua/l7tKqDLRN84WupDXFDhGJQMFvsMVA2dKuOdRaWTxWpL3cJ7qPkoNw11Jf+Xpj4OSPBBvW0eQ==}
+    dependencies:
+      tslib: 2.6.3
+    dev: true
+
+  /@formatjs/intl-locale@4.0.0:
+    resolution: {integrity: sha512-+4dbMEGsp1bvB3JB3UHH6YTjMnFTifnfdaHp4ROrCCu50NedA69RBsDCG3eivcZkbj57X9ehGhMWjLxlP+gyVw==}
+    dependencies:
+      '@formatjs/ecma402-abstract': 2.0.0
+      '@formatjs/intl-enumerator': 1.4.7
+      '@formatjs/intl-getcanonicallocales': 2.3.0
+      tslib: 2.6.3
+    dev: true
+
+  /@formatjs/intl-localematcher@0.5.4:
+    resolution: {integrity: sha512-zTwEpWOzZ2CiKcB93BLngUX59hQkuZjT2+SAQEscSm52peDW/getsawMcWF1rGRpMCX6D7nSJA3CzJ8gn13N/g==}
+    dependencies:
+      tslib: 2.6.3
+    dev: true
 
   /@iconify-json/lucide@1.1.200:
     resolution: {integrity: sha512-imZeWdgMcJ6xZ15U0h35kehDcrVShvrTui3RvuY/ZUxFGC23wxPt1OQXiu+KQ/GEiujGEeOtQ1BL3Jf+7dQiqw==}
