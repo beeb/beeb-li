@@ -68,15 +68,19 @@ to find the corresponding CSS code. The button class comes from
 The base of our layout will be the following:
 
 ```html
-<div class="flex flex-col">
-  <div class="w-full flex flex-nowrap items-center text-center">
+<div>
+  <div class="flex flex-nowrap items-center text-center">
     <div>
       <button class="btn" aria-label="See previous month">
         &lt; <!-- left chevron -->
       </button>
     </div>
     <h2 class="grow whitespace-nowrap">
-      Month 20xx <!-- this will be formatted according to the locale date formatting and translated -->
+      <!--
+        this will be formatted according to the
+        locale date formatting and translated
+      -->
+      Month 20xx
     </h2>
     <div>
       <button class="btn" aria-label="See next month">
@@ -84,19 +88,23 @@ The base of our layout will be the following:
       </button>
     </div>
   </div>
-  <div class="w-full grid grid-cols-7 justify-items-center">
-    <div>Monday</div> <!-- this might sometimes be another day and will be translated -->
+  <div class="grid grid-cols-7 justify-items-center">
+    <!--
+      this might sometimes be another day
+      and will be translated
+    -->
+    <div>Monday</div>
     <div>Tuesday</div>
     <!-- ... -->
   </div>
-  <div class="w-full grid grid-cols-7 justify-items-center">
-    <!-- the number in the class name below will change for each month -->
-    <div class="first:col-start-1">
-      1
-    </div>
-    <div class="first:col-start-1">
-      2
-    </div>
+  <div class="grid grid-cols-7 justify-items-center">
+    <!--
+      the number in the class name below will change
+      for each month and depending on the locale
+    -->
+    <div class="first:col-start-1">1</div>
+    <div class="first:col-start-1">2</div>
+    <!-- ... -->
   </div>
 </div>
 ```
@@ -138,13 +146,18 @@ relying on the
 method:
 
 ```javascript
-const monthTitle = $derived(new Date(year, month, 1).toLocaleString(locale, { month: 'long', year: 'numeric' }))
+const monthTitle = $derived(
+  new Date(year, month, 1).toLocaleString(locale, {
+    month: 'long', year: 'numeric'
+  })
+)
 ```
 
 <ChatNote>
 In the code above, <code>locale</code>, <code>year</code> and <code>month</code> are reactive pieces of state in Svelte,
 so we derive a new reactive variable with the
-<a href="https://svelte-5-preview.vercel.app/docs/runes" rel="nofollow"><code>$derived</code> rune</a>.
+<a href="https://svelte-5-preview.vercel.app/docs/runes" rel="nofollow"><code>$derived</code> rune</a>. The derived
+value will reactively update any time any of its dependencies change.
 </ChatNote>
 
 ### First Day of the Week
@@ -159,7 +172,9 @@ According to the API docs, this method returns an object with a `firstDay` key a
 `7` is Sunday:
 
 ```javascript
-const firstDayOfWeek = $derived(new Intl.Locale(locale).getWeekInfo().firstDay)
+const firstDayOfWeek = $derived(
+  new Intl.Locale(locale).getWeekInfo().firstDay
+)
 ```
 
 ### List of Day Names
@@ -172,9 +187,16 @@ object and re-using it to format multiple dates. This speeds up execution as the
 loaded once instead of once per call.
 
 ```javascript
-const dateTimeFormat = $derived(new Intl.DateTimeFormat(locale, { weekday: 'short' }))
+const dateTimeFormat = $derived(
+  new Intl.DateTimeFormat(locale, { weekday: 'short' })
+)
 const dayNames = $derived(
-  Array.from({ length: 7 }, (_, i) => dateTimeFormat.format(new Date(2018, 0, i + firstDayOfWeek)))
+  Array.from(
+    { length: 7 },
+    (_, i) => dateTimeFormat.format(
+      new Date(2018, 0, i + firstDayOfWeek)
+    )
+  )
 )
 ```
 
@@ -186,7 +208,7 @@ indexes months starting at zero, so month `0` is January (for some reason...).
 ### Last Day of the Month
 
 To get the number of days in the displayed month, we use another JavaScript trick. The `Date()` object will not complain
-if we give it a day or month index that is invalid (e.g. `32` for the day number), and will instead wrap as necessary to
+if we give it a day or month index that is invalid (_e.g._ `32` for the day number), and will instead wrap as necessary to
 land on a valid date. As such, `Date(2018, 0, 32)` gives `Thu Feb 01 2018`. Likewise, we can retrieve the last
 day of January with `Date(2018, 1, 0)` (remember that days start at 1 normally), which gives `Wed Jan 31 2018`.
 
@@ -195,7 +217,9 @@ If we now were to try `Date(2018, 12, 1)`, we would get `Tue Jan 01 2019` (remem
 Armed with this knowledge, we can now find the last day in `month` (1-indexed):
 
 ```javascript
-const lastDay = $derived(new Date(year, month + 1, 0).getDate())
+const lastDay = $derived(
+  new Date(year, month + 1, 0).getDate()
+)
 ```
 
 ### Column Offset for the First Day
