@@ -93,9 +93,9 @@
         <div>{dayName}</div>
       {/each}
     </div>
-    <div class="grid grid-cols-7 gap-y-6 justify-items-center">
+    <div class="grid grid-cols-7 justify-items-center">
       {#each range(1, lastDay) as day}
-        <div class={`first:col-start-${firstDayColumn} text-base sm:text-lg`}>
+        <div class={`first:col-start-${firstDayColumn} h-10 text-base sm:text-lg`}>
           {day}
         </div>
       {/each}
