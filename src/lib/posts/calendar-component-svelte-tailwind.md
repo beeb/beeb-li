@@ -61,7 +61,7 @@ grid thanks to the `display: grid` property.
 <ChatNote>
 <strong>Note</strong>: I'm using <a href="https://tailwindcss.com/" rel="nofollow">TailwindCSS</a> in the markup below,
 but the same result can be (painfully) achieved with regular CSS too! You can look up the relevant classes in their docs
-to find the corresponding CSS code. The `.btn` class comes from
+to find the corresponding CSS code. The button class comes from
 <a href="https://daisyui.com/" rel="nofollow">DaisyUI</a>.
 </ChatNote>
 
