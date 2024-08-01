@@ -246,9 +246,9 @@ Let's also imagine for the example that we are dealing with the `fr` locale whic
 By subtracting our value `firstDayOfWeek`, for our example, we end up with `4 - 1 = 3`. So, we need to offset the day
 cell by 3 columns to the right.
 
-Now we need to adjust a couple of things after the subtraction, because if `getDay()` returns `0` and our
-`firstDayOfWeek` is greater than zero, we will end up with a negative number. To avoid this, we add `7` to the result,
-and then apply a modulo `7` to the result to remain in the `0-6` range.
+Now we need to adjust a couple of things after the subtraction, because if `getDay()` returns a number smaller than our
+`firstDayOfWeek`, we will end up with a negative number. To avoid this, we add `7` to the result, and then apply a
+modulo `7` to the result to end up in the `0-6` range.
 
 Since the `.col-start-*` class is not an offset but a starting index, we finally add `1` to the result of the
 calculation to get the column index (starting at 1).
