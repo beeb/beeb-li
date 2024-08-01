@@ -7,9 +7,10 @@
     alt: string
     maxWidth?: number
     link?: boolean
+    source?: string
   }
 
-  const { src, caption, alt, maxWidth, link = true, ...restProps }: Props = $props()
+  const { src, caption, alt, maxWidth, link = true, source, ...restProps }: Props = $props()
 
   const sizes = $derived(
     maxWidth
@@ -35,6 +36,9 @@
   {#if caption}
     <figcaption style={maxWidth ? `max-width: ${Math.max(maxWidth + 100, 500)}px` : ''}>
       {caption}
+      {#if source}
+        <cite><a href={source} rel="nofollow">Source</a></cite>
+      {/if}
     </figcaption>
   {/if}
 </figure>
