@@ -44,7 +44,7 @@ surprisingly easy to achieve a satisfactory result that works for most locales w
 ## HTML Markup
 
 We want to display our monthly calendar view as a table, like you're probably used to seeing. Each column will represent
-a weekday, and each row will represent a week. Since we want our view to update according to the locale's preferences,
+a day, and each row will represent a week. Since we want our view to update according to the locale's preferences,
 the first column will sometimes represent Monday, sometimes Sunday or Saturday, sometimes even [Friday](https://en.m.wikipedia.org/wiki/Week).
 
 <Image
@@ -59,16 +59,17 @@ Since html tables are painful to work with and style, I opted for a collection o
 grid thanks to the `display: grid` property.
 
 <ChatNote>
-<strong>Note</strong>: I'm using <a href="https://tailwindcss.com/" rel="nofollow">TailwindCSS</a> in the markup below, but the same result can be
-(painfully) achieved with regular CSS too! You can look up the relevant classes in their docs to find the corresponding
-CSS code.
+<strong>Note</strong>: I'm using <a href="https://tailwindcss.com/" rel="nofollow">TailwindCSS</a> in the markup below,
+but the same result can be (painfully) achieved with regular CSS too! You can look up the relevant classes in their docs
+to find the corresponding CSS code. The `.btn` class comes from
+<a href="https://daisyui.com/" rel="nofollow">DaisyUI</a>.
 </ChatNote>
 
-As such, the base of our layout will be:
+The base of our layout will be the following:
 
 ```html
-<div class="flex flex-col gap-4">
-  <div class="flex w-full flex-nowrap text-center items-center">
+<div class="flex flex-col">
+  <div class="w-full flex flex-nowrap items-center text-center">
     <div>
       <button class="btn" aria-label="See previous month">
         &lt; <!-- left chevron -->
@@ -88,8 +89,8 @@ As such, the base of our layout will be:
     <div>Tuesday</div>
     <!-- ... -->
   </div>
-  <div class="flex w-full flex-nowrap">
-    <div class="grid w-full grid-cols-7 justify-items-center gap-y-4">
+  <div class="w-full flex flex-nowrap">
+    <div class="w-full grid grid-cols-7 justify-items-center">
       <!-- the number in the class name below will change for each month -->
       <div class="first:col-start-1">
         1
@@ -102,9 +103,24 @@ As such, the base of our layout will be:
 </div>
 ```
 
+The first thing to note is that we use the `.grid .grid-cols-7` classes for the heading row (with the day names) and
+the main table-like div. This creates a grid with 7 columns as you might expect (gotta love Tailwind for this).
+
+The `.justify-items-center` ensures that each child `<div>` is horizontally centered inside of its grid cell.
+
+Finally and most importantly, not each month will have its first day on a Monday (or whichever the first column day is
+according to i18n). As such, we have to skip a few cells to move the first day `<div>` into the right column. This is
+achieved with the `.col-start-#` classes and should only be applied to the first day element. It will automatically
+offset the next elements along with it, and all elements will wrap according to our preference of 7 columns.
+
+Since we want to generate those elements dynamically using JavaScript, it's much easier if we apply the same classes to
+each day element, so we prepend our class with
+[`first:`](https://tailwindcss.com/docs/hover-focus-and-other-states#first), which will only apply to the element if
+it's the first child of its parent.
+
 ## The Result
 
-Here's the final result after implementing all the things discussed in this article. The [full component source code](https://github.com/beeb/beeb-li/blob/main/src/lib/posts/calendar-component-svelte-tailwind/Calendar.svelte) is available on GitHub. Bear in mind some of the styles come from [DaisyUI](https://daisyui.com/).
+Here's the final result after implementing all the things discussed in this article. The [full component source code](https://github.com/beeb/beeb-li/blob/main/src/lib/posts/calendar-component-svelte-tailwind/Calendar.svelte) is available on GitHub.
 
 <div class="not-prose w-full">
   <LocalePicker {handler} />
@@ -114,3 +130,4 @@ Here's the final result after implementing all the things discussed in this arti
 ## Conclusion
 
 *[CSS]: Cascading Style Sheets
+*[i18n]: internationalization
