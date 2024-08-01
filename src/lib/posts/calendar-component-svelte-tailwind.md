@@ -36,7 +36,7 @@ excerpt: >
 Recently, I needed to create a localized calendar view for a website and decided to craft it from scratch, instead of
 relying on a pre-made component. I often prefer this approach when developing with [Svelte](https://svelte.dev/) because
 it reduces the number of dependencies of the project and allows to really understand how things work under the hood.
-This in turns makes maintenance or changes easier and it's also fun!
+This in turns makes maintenance or customization easier and it's also fun!
 
 In recent years/months, browser support for internationalization in JavaScript has reached an "okay" level, and it was
 surprisingly easy to achieve a satisfactory result that works for most locales without relying on an external library
@@ -56,8 +56,8 @@ the first column will sometimes represent Monday, sometimes Sunday or Saturday, 
   source="https://en.m.wikipedia.org/wiki/File:First_Day_of_Week_World_Map.svg"
 />
 
-Since html tables are painful to work with and style, I opted for a collection of `<div>`'s arranged with CSS into a
-grid thanks to the `display: grid` property.
+Since html tables are painful to work with and stylize, I opted for a collection of `<div>` elements arranged with CSS
+into a grid thanks to the `display: grid` property.
 
 <ChatNote>
 <strong>Note</strong>: I'm using <a href="https://tailwindcss.com/" rel="nofollow">TailwindCSS</a> in the markup below,
@@ -70,6 +70,7 @@ The base of our layout will be the following:
 
 ```html
 <div>
+  <!-- title and navigation -->
   <div class="flex flex-nowrap items-center text-center">
     <div>
       <button class="btn" aria-label="See previous month">
@@ -89,15 +90,17 @@ The base of our layout will be the following:
       </button>
     </div>
   </div>
+  <!-- header row -->
   <div class="grid grid-cols-7 justify-items-center">
     <!--
-      this might sometimes be another day
+      first item might sometimes be another day
       and will be translated
     -->
     <div>Monday</div>
     <div>Tuesday</div>
     <!-- ... -->
   </div>
+  <!-- days table -->
   <div class="grid grid-cols-7 justify-items-center">
     <!--
       the number in the class name below will change
@@ -353,10 +356,21 @@ And the table is generated with:
 </div>
 ```
 
+Since we dynamically generate the class name for the column offset, the Tailwind compiler doesn't pick them up and will
+tree-shake them out of your CSS (depending on your config). In order to ensure they stay present in the final bundle,
+the `tailwind.config.js` file can be edited to include the
+[`safelist`](https://tailwindcss.com/docs/content-configuration#safelisting-classes) key:
+
+```js
+export default {
+  safelist: [{ pattern: /^col-start-/, variants: ['first'] }]
+}
+```
 
 ## The Result
 
-Here's the final result after implementing all the things discussed in this article. The
+Here's the final result after implementing all the things discussed in this article. You can play with it below!<br>
+The
 [full component source code](https://github.com/beeb/beeb-li/blob/main/src/lib/posts/calendar-component-svelte-tailwind/Calendar.svelte)
 is available on GitHub.
 
@@ -367,12 +381,14 @@ is available on GitHub.
 
 ## Conclusion
 
-Throughout this article, we've seen how we can leverage modern web APIs to create a localized Svelte component which can
-serve content tailored to the user's preferences. We've also derived a couple of maths formulae to produce the correct
+Throughout this article, we've seen how we can leverage modern web APIs to create a localized Svelte component which
+serves content tailored to the user's preferences. We've also derived a couple of maths formulae to produce the correct
 markup for displaying a monthly calendar view.
 
 I hope you found this article useful and could learn a thing or two about using JavaScript APIs for the localization of
 your front-end applications.
+
+'Till next time!
 
 *[API]: Application Programming Interface
 *[HTML]: Hypertext Markup Language

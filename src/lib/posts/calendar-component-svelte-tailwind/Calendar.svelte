@@ -15,7 +15,6 @@
   interface Props {
     locale?: string
   }
-
   let { locale = 'en' }: Props = $props()
 
   // App state for the prev/next buttons, starts with the current month
