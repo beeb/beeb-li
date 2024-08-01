@@ -108,8 +108,9 @@ The `.justify-items-center` ensures that each child `<div>` is horizontally cent
 
 Finally and most importantly, not each month will have its first day on a Monday (or whichever the first column day is
 according to i18n). As such, we have to skip a few cells to move the first day `<div>` into the right column. This is
-achieved with the `.col-start-#` classes and should only be applied to the first day element. It will automatically
-offset the next elements along with it, and all elements will wrap according to our preference of 7 columns.
+achieved with the [`.col-start-*`](https://tailwindcss.com/docs/grid-column#starting-and-ending-lines) classes and
+should only be applied to the first day element. It will automatically offset the next elements along with it, and all
+elements will wrap according to our preference of 7 columns.
 
 Since we want to generate those elements dynamically using JavaScript, it's easier if we apply the same classes to each
 day element (to avoid conditionals), so we prepend our class with
@@ -124,7 +125,10 @@ knowing the currently displayed month and year:
 - which day is the first day of the week for the locale,
 - the list of the day names, starting with the first day of the week for the locale,
 - the last day of the month, or how many days are in the displayed month,
-- and in which column should the first day of the displayed month land,
+- and in which column should the first day of the displayed month land.
+
+There is a bit of math below, but I promise it's not going to be too complicated! I'm going to do my best to explain
+how it works.
 
 ### Month Title
 
@@ -164,7 +168,8 @@ To get the list of day names, we will similarly use the i18n capabilities of Jav
 we are localizing multiple dates (one for each day of the week) with the same formatting, we can optimize our code by
 first constructing a
 [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/format)
-object and re-use it to format multiple dates.
+object and re-using it to format multiple dates. This speeds up execution as the heavy data for the locale is only
+loaded once instead of once per call.
 
 ```javascript
 const dateTimeFormat = $derived(new Intl.DateTimeFormat(locale, { weekday: 'short' }))
@@ -175,7 +180,59 @@ const dayNames = $derived(
 
 The list must start with the correct day according to `firstDayOfWeek` defined above. We leverage the fact that year
 2018 started on a Monday to generate the list of days starting with the correct day. With our index `i` starting at
-zero, we simply add our `firstDayOfWeek` to retrieve the the date which corresponds to the day name.
+zero, we simply add our `firstDayOfWeek` to retrieve the the date which corresponds to the day name. Note that `Date()`
+indexes months starting at zero, so month `0` is January (for some reason...).
+
+### Last Day of the Month
+
+To get the number of days in the displayed month, we use another JavaScript trick. The `Date()` object will not complain
+if we give it a day or month index that is invalid (e.g. `32` for the day number), and will instead correct the other
+items to land on a valid date. As such, `Date(2018, 0, 32)` gives `Thu Feb 01 2018`. Likewise, we can retrive the last
+day of January with `Date(2018, 1, 0)` (remember that days start at 1 normally), which gives `Wed Jan 31 2018`.
+
+If we now were to try `Date(2018, 12, 1)`, we would get `Tue Jan 01 2019` (remember that months start at 0).
+
+Armed with this knowledge, we can now find the last day in `month` (1-indexed):
+
+```javascript
+const lastDay = $derived(new Date(year, month + 1, 0).getDate())
+```
+
+### Column Offset for the First Day
+
+In the markup section above, we determined that we need to offset the first item in the table by a number of rows so
+that it ends up in the correct column. This involves a bit of simple math and can be achieved like so:
+
+```javascript
+const firstDayColumn = $derived(
+  (
+    (
+      new Date(year, month, 1).getDay() + 7 - firstDayOfWeek
+    ) % 7
+  ) + 1
+)
+```
+
+First, we construct a date object for the first day of the displayed month, then we retrieve the corresponding day of
+the week with `getDay()`. This returns `0` for Sunday, `1` for Monday, etc.
+
+Let's imagine we are in August 2024, and so the values we get from `getDay()` is 4, as the month starts on a Thursday.
+Let's also imagine for the example that we are dealing with the `fr` locale which gave us `firstDayOfWeek = 1`.
+
+By subtracting our value `firstDayOfWeek`, for our example, we end up with `4 - 1 = 3`. So, we need to offset the day
+cell by 3 columns to the right.
+
+Now we need to adjust a couple of things after the subtraction, because if `getDay()` returns `0` and our
+`firstDayOfWeek` is greater than zero, we will end up with a negative number. To avoid this, we add `7` to the result,
+and then apply a modulo `7` to the result to remain in the `0-6` range.
+
+Since the `.col-start-*` class is not an offset but a starting index, we finally add `1` to the result of the
+calculation to get the column index (starting at 1).
+
+## Svelte Component
+
+Phew, now that the maths are out of the way, let's see how we can construct our component with the pieces described
+until now.
 
 ## The Result
 
