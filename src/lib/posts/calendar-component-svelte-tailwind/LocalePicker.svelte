@@ -5,7 +5,7 @@
 
   let { handler }: Props = $props()
 
-  const locales = ['en-US', 'en-GB', 'fr-CH', 'de-DE', 'kab']
+  const locales = ['en-US', 'en-GB', 'dv-MV', 'fr-CH', 'kab']
   let locale = $state(locales[0])
 
   $effect(() => {

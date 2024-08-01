@@ -8,6 +8,11 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+	namespace Intl {
+		interface Locale {
+			getWeekInfo: () => { firstDay: number, weekend: number[], minimalDays: number }
+		}
+	}
 }
 
 export {}
