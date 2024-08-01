@@ -22,10 +22,10 @@
   let year = $state(new Date().getFullYear())
   let month = $state(new Date().getMonth())
 
-  // 0 for Sunday, 1 for Monday (to match the `Date.getDay()` method)
+  // 1 for Monday, 7 for Sunday
   // This method requires a polyfill as some browsers expose `weekInfo` as a prop instead of a method, and some don't
   // have it at all (Firefox, I'm looking at you!)
-  const firstDayOfWeek = $derived(new Intl.Locale(locale).getWeekInfo().firstDay % 7)
+  const firstDayOfWeek = $derived(new Intl.Locale(locale).getWeekInfo().firstDay)
 
   // Since the first column of the view is the first day of the week, we need to offset the first cell so that it lands
   // in the right column.
@@ -42,10 +42,9 @@
   const lastDay = $derived(new Date(year, month + 1, 0).getDate())
 
   // List of the weekday names, starting with the first day of the week (locale-aware)
+  const dateTimeFormat = $derived(new Intl.DateTimeFormat(locale, { weekday: 'short' }))
   const dayNames = $derived(
-    Array.from({ length: 7 }, (_, i) =>
-      new Date(2017, 0, i + 1 + firstDayOfWeek).toLocaleString(locale, { weekday: 'short' })
-    )
+    Array.from({ length: 7 }, (_, i) => dateTimeFormat.format(new Date(2018, 0, i + firstDayOfWeek)))
   )
 
   // Helper method to generate a range of integers from `start` to `end`, inclusive

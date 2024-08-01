@@ -39,7 +39,7 @@ This in turns makes maintenance or changes easier and it's also fun!
 
 In recent years/months, browser support for internationalization in JavaScript has reached an "okay" level, and it was
 surprisingly easy to achieve a satisfactory result that works for most locales without relying on an external library
-(except for a small polyfill).
+(except for a polyfill).
 
 ## HTML Markup
 
@@ -102,7 +102,7 @@ The base of our layout will be the following:
 ```
 
 The first thing to note is that we use the `.grid .grid-cols-7` classes for the heading row (with the day names) and
-the main table-like div. This creates a grid with 7 columns as you might expect (gotta love Tailwind for this).
+the main table-like `<div>`. This creates a grid with 7 columns as you might expect (gotta love Tailwind for this).
 
 The `.justify-items-center` ensures that each child `<div>` is horizontally centered inside of its grid cell.
 
@@ -111,14 +111,77 @@ according to i18n). As such, we have to skip a few cells to move the first day `
 achieved with the `.col-start-#` classes and should only be applied to the first day element. It will automatically
 offset the next elements along with it, and all elements will wrap according to our preference of 7 columns.
 
-Since we want to generate those elements dynamically using JavaScript, it's much easier if we apply the same classes to
-each day element, so we prepend our class with
+Since we want to generate those elements dynamically using JavaScript, it's easier if we apply the same classes to each
+day element (to avoid conditionals), so we prepend our class with
 [`first:`](https://tailwindcss.com/docs/hover-focus-and-other-states#first), which will only apply to the element if
 it's the first child of its parent.
 
+## Generating the Localized Data
+
+Ok, we have a markup template, we now need to populate it with localized data. For this, we need to have the following,
+knowing the currently displayed month and year:
+- the month title (with year),
+- which day is the first day of the week for the locale,
+- the list of the day names, starting with the first day of the week for the locale,
+- the last day of the month, or how many days are in the displayed month,
+- and in which column should the first day of the displayed month land,
+
+### Month Title
+
+This is probably the easiest bit, and we can retrieve the formatted month and year title with the following code,
+relying on the
+[`Date.toLocaleString()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString)
+method:
+
+```javascript
+const monthTitle = $derived(new Date(year, month, 1).toLocaleString(locale, { month: 'long', year: 'numeric' }))
+```
+
+<ChatNote>
+In the code above, <code>locale</code>, <code>year</code> and <code>month</code> are reactive pieces of state in Svelte,
+so we derive a new reactive variable with the
+<a href="https://svelte-5-preview.vercel.app/docs/runes" rel="nofollow"><code>$derived</code> rune</a>.
+</ChatNote>
+
+### First Day of the Week
+
+JavaScript provides an API to retrieve information about the week structure for a locale via the
+[`Intl.Locale.getWeekInfo()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getWeekInfo)
+method. Browser support is not exactly great for this API (some browsers expose it via a `weekInfo` property instead,
+some browsers don't have it at all), so we use the following polyfill to level the playing field:
+[`@formatjs/intl-locale`](https://www.npmjs.com/package/@formatjs/intl-locale).
+
+According to the API docs, this method returns an object with a `firstDay` key as an integer, where `1` is Monday and
+`7` is Sunday:
+
+```javascript
+const firstDayOfWeek = $derived(new Intl.Locale(locale).getWeekInfo().firstDay)
+```
+
+### List of Day Names
+
+To get the list of day names, we will similarly use the i18n capabilities of JavaScript, this time with a twist. Since
+we are localizing multiple dates (one for each day of the week) with the same formatting, we can optimize our code by
+first constructing a
+[`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/format)
+object and re-use it to format multiple dates.
+
+```javascript
+const dateTimeFormat = $derived(new Intl.DateTimeFormat(locale, { weekday: 'short' }))
+const dayNames = $derived(
+  Array.from({ length: 7 }, (_, i) => dateTimeFormat.format(new Date(2018, 0, i + firstDayOfWeek)))
+)
+```
+
+The list must start with the correct day according to `firstDayOfWeek` defined above. We leverage the fact that year
+2018 started on a Monday to generate the list of days starting with the correct day. With our index `i` starting at
+zero, we simply add our `firstDayOfWeek` to retrieve the the date which corresponds to the day name.
+
 ## The Result
 
-Here's the final result after implementing all the things discussed in this article. The [full component source code](https://github.com/beeb/beeb-li/blob/main/src/lib/posts/calendar-component-svelte-tailwind/Calendar.svelte) is available on GitHub.
+Here's the final result after implementing all the things discussed in this article. The
+[full component source code](https://github.com/beeb/beeb-li/blob/main/src/lib/posts/calendar-component-svelte-tailwind/Calendar.svelte)
+is available on GitHub.
 
 <div class="not-prose w-full">
   <LocalePicker {handler} />
@@ -127,5 +190,6 @@ Here's the final result after implementing all the things discussed in this arti
 
 ## Conclusion
 
+*[HTML]: Hypertext Markup Language
 *[CSS]: Cascading Style Sheets
 *[i18n]: internationalization
