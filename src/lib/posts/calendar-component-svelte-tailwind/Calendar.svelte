@@ -51,31 +51,13 @@
   const range = (start: number, end: number) => {
     return Array.from({ length: end - start + 1 }, (_, i) => i + start)
   }
-
-  // Go to the previous month, wrapping around to December of the previous year
-  const prevMonth = () => {
-    month--
-    if (month < 0) {
-      month = 11
-      year--
-    }
-  }
-
-  // Go to the next month, wrapping around to January of the next year
-  const nextMonth = () => {
-    month++
-    if (month > 11) {
-      month = 0
-      year++
-    }
-  }
 </script>
 
 <div class="w-full max-w-lg mx-auto overflow-x-scroll rounded-box border border-neutral p-4">
   <div class="min-w-80 flex flex-col gap-4">
     <div class="flex flex-nowrap items-center text-center sm:text-xl">
       <div>
-        <button class="btn btn-ghost text-xl font-normal" onclick={() => prevMonth()} aria-label="See previous month">
+        <button class="btn btn-ghost text-xl font-normal" onclick={() => month--} aria-label="See previous month">
           &lt;
         </button>
       </div>
@@ -83,7 +65,7 @@
         {monthTitle}
       </h2>
       <div>
-        <button class="btn btn-ghost text-xl font-normal" onclick={() => nextMonth()} aria-label="See next month">
+        <button class="btn btn-ghost text-xl font-normal" onclick={() => month++} aria-label="See next month">
           &gt;
         </button>
       </div>

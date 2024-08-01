@@ -5,13 +5,14 @@ date: 2024-07-28T18:27:00Z
 categories:
   - svelte
   - tailwind
+  - javascript
   - webdev
   - tutorial
 coverImage: true
 coverCredits: Photo by Renáta-Adrienn on Unsplash
 coverAlt: A paper calendar book with a pen and a delicate green plant laid on top of it
 excerpt: >
-  Calendar component TODO
+  Let's create a localized monthly calendar component together, using Svelte and TailwindCSS with minimal dependencies. To achieve this result, we explore the internationalization APIs of JavaScript and use some clever maths to generate a simple markup. After detailing each piece of the puzzle, we put everything together into a simple but customizable demo which can serve as the basis for your calendar needs.
 ---
 
 <script lang="ts">
@@ -115,8 +116,8 @@ the main table-like `<div>`. This creates a grid with 7 columns as you might exp
 The `.justify-items-center` ensures that each child `<div>` is horizontally centered inside of its grid cell.
 
 Finally and most importantly, not each month will have its first day on a Monday (or whichever the first column day is
-according to i18n). As such, we have to skip a few cells to move the first day `<div>` into the right column. This is
-achieved with the [`.col-start-*`](https://tailwindcss.com/docs/grid-column#starting-and-ending-lines) classes and
+according to the locale). As such, we have to skip a few cells to move the first day `<div>` into the right column. This
+is achieved with the [`.col-start-*`](https://tailwindcss.com/docs/grid-column#starting-and-ending-lines) classes and
 should only be applied to the first day element. It will automatically offset the next elements along with it, and all
 elements will wrap according to our preference of 7 columns.
 
@@ -145,7 +146,7 @@ relying on the
 [`Date.toLocaleString()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString)
 method:
 
-```javascript
+```js
 const monthTitle = $derived(
   new Date(year, month, 1).toLocaleString(locale, {
     month: 'long', year: 'numeric'
@@ -163,7 +164,7 @@ value will reactively update any time any of its dependencies change.
 ### First Day of the Week
 
 JavaScript provides an API to retrieve information about the week structure for a locale via the
-[`Intl.Locale.getWeekInfo()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getWeekInfo)
+[`Intl.Locale.getWeekInfo()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getWeekInfo)
 method. Browser support is not exactly great for this API (some browsers expose it via a `weekInfo` property instead,
 some browsers don't have it at all), so we use the following polyfill to level the playing field:
 [`@formatjs/intl-locale`](https://www.npmjs.com/package/@formatjs/intl-locale).
@@ -171,7 +172,7 @@ some browsers don't have it at all), so we use the following polyfill to level t
 According to the API docs, this method returns an object with a `firstDay` key as an integer, where `1` is Monday and
 `7` is Sunday:
 
-```javascript
+```js
 const firstDayOfWeek = $derived(
   new Intl.Locale(locale).getWeekInfo().firstDay
 )
@@ -186,7 +187,7 @@ first constructing a
 object and re-using it to format multiple dates. This speeds up execution as the heavy data for the locale is only
 loaded once instead of once per call.
 
-```javascript
+```js
 const dateTimeFormat = $derived(
   new Intl.DateTimeFormat(locale, { weekday: 'short' })
 )
@@ -216,7 +217,7 @@ If we now were to try `Date(2018, 12, 1)`, we would get `Tue Jan 01 2019` (remem
 
 Armed with this knowledge, we can now find the last day in `month` (1-indexed):
 
-```javascript
+```js
 const lastDay = $derived(
   new Date(year, month + 1, 0).getDate()
 )
@@ -227,7 +228,7 @@ const lastDay = $derived(
 In the markup section above, we determined that we need to offset the first item in the table by a number of rows so
 that it ends up in the correct column. This involves a bit of simple math and can be achieved like so:
 
-```javascript
+```js
 const firstDayColumn = $derived(
   (
     (
@@ -244,7 +245,7 @@ Let's imagine we are in August 2024, and so the values we get from `getDay()` is
 Let's also imagine for the example that we are dealing with the `fr` locale which gave us `firstDayOfWeek = 1`.
 
 By subtracting our value `firstDayOfWeek`, for our example, we end up with `4 - 1 = 3`. So, we need to offset the day
-cell by 3 columns to the right.
+cell by 3 columns to the right. Brilliant!
 
 Now we need to adjust a couple of things after the subtraction, because if `getDay()` returns a number smaller than our
 `firstDayOfWeek`, we will end up with a negative number. To avoid this, we add `7` to the result, and then apply a
@@ -257,6 +258,101 @@ calculation to get the column index (starting at 1).
 
 Phew, now that the maths are out of the way, let's see how we can construct our component with the pieces described
 until now.
+
+I want the component to expose a `prop` named `locale` which the consumer can use to define the locale string to use.
+The default value will be `en`:
+
+```js
+interface Props {
+  locale?: string
+}
+let { locale = 'en' }: Props = $props()
+```
+
+Then, I need two state variables to store the year and month, and we will initialize them with the current date:
+
+```js
+let year = $state(new Date().getFullYear())
+let month = $state(new Date().getMonth())
+```
+
+It could be interesting to also expose those as props and would be easy enough to do, but it's not required for this
+demo.
+
+To generate the list of all day cells, we also need such a list that contains all numbers from 1 to the `lastDay` that
+we calculated previously. We create a helper `range` function:
+
+```js
+// Helper method to generate a range of integers from `start` to `end`, inclusive
+const range = (start: number, end: number) => {
+  return Array.from({ length: end - start + 1 }, (_, i) => i + start)
+}
+```
+
+We should also be able to increment and decrement the month and year counters. Knowing how the `Date()` object works, we
+know it's a simple as:
+
+```js
+<button class="btn" onclick={() => month--} aria-label="See previous month">
+  &lt;
+</button>
+<!-- ... -->
+<button class="btn" onclick={() => month++} aria-label="See next month">
+  &lt;
+</button>
+```
+
+The overflow to the next or previous year will be handled properly. We could also do something like below, which would
+be less "hacky" and would be necessary if we relied on the `year` and `month` variables for anything else than the input
+to the `Date` constructor:
+
+```js
+const prevMonth = () => {
+  month--
+  if (month < 0) {
+    month = 11
+    year--
+  }
+}
+const nextMonth = () => {
+  month++
+  if (month > 11) {
+    month = 0
+    year++
+  }
+}
+```
+
+The title is simply:
+
+```svelte
+<h2 class="grow whitespace-nowrap">
+  {monthTitle}
+</h2>
+```
+
+The row with the day names is constructed as follows:
+
+```svelte
+<div class="grid grid-cols-7 justify-items-center">
+  {#each dayNames as dayName}
+    <div>{dayName}</div>
+  {/each}
+</div>
+```
+
+And the table is generated with:
+
+```svelte
+<div class="grid grid-cols-7 justify-items-center">
+  {#each range(1, lastDay) as day}
+    <div class={`first:col-start-${firstDayColumn}`}>
+      {day}
+    </div>
+  {/each}
+</div>
+```
+
 
 ## The Result
 
@@ -271,6 +367,14 @@ is available on GitHub.
 
 ## Conclusion
 
+Throughout this article, we've seen how we can leverage modern web APIs to create a localized Svelte component which can
+serve content tailored to the user's preferences. We've also derived a couple of maths formulae to produce the correct
+markup for displaying a monthly calendar view.
+
+I hope you found this article useful and could learn a thing or two about using JavaScript APIs for the localization of
+your front-end applications.
+
+*[API]: Application Programming Interface
 *[HTML]: Hypertext Markup Language
 *[CSS]: Cascading Style Sheets
 *[i18n]: internationalization
