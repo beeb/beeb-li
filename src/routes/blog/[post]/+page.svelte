@@ -64,7 +64,7 @@
         ></enhanced:img>
       </figure>
       {#if data.meta.coverCredits}
-        <small id="cover-image-credits" class="opacity-50">{data.meta.coverCredits}</small>
+        <cite id="cover-image-credits" class="opacity-50">{data.meta.coverCredits}</cite>
       {/if}
     </div>
   {/if}

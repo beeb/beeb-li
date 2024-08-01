@@ -186,8 +186,8 @@ indexes months starting at zero, so month `0` is January (for some reason...).
 ### Last Day of the Month
 
 To get the number of days in the displayed month, we use another JavaScript trick. The `Date()` object will not complain
-if we give it a day or month index that is invalid (e.g. `32` for the day number), and will instead correct the other
-items to land on a valid date. As such, `Date(2018, 0, 32)` gives `Thu Feb 01 2018`. Likewise, we can retrive the last
+if we give it a day or month index that is invalid (e.g. `32` for the day number), and will instead wrap as necessary to
+land on a valid date. As such, `Date(2018, 0, 32)` gives `Thu Feb 01 2018`. Likewise, we can retrieve the last
 day of January with `Date(2018, 1, 0)` (remember that days start at 1 normally), which gives `Wed Jan 31 2018`.
 
 If we now were to try `Date(2018, 12, 1)`, we would get `Tue Jan 01 2019` (remember that months start at 0).
