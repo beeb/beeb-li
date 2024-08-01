@@ -72,9 +72,9 @@
   }
 </script>
 
-<div class="w-full mx-auto max-w-lg overflow-x-scroll rounded-box border border-neutral p-4">
-  <div class="flex min-w-80 flex-col gap-4">
-    <div class="flex w-full flex-nowrap text-center sm:text-xl items-center">
+<div class="w-full max-w-lg mx-auto overflow-x-scroll rounded-box border border-neutral p-4">
+  <div class="min-w-80 flex flex-col gap-4">
+    <div class="w-full flex flex-nowrap items-center text-center sm:text-xl">
       <div>
         <button class="btn btn-ghost text-xl font-normal" onclick={() => prevMonth()} aria-label="See previous month">
           &lt;
@@ -89,19 +89,17 @@
         </button>
       </div>
     </div>
-    <div class="grid grid-cols-7 justify-items-center text-sm sm:text-base opacity-80">
+    <div class="w-full grid grid-cols-7 justify-items-center text-sm sm:text-base opacity-80">
       {#each dayNames as dayName}
         <div>{dayName}</div>
       {/each}
     </div>
-    <div class="flex w-full flex-nowrap">
-      <div class="grid w-full grid-cols-7 justify-items-center gap-y-4">
-        {#each range(1, lastDay) as day}
-          <div class={`text-base sm:text-lg first:col-start-${firstDayColumn}`}>
-            {day}
-          </div>
-        {/each}
-      </div>
+    <div class="w-full grid grid-cols-7 gap-y-4 justify-items-center">
+      {#each range(1, lastDay) as day}
+        <div class={`first:col-start-${firstDayColumn} text-base sm:text-lg`}>
+          {day}
+        </div>
+      {/each}
     </div>
   </div>
 </div>

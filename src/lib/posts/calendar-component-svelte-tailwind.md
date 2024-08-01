@@ -84,20 +84,18 @@ The base of our layout will be the following:
       </button>
     </div>
   </div>
-  <div class="grid grid-cols-7 justify-items-center">
+  <div class="w-full grid grid-cols-7 justify-items-center">
     <div>Monday</div> <!-- this might sometimes be another day and will be translated -->
     <div>Tuesday</div>
     <!-- ... -->
   </div>
-  <div class="w-full flex flex-nowrap">
-    <div class="w-full grid grid-cols-7 justify-items-center">
-      <!-- the number in the class name below will change for each month -->
-      <div class="first:col-start-1">
-        1
-      </div>
-      <div class="first:col-start-1">
-        2
-      </div>
+  <div class="w-full grid grid-cols-7 justify-items-center">
+    <!-- the number in the class name below will change for each month -->
+    <div class="first:col-start-1">
+      1
+    </div>
+    <div class="first:col-start-1">
+      2
     </div>
   </div>
 </div>
