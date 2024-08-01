@@ -1,6 +1,6 @@
 ---
 title: Localized Calendar Component with Svelte and TailwindCSS
-date: 2024-07-28T18:27:00Z
+date: 2024-08-01T15:36:00Z
 # updated:
 categories:
   - svelte
