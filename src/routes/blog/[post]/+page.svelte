@@ -109,6 +109,6 @@
   </aside>
 
   <div class="prose prose-lg max-w-none prose-p:text-justify prose-headings:text-balance">
-    <svelte:component this={data.PostContent} />
+    <data.PostContent />
   </div>
 </article>

@@ -20,5 +20,5 @@
   <h1>Hi there!</h1>
 </div>
 <div class="prose prose-lg w-full max-w-full">
-  <svelte:component this={data.Readme} />
+  <data.Readme />
 </div>
