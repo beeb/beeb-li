@@ -1,11 +1,11 @@
 <script lang="ts">
-  import type { Snippet } from "svelte"
+  import type { Snippet } from 'svelte'
 
   interface Props {
-    children: Snippet;
+    children: Snippet
   }
 
-  const { children }: Props = $props();
+  const { children }: Props = $props()
 </script>
 
 <div class="chat chat-end">
@@ -18,3 +18,9 @@
     {@render children()}
   </div>
 </div>
+
+<style>
+  .prose-invert :global(a) {
+    color: oklch(64.48% 0.156 284.08) !important;
+  }
+</style>
