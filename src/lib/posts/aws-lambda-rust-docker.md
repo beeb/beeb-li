@@ -153,7 +153,7 @@ COPY --from=build /build/target/lambda/$package/bootstrap ${LAMBDA_RUNTIME_DIR}/
 CMD ["app.handler"]
 ```
 
-In the image above, the target platform and name of the package are build-time parameters that allow to create different
+In the file above, the target platform and name of the package are build-time parameters that allow to create different
 images from a single Dockerfile. Only `linux/amd64` and `linux/arm64` are supported by AWS Lambda, but the code above
 could be very simply edited to add more target triplets in the Docker-to-Rust conversion switch statement.
 
@@ -163,7 +163,7 @@ Here's how this file would be used to build an ARM image for our `hello_world` s
 "docker build --platform linux/arm64 --build-arg package=hello_world -t hello_world:latest ."
 ]} />
 
-Note that the file above would work in a Cargo workspace thanks to the `--bin $package` argument, so you could use a
+Note that this Dockerfilee would work in a Cargo workspace thanks to the `--bin $package` argument, so you could use a
 single Dockerfile to compile every service in your monorepo!
 
 ## Bonus Tips
@@ -200,6 +200,13 @@ The URL to target, considering we exposed the `8080` port of the container to th
 
 It took me a while to find this information because I didn't really know what I was looking for. Turns out the
 ["Invoke" docs describes this URL](https://docs.aws.amazon.com/lambda/latest/api/API_Invoke.html).
+
+If we send this request to the container, we get the answer, in the API Gateway response format 🎉:
+
+<Console entries={[
+"curl -X POST --data '{\"version\":\"2.0\",\"rawQueryString\":\"name=beeb\",\"requestContext\":{\"http\":{\"method\":\"GET\"},\"timeEpoch\":0}}' http://localhost:8080/2015-03-31/functions/function/invocations",
+{ text: "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html\"},\"multiValueHeaders\":{},\"body\":\"Hello beeb, this is an AWS Lambda HTTP request\",\"isBase64Encoded\":false,\"cookies\":[]}", prefix: "", cl: "text-info" },
+]} />
 
 ## Final Words
 
