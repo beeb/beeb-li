@@ -1,6 +1,6 @@
 ---
 title: Rust for AWS Lambda, the Docker Way
-date: 2024-11-22T11:30:00Z
+date: 2024-11-22T12:27:00Z
 # updated:
 categories:
   - rust
