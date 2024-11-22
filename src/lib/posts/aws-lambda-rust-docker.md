@@ -1,12 +1,11 @@
 ---
 title: Rust for AWS Lambda, the Docker Way
-date: 2024-11-22T15:36:00Z
+date: 2024-11-22T11:30:00Z
 # updated:
 categories:
   - rust
   - docker
-  - aws
-  - lambda
+  - aws lambda
   - webdev
   - tutorial
 coverImage: true
@@ -21,19 +20,20 @@ excerpt: >
 <script lang="ts">
   import ChatNote from '$lib/components/ChatNote.svelte'
   import Console from '$lib/components/Console.svelte'
-  import Image from '$lib/components/Image.svelte'
 </script>
 
 ## Contents
 
 ## Introduction
 
-Rust is a great language to consider when writing services for AWS Lambda, because of its extremely low start-up time,
-CPU usage and memory footprint. These are all important metrics to consider in serverless infrastructure and they
-translate to direct cost savings and better performance when minimized.
+Rust is a great language to consider when writing services for [AWS Lambda](https://aws.amazon.com/lambda/), because of
+its extremely low start-up time, CPU usage and memory footprint.
+These are all important metrics to consider in serverless infrastructure and they translate to direct cost savings and
+better performance when minimized.
 
 The [recommended](https://docs.aws.amazon.com/lambda/latest/dg/rust-package.html) and most straightforward way to deploy
-Rust programs to AWS Lambda is to upload a zipped binary, either through the AWS CLI or with the amazing
+Rust programs to AWS Lambda is to upload a zipped binary, either through the
+[AWS CLI](https://docs.aws.amazon.com/lambda/latest/dg/rust-package.html#rust-deploy-cargo) or with the amazing
 [Cargo Lambda](https://www.cargo-lambda.info/commands/deploy.html). While the latter makes the process of testing,
 compiling and deploying Rust Lambdas very easy, there is sometimes the need to distribute a Docker image instead of
 the raw binary. For instance, using container images allows to leverage the ECR container registry in AWS for
@@ -84,7 +84,7 @@ compiles and runs the lambda locally whenever a source file is changed. `cargo l
 requests to this locally-running lambda without worrying about the AWS event object format, API Gateway, etc.
 
 `cargo lambda build --release` is the command that we will need, as it includes a good default build profile for
-Lambda, as well as allows to cross-compile for different processor architectures.
+Lambda, and allows to cross-compile for different processor architectures.
 
 <ChatNote>
 Interestingly, Cargo Lambda uses the <a href="https://www.cargo-lambda.info/guide/cross-compiling.html" ref="nofollow">
@@ -95,7 +95,7 @@ Zig toolchain to enable cross-compilation</a>. How cool! Note that the use of
 ## The Dockerfile
 
 The Dockerfile below is what took me some time to research and find information about. In the end, some trial and error
-paired with the use of the GitHub search engine allowed me to find the most straightforward way to get to a working
+paired with the use of the GitHub search bar allowed me to find the most straightforward way to get to a working
 Docker image.
 
 ```Dockerfile
@@ -154,8 +154,8 @@ CMD ["app.handler"]
 ```
 
 In the file above, the target platform and name of the package are build-time parameters that allow to create different
-images from a single Dockerfile. Only `linux/amd64` and `linux/arm64` are supported by AWS Lambda, but the code above
-could be very simply edited to add more target triplets in the Docker-to-Rust conversion switch statement.
+images from a single Dockerfile. Only `linux/amd64` and `linux/arm64` are
+[supported by AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/foundation-arch.html).
 
 Here's how this file would be used to build an ARM image for our `hello_world` service:
 
@@ -163,8 +163,8 @@ Here's how this file would be used to build an ARM image for our `hello_world` s
 "docker build --platform linux/arm64 --build-arg package=hello_world -t hello_world:latest ."
 ]} />
 
-Note that this Dockerfilee would work in a Cargo workspace thanks to the `--bin $package` argument, so you could use a
-single Dockerfile to compile every service in your monorepo!
+Note that this Dockerfile would work within a Cargo workspace thanks to the `--bin $package` argument, so you could use
+a single Dockerfile to compile every service in your monorepo!
 
 ## Bonus Tips
 
@@ -177,7 +177,7 @@ To spin up our container, we use the following command:
 "docker run --rm -p 8080:8080 hello_world:latest"
 ]} />
 
-The request needs to have the `POST` method and a JSON body matching the
+The request needs to be sent with the `POST` method and a JSON body matching the
 [Payload 2.0 format](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html).
 It wraps our `GET` HTTP request with some metadata, and a minimal payload for our example would be:
 
@@ -201,7 +201,8 @@ The URL to target, considering we exposed the `8080` port of the container to th
 It took me a while to find this information because I didn't really know what I was looking for. Turns out the
 ["Invoke" docs describes this URL](https://docs.aws.amazon.com/lambda/latest/api/API_Invoke.html).
 
-If we send this request to the container, we get the answer, in the API Gateway response format 🎉:
+If we send this request to the container, we get a response from our function 🎉 (albeit wrapped in the API Gateway
+response format).
 
 <Console entries={[
 "curl -X POST --data '{\"version\":\"2.0\",\"rawQueryString\":\"name=beeb\",\"requestContext\":{\"http\":{\"method\":\"GET\"},\"timeEpoch\":0}}' http://localhost:8080/2015-03-31/functions/function/invocations",
