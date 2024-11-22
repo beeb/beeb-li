@@ -42,7 +42,7 @@ versioning and distribution.
 In this short article, we'll see how we can leverage Cargo Lambda and Docker to create an image suitable for use with
 Lambda.
 
-## The Rust code
+## The Rust Code
 
 Below is the example Lambda that we will use to test our deployment. It's a simple "hello world" taken from the
 default `cargo lambda new` template, which takes in a `name` query string parameter and outputs a very simple greeting
