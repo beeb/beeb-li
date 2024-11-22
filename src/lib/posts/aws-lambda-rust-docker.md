@@ -9,9 +9,9 @@ categories:
   - lambda
   - webdev
   - tutorial
-coverImage: false
-coverCredits: Photo by ... on Unsplash
-coverAlt: TODO
+coverImage: true
+coverCredits: Photo by Erwan Hesry on Unsplash
+coverAlt: A view of four shipping containers which show some signs of rust.
 excerpt: >
   In this short article, we go over a setup to distribute AWS Lambda endpoints written in the Rust programming language
   through Docker images instead of a zipped binary. This technique leverages the power of Cargo Lambda and multi-stage
