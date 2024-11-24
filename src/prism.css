@@ -1,4 +1,4 @@
-:not(pre)>code[class*='language-'],
+:not(pre) > code[class*='language-'],
 pre[class*='language-'] {
   color: #cdd6f4;
   background: #1e1e2e;
@@ -77,4 +77,9 @@ pre[class*='language-'] {
 
 .token.entity {
   cursor: help;
+}
+
+/* fix display bug with TOML */
+.language-toml .class-name.table {
+  display: inline;
 }
