@@ -16,23 +16,23 @@
 
 /* table of contents */
 
-h2#contents+ul {
+h2#contents + ul {
   @apply card bg-base-200 shadow max-w-lg px-3 py-2 list-none;
 }
 
-h2#contents+ul a {
+h2#contents + ul a {
   @apply text-base-content;
 }
 
-h2#contents+ul ul {
+h2#contents + ul ul {
   @apply list-none my-0;
 }
 
-h2#contents+ul li {
+h2#contents + ul li {
   @apply my-1;
 }
 
-h2#contents+ul ul>li:last-child {
+h2#contents + ul ul > li:last-child {
   @apply mb-0;
 }
 
@@ -99,4 +99,15 @@ abbr[title]:focus::after {
   font-family: 'TASA Orbiter';
   font-weight: 100 900;
   src: url('/fonts/tasa-orbiter-vf.woff2') format('woff2-variations');
+}
+
+/* code highlighting */
+html:has(input.theme-controller[value='light']:not(:checked)) .shiki,
+html:has(input.theme-controller[value='light']:not(:checked)) .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  /* Optional, if you also want font styles */
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
 }

@@ -1,13 +1,19 @@
 import adapter from '@sveltejs/adapter-static'
 import { h } from 'hastscript'
-import { mdsvex } from 'mdsvex'
+import { escapeSvelte, mdsvex } from 'mdsvex'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSlug from 'rehype-slug'
 import remarkAbbr from 'remark-abbr'
 import remarkToc from 'remark-toc'
+import { createHighlighter } from 'shiki'
 
 const prodUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL || 'beeb.li'
+
+const highlighter = await createHighlighter({
+	themes: ['catppuccin-latte', 'catppuccin-mocha'],
+	langs: ['dockerfile', 'html', 'javascript', 'json', 'rust', 'solidity', 'svelte', 'toml', 'typescript'],
+})
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -48,6 +54,15 @@ const config = {
 				],
 				rehypeExternalLinks,
 			],
+
+			highlight: {
+				highlighter: async (code, lang = 'text') => {
+					const html = escapeSvelte(
+						highlighter.codeToHtml(code, { lang, themes: { light: 'catppuccin-latte', dark: 'catppuccin-mocha' } }),
+					)
+					return `{@html \`${html}\` }`
+				},
+			},
 		}),
 	],
 
