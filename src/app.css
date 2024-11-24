@@ -102,8 +102,8 @@ abbr[title]:focus::after {
 }
 
 /* code highlighting */
-html[data-theme='dark'] .shiki,
-html[data-theme='dark'] .shiki span {
+html:has(input.theme-controller[value='light']:not(:checked)) .shiki,
+html:has(input.theme-controller[value='light']:not(:checked)) .shiki span {
   color: var(--shiki-dark) !important;
   background-color: var(--shiki-dark-bg) !important;
   /* Optional, if you also want font styles */
