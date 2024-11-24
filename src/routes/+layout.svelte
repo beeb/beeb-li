@@ -1,6 +1,5 @@
 <script lang="ts">
   import '../app.css'
-  import '../prism.css'
   import Header from '$lib/components/Header.svelte'
   import Footer from '$lib/components/Footer.svelte'
   import { siteDescription } from '$lib/config'

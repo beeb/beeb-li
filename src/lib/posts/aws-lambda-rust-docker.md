@@ -98,7 +98,7 @@ The Dockerfile below is what took me some time to research and find information 
 paired with the use of the GitHub search bar allowed me to find the most straightforward way to get to a working
 Docker image.
 
-```Dockerfile
+```dockerfile
 # The build image with Cargo Lambda pre-installed
 FROM ghcr.io/cargo-lambda/cargo-lambda:latest AS build
 
@@ -131,7 +131,7 @@ use [build args](https://docs.docker.com/build/building/variables/).
 
 Without further ado, here's the version which allows cross-compilation and parametrization through some variables.
 
-```Dockerfile
+```dockerfile
 FROM --platform=$BUILDPLATFORM ghcr.io/cargo-lambda/cargo-lambda:latest AS build
 ARG package
 ARG TARGETPLATFORM

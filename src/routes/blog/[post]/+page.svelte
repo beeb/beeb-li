@@ -10,7 +10,7 @@
   const ogDate = $derived((data.meta.updated ? new Date(data.meta.updated) : new Date(data.meta.date)).toISOString())
 
   $effect(() => {
-    for (const node of article.querySelectorAll("pre[class*='language-']")) {
+    for (const node of article.querySelectorAll('pre.shiki')) {
       const wrapper = document.createElement('div')
       wrapper.className = 'relative'
       node.parentNode?.insertBefore(wrapper, node)

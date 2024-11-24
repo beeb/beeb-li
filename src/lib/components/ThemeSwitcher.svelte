@@ -21,6 +21,14 @@
     }
   })
 
+  $effect(() => {
+    if (light) {
+      document.documentElement.setAttribute('data-theme', 'light')
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark')
+    }
+  })
+
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     localStorage.setItem(KEY_NAME, JSON.stringify(e.currentTarget.checked))
   }
