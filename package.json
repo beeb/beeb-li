@@ -13,7 +13,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
 		"@formatjs/intl-locale": "^4.2.5",
-		"@iconify-json/lucide": "^1.2.15",
+		"@iconify-json/lucide": "^1.2.16",
 		"@iconify-json/mingcute": "^1.2.1",
 		"@resvg/resvg-js": "^2.6.2",
 		"@sveltejs/adapter-static": "^3.0.6",
