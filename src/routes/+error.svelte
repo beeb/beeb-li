@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { page } from '$app/stores'
+  import { page } from '$app/state'
 </script>
 
 <div class="flex justify-center">
   <div class="prose prose-xl max-w-none">
-    <h2>{$page.status}</h2>
-    <code>{$page.error?.message || 'error'}</code>
+    <h2>{page.status}</h2>
+    <code>{page.error?.message || 'error'}</code>
 
     <p><strong>Sorry!</strong> Something went wrong. Maybe try one of these links?</p>
     <ul>
