@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { siteTitle } from '$lib/config'
+  import { siteTitle } from "$lib/config";
 </script>
 
 <svelte:head>
@@ -13,14 +13,16 @@
   <p>Want to get in touch? Great!</p>
 
   <p>
-    Feel free to shoot me an email at <code>hi@[this_domain]</code>.
+    Feel free to shoot me an email at <code>hi@[this_domain]</code> (replace with
+    the domain name you see in the URL bar).
   </p>
 
   <p>Relevant social links:</p>
 
   <ul>
     <li>
-      <a href="https://hachyderm.io/@beeb" rel="external">Mastodon</a> (preferred for interaction)
+      <a href="https://hachyderm.io/@beeb" rel="external">Mastodon</a> (preferred
+      for interaction)
     </li>
     <li>
       <a href="https://github.com/beeb" rel="external">Github</a>
@@ -29,9 +31,13 @@
       <a href="https://codeberg.org/beeb" rel="external">Codeberg</a>
     </li>
     <li>
-      <a href="https://www.linkedin.com/in/vbersier/" rel="external">LinkedIn</a>
+      <a href="https://www.linkedin.com/in/vbersier/" rel="external">LinkedIn</a
+      >
     </li>
   </ul>
 
-  <p>Accounts I may have on other social networks are seldom checked, don't expect a reply.</p>
+  <p>
+    Accounts I may have on other social networks are seldom checked, don't
+    expect a reply.
+  </p>
 </div>
