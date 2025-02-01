@@ -32,7 +32,7 @@
 		"remark-abbr": "^1.4.2",
 		"remark-toc": "^9.0.0",
 		"satori": "^0.12.1",
-		"shiki": "^1.29.2",
+		"shiki": "^2.2.0",
 		"svelte": "^5.19.6",
 		"svelte-check": "^4.1.4",
 		"svelte-preprocess": "^6.0.3",
