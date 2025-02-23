@@ -109,8 +109,8 @@ Toolchains like [Foundry](https://github.com/foundry-rs/foundry/) (which, by the
 [`v1.0` recently](https://book.getfoundry.sh/guides/v1.0-migration) 🎉) can use those comments to automatically generate
 Markdown and HTML files for documentating a project's API.
 
-As such, it's pretty important to make sure that these comments stay in sync with the actual code, and even more
-important to ensure that they are present altogether!
+**As such, it's pretty important to make sure that these comments stay in sync with the actual code, and even more
+important to ensure that they are present altogether!**
 
 ## Natspec-smells
 
