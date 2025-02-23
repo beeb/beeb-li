@@ -121,7 +121,7 @@ did so a while ago, and provide a CLI tool that can be used to validate those co
 Having used this tool pretty much since its inception in January 2024, I was always a bit disappointed by its speed
 and the fact that it sometimes errors for seemingly unrelated reasons, like it
 [not being able to understand](https://github.com/defi-wonderland/natspec-smells/issues/65) the path to a source file's
-dependencies. Another lacking feature, as of writing this, is a support for documenting `enum`s.
+dependencies. Another lacking feature, as of writing this, is the verification of `enum` NatSpec.
 
 ## A (Long) Weekend Project
 
