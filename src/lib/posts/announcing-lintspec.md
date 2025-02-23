@@ -178,6 +178,9 @@ could benefit from some added flair. Finally, having to install NodeJS and `npm`
 tedious, especially since `npm` is not required to manage Solidity dependencies (thanks,
 [`soldeer`](https://github.com/mario-eth/soldeer)!).
 
+To produce pretty diagnostic messages, I used the amazing [`miette`](https://crates.io/crates/miette) crate which gives
+really good results with very little work.
+
 <Image
   src={screenshot}
   maxWidth={800}
@@ -197,7 +200,7 @@ large project where you'd be worried about the performance of a linter, and they
 all items, which gives us a nice amount of diagnostics to output (487 of them!).
 
 I set up `lintspec`'s output format to be as close as possible to what `natspec-smells` is doing, that is including
-validation of `struct` members and using the bare-bones text output format seen below:
+validation of `struct` members and using the compact text output format seen below:
 
 ```
 # natspec-smells output
