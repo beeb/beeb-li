@@ -291,7 +291,7 @@ need to redirect output to `stdout` for piping into `jq`. Here are a couple of q
 ## What's Next
 
 Although the test suite is now pretty extensive, I'm sure there are some bugs I didn't find yet. I would be extremely
-greateful if you could consider using the tool and let me know how it goes!
+greateful if you could consider using the tool and letting me know how it goes!
 Please do [open an issue on GitHub](https://github.com/beeb/lintspec/issues/new) if you have suggestions or
 experience problems.
 
