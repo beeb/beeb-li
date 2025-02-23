@@ -22,6 +22,54 @@ excerpt: >
 
 ## Contents
 
+## TL;DR
+
+[`lintspec`](https://github.com/beeb/lintspec) is a command-line utility (linter) that checks the completeness and
+validity of NatSpec doc-comments in Solidity code. It is focused on speed and ergonomics and aims to improve the user
+experience over existing solutions. Benchmarks show that it can be as much as 200 times faster than `natspec-smells`. A
+native GitHub Action allows to easily integrate it with CI.
+
+### Install
+
+#### Via `cargo`
+
+<Console entries={["cargo install lintspec"]} />
+
+#### Via [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall)
+
+<Console entries={["cargo binstall lintspec"]} />
+
+#### Via `nix`
+
+Depending on your use case, use one of the commands below:
+
+<Console entries={["nix-env -iA nixpkgs.lintspec", "nix-shell -p lintspec", "nix run nixpkgs#lintspec"]} />
+
+#### Pre-built binaries and install script
+
+Head over to the [releases page](https://github.com/beeb/lintspec/releases)!
+
+### Usage
+
+```
+Usage: lintspec [OPTIONS] [PATH]...
+
+Arguments:
+  [PATH]...  One or more paths to files and folders to analyze
+
+Options:
+  -e, --exclude <EXCLUDE>            Path to a file or folder to exclude (can be used more than once)
+  -o, --out <OUT>                    Write output to a file instead of stderr
+      --inheritdoc                   Enforce that all public and external items have `@inheritdoc`
+      --constructor                  Enforce that constructors have NatSpec
+      --struct-params                Enforce that structs have `@param` for each member
+      --enum-params                  Enforce that enums have `@param` for each variant
+      --json                         Output diagnostics in JSON format
+      --compact                      Compact output
+  -h, --help                         Print help (see more with '--help')
+  -V, --version                      Print version
+```
+
 ## Introduction
 
 The Solidity language provides a [succinct specification](https://docs.soliditylang.org/en/latest/natspec-format.html)
@@ -187,7 +235,8 @@ Summary
 ## Run It in CI
 
 `lintspec` comes with a built-in Github Action that you can use in your workflows. Here's an example of how you would
-use it:
+use it. Of course, it can be customized with parameters, check out the
+[GitHub repository](https://github.com/beeb/lintspec) to learn more:
 
 ```yaml
 name: Lintspec
