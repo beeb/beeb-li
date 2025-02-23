@@ -1,13 +1,19 @@
 import { postsPerPage } from '$lib/config'
 
+export const fetchCover = async (slug: string) => {
+	try {
+		return (await import(`./posts/${slug}/title.jpg?enhanced&w=2048;1280;1024;768;512;256`)).default
+	} catch {
+		return (await import(`./posts/${slug}/title.png?enhanced&w=2048;1280;1024;768;512;256`)).default
+	}
+}
+
 export const fetchPosts = async ({ offset = 0, limit = postsPerPage, category = '' } = {}) => {
 	const posts = await Promise.all(
 		Object.entries(import.meta.glob<Post>('/src/lib/posts/*.md')).map(async ([path, resolver]) => {
 			const { metadata } = await resolver()
 			const slug = path.split('/').pop()?.slice(0, -3) ?? 'undefined'
-			const enhancedImage = metadata.coverImage
-				? (await import(`./posts/${slug}/title.jpg?enhanced&w=2048;1280;1024;768;512;256`)).default
-				: null
+			const enhancedImage = metadata.coverImage ? await fetchCover(slug) : null
 			return { ...metadata, slug, enhancedImage }
 		}),
 	)
