@@ -194,7 +194,7 @@ to the competition?". Feat not, reader, I have benchmarked the tool against <cod
 I used the [Uniswap v4 codebase](https://github.com/Uniswap/v4-core) for this, because it includes (at the time of
 writing) 83 Solidity source files totaling about 6600 lines of code and comments, which is pretty representative of a
 large project where you'd be worried about the performance of a linter, and they don't strictly enforce NatSpec for
-all items, which gives us a nice amount of diagnostics to output (457 of them!).
+all items, which gives us a nice amount of diagnostics to output (487 of them!).
 
 I set up `lintspec`'s output format to be as close as possible to what `natspec-smells` is doing, that is including
 validation of `struct` members and using the bare-bones text output format seen below:
