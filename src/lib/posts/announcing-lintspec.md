@@ -150,6 +150,10 @@ What was initially a weekend project turned into 5 days of relatively intense de
 the features I wanted in the tool. This didn't include much unit and intergration testing, and a few days of bug-hunting
 shortly followed.
 
+One of the important parts of the development was to create a parser for NatSpec comments, which was done with the help
+of [`winnow`](https://docs.rs/winnow/). Since the `lintspec` crate is both a binary and a library, the parser can and
+will be re-used for future projects!
+
 ## Features
 
 Below is a comparison table highlighting the features that were added in `lintspec`, which I felt were missing from
