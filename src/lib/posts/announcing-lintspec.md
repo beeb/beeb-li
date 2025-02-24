@@ -139,7 +139,7 @@ about how to traverse the syntax tree and the peculiarities of the library.
 After opening a couple of issues in the `natspec-smells` repository, a sudden and unexpected _RiiR_™ (Rewrite it in
 Rust) urge came onto me. This was the perfect small-ish-scope project I was looking for to entertain my week-end!
 
-This is how `lintspec` came to be. Besides the unoriginality of the name, I thought I had a very good shot of making a
+This is how `lintspec` came to be. Besides the unoriginality of the name, I thought I had a very good shot at making a
 tool that could be both much faster than the single-threaded, NodeJS-based `natspec-smells`, and also more ergonomic to
 use.
 
@@ -147,7 +147,7 @@ Speed was an important factor because I wanted people to be able to use `lintspe
 command running for more than a few hundreds of milliseconds really affects the developer experience.
 
 What was initially a weekend project turned into 5 days of relatively intense development, until I felt I had most of
-the features I wanted in the tool. This didn't include much unit and intergration tests, and a few days of bug-hunting
+the features I wanted in the tool. This didn't include much unit and intergration testing, and a few days of bug-hunting
 shortly followed.
 
 ## Features
