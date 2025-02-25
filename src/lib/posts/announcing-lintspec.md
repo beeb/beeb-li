@@ -1,5 +1,5 @@
 ---
-title: Announcing lintspec, a NatSpec Linter
+title: Announcing lintspec
 date: 2025-02-23T14:00:00Z
 # updated:
 categories:
