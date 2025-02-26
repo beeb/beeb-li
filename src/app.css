@@ -111,3 +111,8 @@ html:has(input.theme-controller[value='light']:not(:checked)) .shiki span {
   font-weight: var(--shiki-dark-font-weight) !important;
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
+
+.prose pre[data-language]::before {
+  content: attr(data-language);
+  @apply absolute right-2 bottom-2 text-sm border rounded-md p-1 opacity-60;
+}

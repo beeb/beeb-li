@@ -58,7 +58,17 @@ const config = {
 			highlight: {
 				highlighter: async (code, lang = 'text') => {
 					const html = escapeSvelte(
-						highlighter.codeToHtml(code, { lang, themes: { light: 'catppuccin-latte', dark: 'catppuccin-mocha' } }),
+						highlighter.codeToHtml(code, {
+							lang,
+							themes: { light: 'catppuccin-latte', dark: 'catppuccin-mocha' },
+							transformers: [
+								{
+									pre(node) {
+										node.properties.dataLanguage = lang
+									},
+								},
+							],
+						}),
 					)
 					return `{@html \`${html}\` }`
 				},
