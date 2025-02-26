@@ -12,7 +12,7 @@ const prodUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL || 'beeb.li'
 
 const highlighter = await createHighlighter({
 	themes: ['catppuccin-latte', 'catppuccin-mocha'],
-	langs: ['dockerfile', 'html', 'javascript', 'json', 'rust', 'solidity', 'svelte', 'toml', 'typescript'],
+	langs: ['dockerfile', 'html', 'javascript', 'json', 'rust', 'solidity', 'svelte', 'toml', 'typescript', 'yaml'],
 })
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -58,7 +58,17 @@ const config = {
 			highlight: {
 				highlighter: async (code, lang = 'text') => {
 					const html = escapeSvelte(
-						highlighter.codeToHtml(code, { lang, themes: { light: 'catppuccin-latte', dark: 'catppuccin-mocha' } }),
+						highlighter.codeToHtml(code, {
+							lang,
+							themes: { light: 'catppuccin-latte', dark: 'catppuccin-mocha' },
+							transformers: [
+								{
+									pre(node) {
+										node.properties.dataLanguage = lang
+									},
+								},
+							],
+						}),
 					)
 					return `{@html \`${html}\` }`
 				},
