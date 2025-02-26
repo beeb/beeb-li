@@ -1,6 +1,6 @@
 ---
 title: Announcing lintspec
-date: 2025-02-23T14:00:00Z
+date: 2025-02-26T21:00:00Z
 # updated:
 categories:
   - rust
