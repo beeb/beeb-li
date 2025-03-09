@@ -126,8 +126,8 @@ elements will wrap according to our preference of 7 columns.
 
 Since we want to generate those elements dynamically using JavaScript, it's easier if we apply the same classes to each
 day element (to avoid conditionals), so we prepend our class with
-[`first:`](https://tailwindcss.com/docs/hover-focus-and-other-states#first), which will only apply to the element if
-it's the first child of its parent.
+[`first:`](https://tailwindcss.com/docs/hover-focus-and-other-states#first-last-odd-and-even), which will only apply to
+the element if it's the first child of its parent.
 
 ## Generating the Localized Data
 

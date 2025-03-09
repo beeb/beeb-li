@@ -1,8 +1,9 @@
-import type { UserConfig } from 'vite'
-import { sveltekit } from '@sveltejs/kit/vite'
 import { enhancedImages } from '@sveltejs/enhanced-img'
-import arraybuffer from 'vite-plugin-arraybuffer'
+import { sveltekit } from '@sveltejs/kit/vite'
+import tailwindcss from '@tailwindcss/vite'
 import Icons from 'unplugin-icons/vite'
+import type { UserConfig } from 'vite'
+import arraybuffer from 'vite-plugin-arraybuffer'
 
 const config: UserConfig = {
 	plugins: [
@@ -12,6 +13,7 @@ const config: UserConfig = {
 		Icons({
 			compiler: 'svelte',
 		}),
+		tailwindcss(),
 	],
 	server: {
 		fs: {

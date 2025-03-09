@@ -24,7 +24,7 @@
       <div tabindex="0" role="button" class="btn btn-ghost text-lg">
         <Hamburger />
       </div>
-      <Nav tabindex="0" class="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52" />
+      <Nav tabindex="0" class="menu menu-lg dropdown-content mt-3 z-1 p-2 shadow-sm bg-base-200 rounded-box w-52" />
     </div>
     <a href="/" class="text-2xl sm:text-3xl text-primary font-extrabold inline-flex gap-2 items-center">
       <Logo class="w-8 sm:w-10 shrink-0" />

@@ -19,7 +19,7 @@
         target: wrapper,
         props: {
           content: node.textContent ?? '',
-          class: 'absolute top-2 right-2 btn-outline btn-square' // requires <pre> to have position: relative;
+          class: 'absolute top-2 right-2 btn-outline btn-square text-base-content!' // requires <pre> to have position: relative;
         }
       })
     }
@@ -73,7 +73,7 @@
     <h1 class="text-balance">{data.meta.title}</h1>
   </div>
 
-  <aside class="flow-root rounded-lg bg-base-200 border border-base-300 py-3 shadow mb-8 max-w-lg">
+  <aside class="flow-root rounded-box bg-base-200 border border-base-300 py-3 shadow-sm mb-8 max-w-lg">
     <dl class="-my-3 divide-y divide-base-300 text-sm">
       <div class="grid grid-cols-1 gap-1 p-2 sm:grid-cols-3 sm:gap-4">
         <dt class="font-medium">Published</dt>

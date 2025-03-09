@@ -52,7 +52,7 @@
   }
 </script>
 
-<div class="w-full max-w-lg mx-auto overflow-x-scroll rounded-box border border-neutral p-4">
+<div class="w-full max-w-lg mx-auto overflow-x-scroll card bg-base-200 shadow-sm p-4">
   <div class="min-w-80 flex flex-col gap-4">
     <div class="flex flex-nowrap items-center text-center sm:text-xl">
       <div>

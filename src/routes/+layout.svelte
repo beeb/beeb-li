@@ -14,7 +14,7 @@
   <meta name="author" content="Valentin Bersier" />
 </svelte:head>
 
-<div class="max-w-screen-lg mx-auto px-6">
+<div class="max-w-(--breakpoint-lg) mx-auto px-6">
   <Header />
   <main id="main" tabindex="-1">
     {@render children()}

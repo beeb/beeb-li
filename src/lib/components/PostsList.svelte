@@ -9,7 +9,7 @@
 <ul class="flex flex-col gap-6">
   {#each posts as post}
     <li>
-      <article class="card md:card-side bg-base-200 shadow">
+      <article class="card md:card-side bg-base-200 shadow-sm">
         {#if post.coverImage}
           <figure class="max-h-72 md:max-h-none">
             <a href="/blog/{post.slug}" class="flex justify-center items-center">

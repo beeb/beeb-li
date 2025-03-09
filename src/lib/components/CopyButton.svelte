@@ -32,9 +32,9 @@
 </script>
 
 <button
-  class={['btn-link btn-sm btn text-neutral-content', additionalClasses]}
-  class:!text-success={clipboardIcon === 'success'}
-  class:!text-error={clipboardIcon === 'error'}
+  class={['btn-link btn text-neutral-content', additionalClasses]}
+  class:text-success!={clipboardIcon === 'success'}
+  class:text-error!={clipboardIcon === 'error'}
   title="Copy to clipboard"
   aria-label="Copy to clipboard"
   onclick={() => copyToClipboard(content)}
