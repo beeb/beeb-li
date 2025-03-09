@@ -9,7 +9,7 @@
 <ul class="flex flex-col gap-6">
   {#each posts as post}
     <li>
-      <article class="card md:card-side bg-base-200 shadow-sm">
+      <article class="card md:card-side bg-base-300 shadow-sm">
         {#if post.coverImage}
           <figure class="max-h-72 md:max-h-none">
             <a href="/blog/{post.slug}" class="flex justify-center items-center">
@@ -38,7 +38,7 @@
           <div class="card-actions justify-between items-end flex-nowrap">
             <div class="flex gap-2 flex-wrap">
               {#each post.categories as category}
-                <a class="badge badge-neutral" href="/blog/category/{category}/page/1">
+                <a class="badge" href="/blog/category/{category}/page/1">
                   {category}
                 </a>
               {/each}
