@@ -112,11 +112,3 @@
     <data.PostContent />
   </div>
 </article>
-
-<style>
-  @reference "tailwindcss";
-  @plugin "daisyui";
-  :is(dl > :not(:last-child).separation)::after {
-    @apply content-[''] border-b border-base-content/30 bottom-0 absolute inset-3;
-  }
-</style>

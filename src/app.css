@@ -144,3 +144,8 @@ html:has(input.theme-controller[value='light']:not(:checked)) .shiki span {
   content: attr(data-language);
   @apply absolute right-2 bottom-2 text-sm border rounded-sm p-1 opacity-60;
 }
+
+/* various */
+:is(dl > :not(:last-child).separation)::after {
+  @apply content-[''] border-b border-base-content/30 bottom-0 absolute inset-3;
+}
