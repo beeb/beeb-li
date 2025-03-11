@@ -126,8 +126,8 @@ elements will wrap according to our preference of 7 columns.
 
 Since we want to generate those elements dynamically using JavaScript, it's easier if we apply the same classes to each
 day element (to avoid conditionals), so we prepend our class with
-[`first:`](https://tailwindcss.com/docs/hover-focus-and-other-states#first), which will only apply to the element if
-it's the first child of its parent.
+[`first:`](https://tailwindcss.com/docs/hover-focus-and-other-states#first-last-odd-and-even), which will only apply to
+the element if it's the first child of its parent.
 
 ## Generating the Localized Data
 
@@ -149,7 +149,7 @@ relying on the
 [`Date.toLocaleString()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString)
 method:
 
-```js
+```javascript
 const monthTitle = $derived(
   new Date(year, month, 1).toLocaleString(locale, {
     month: 'long', year: 'numeric'
@@ -175,7 +175,7 @@ some browsers don't have it at all), so we use the following polyfill to level t
 According to the API docs, this method returns an object with a `firstDay` key as an integer, where `1` is Monday and
 `7` is Sunday:
 
-```js
+```javascript
 const firstDayOfWeek = $derived(
   new Intl.Locale(locale).getWeekInfo().firstDay
 )
@@ -190,7 +190,7 @@ first constructing a
 object and re-using it to format multiple dates. This speeds up execution as the heavy data for the locale is only
 loaded once instead of once per call.
 
-```js
+```javascript
 const dateTimeFormat = $derived(
   new Intl.DateTimeFormat(locale, { weekday: 'short' })
 )
@@ -220,7 +220,7 @@ If we now were to try `Date(2018, 12, 1)`, we would get `Tue Jan 01 2019` (remem
 
 Armed with this knowledge, we can now find the last day in `month` (1-indexed):
 
-```js
+```javascript
 const lastDay = $derived(
   new Date(year, month + 1, 0).getDate()
 )
@@ -231,7 +231,7 @@ const lastDay = $derived(
 In the markup section above, we determined that we need to offset the first item in the table by a number of rows so
 that it ends up in the correct column. This involves a bit of simple math and can be achieved like so:
 
-```js
+```javascript
 const firstDayColumn = $derived(
   (
     (
@@ -265,7 +265,7 @@ until now.
 I want the component to expose a `prop` named `locale` which the consumer can use to define the locale string to use.
 The default value will be `en`:
 
-```js
+```javascript
 interface Props {
   locale?: string
 }
@@ -274,7 +274,7 @@ let { locale = 'en' }: Props = $props()
 
 Then, I need two state variables to store the year and month, and we will initialize them with the current date:
 
-```js
+```javascript
 let year = $state(new Date().getFullYear())
 let month = $state(new Date().getMonth())
 ```
@@ -285,7 +285,7 @@ demo.
 To generate the list of all day cells, we also need such a list that contains all numbers from 1 to the `lastDay` that
 we calculated previously. We create a helper `range` function:
 
-```js
+```javascript
 // Helper method to generate a range of integers from `start` to `end`, inclusive
 const range = (start: number, end: number) => {
   return Array.from({ length: end - start + 1 }, (_, i) => i + start)
@@ -295,7 +295,7 @@ const range = (start: number, end: number) => {
 We should also be able to increment and decrement the month and year counters. Knowing how the `Date()` object works, we
 know it's a simple as:
 
-```js
+```javascript
 <button class="btn" onclick={() => month--} aria-label="See previous month">
   &lt;
 </button>
@@ -309,7 +309,7 @@ The overflow to the next or previous year will be handled properly. We could als
 be less "hacky" and would be necessary if we relied on the `year` and `month` variables for anything else than the input
 to the `Date` constructor:
 
-```js
+```javascript
 const prevMonth = () => {
   month--
   if (month < 0) {
@@ -361,7 +361,7 @@ tree-shake them out of your CSS (depending on your config). In order to ensure t
 the `tailwind.config.js` file can be edited to include the
 [`safelist`](https://tailwindcss.com/docs/content-configuration#safelisting-classes) key:
 
-```js
+```javascript
 export default {
   safelist: [{ pattern: /^col-start-/, variants: ['first'] }]
 }

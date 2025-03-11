@@ -22,7 +22,7 @@
   <div class="my-8 flex flex-wrap items-center justify-center">
     <div class="join">
       <a
-        class="btn-outline join-item btn"
+        class="join-item btn"
         class:btn-disabled={currentPage === 1 || loading}
         href="{path}/1"
         aria-label="Go to first page"
@@ -30,7 +30,7 @@
         «
       </a>
       <a
-        class="btn-outline join-item btn"
+        class="join-item btn"
         class:btn-disabled={currentPage === 1 || loading}
         href="{path}/{Math.max(currentPage - 1, 1)}"
         aria-label="Go to previous page"
@@ -39,13 +39,17 @@
         ‹
       </a>
       {#if showFirstDots}
-        <btn class="btn-disabled btn-outline join-item btn">...</btn>
+        <btn class="join-item btn btn-disabled">...</btn>
       {/if}
       {#each range as page}
         <a
-          class="btn-outline join-item btn"
-          class:btn-disabled={loading}
-          class:btn-primary={page === currentPage}
+          class={[
+            'join-item btn',
+            {
+              'btn-primary': page === currentPage,
+              'btn-disabled': loading
+            }
+          ]}
           aria-current={page === currentPage}
           href="{path}/{page}"
         >
@@ -60,10 +64,10 @@
         </a>
       {/each}
       {#if showLastDots}
-        <btn class="btn-disabled btn-outline join-item btn">...</btn>
+        <btn class="join-item btn btn-disabled">...</btn>
       {/if}
       <a
-        class="btn-outline join-item btn"
+        class="join-item btn"
         class:btn-disabled={currentPage === totalPages || loading}
         href="{path}/{Math.min(currentPage + 1, totalPages)}"
         aria-label="Go to next page"
@@ -72,7 +76,7 @@
         ›
       </a>
       <a
-        class="btn-outline join-item btn"
+        class="join-item btn"
         class:btn-disabled={currentPage === totalPages || loading}
         href="{path}/{totalPages}"
         aria-label="Go to last page"

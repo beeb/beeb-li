@@ -14,13 +14,7 @@
       <img class="m-0" alt="Tailwind CSS chat bubble component" src="/beeb_cartoon.png" />
     </div>
   </div>
-  <div class="chat-bubble prose-invert">
+  <div class="chat-bubble rounded-box">
     {@render children()}
   </div>
 </div>
-
-<style>
-  .prose-invert :global(a) {
-    color: oklch(64.48% 0.156 284.08) !important;
-  }
-</style>
