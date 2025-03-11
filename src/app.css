@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 @plugin 'daisyui';
+
 @plugin 'daisyui/theme' {
   name: 'light';
   --color-primary: oklch(56.47% 0.15 165.54020059855623);
@@ -11,6 +12,7 @@
   --color-warning: oklch(56.33% 0.115 85.35);
   --color-error: oklch(58.29% 0.234 28.71);
 }
+
 @plugin 'daisyui/theme' {
   name: 'dark';
   default: true;
@@ -39,23 +41,23 @@
 
 /* table of contents */
 
-h2#contents + ul {
+h2#contents+ul {
   @apply card bg-base-300 shadow-sm max-w-lg px-3 py-2 list-none;
 }
 
-h2#contents + ul a {
+h2#contents+ul a {
   @apply text-base-content;
 }
 
-h2#contents + ul ul {
+h2#contents+ul ul {
   @apply list-none my-0;
 }
 
-h2#contents + ul li {
+h2#contents+ul li {
   @apply my-1;
 }
 
-h2#contents + ul ul > li:last-child {
+h2#contents+ul ul>li:last-child {
   @apply mb-0;
 }
 
@@ -124,9 +126,10 @@ abbr[title]:focus::after {
   src: url('/fonts/tasa-orbiter-vf.woff2') format('woff2-variations');
 }
 
-@theme inline {
-  --font-sans: 'TASA Orbiter', var(--default-font-family);
-  --font-mono: 'JetBrains Mono', var(--default-mono-font-family);
+
+@theme {
+  --font-sans: 'TASA Orbiter';
+  --font-mono: 'JetBrains Mono';
 }
 
 /* code highlighting */
