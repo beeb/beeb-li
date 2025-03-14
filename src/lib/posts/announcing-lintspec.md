@@ -1,7 +1,7 @@
 ---
 title: Announcing lintspec
 date: 2025-02-26T21:00:00Z
-# updated:
+updated: 2025-03-14T09:26:00Z
 categories:
   - rust
   - solidity
@@ -54,26 +54,37 @@ Head over to the [releases page](https://github.com/beeb/lintspec/releases)!
 ### Usage
 
 ```
-Usage: lintspec [OPTIONS] [PATH]...
+Usage: lintspec [OPTIONS] [PATH]... [COMMAND]
+
+Commands:
+  init  Create a `.lintspec.toml` config file with default values
+  help  Print this message or the help of the given subcommand(s)
 
 Arguments:
   [PATH]...  One or more paths to files and folders to analyze
 
 Options:
-  -e, --exclude <EXCLUDE>  Path to a file or folder to exclude (can be used more than once)
-  -o, --out <OUT>          Write output to a file instead of stderr
-      --inheritdoc         Enforce that all public and external items have `@inheritdoc`
-      --constructor        Enforce that constructors have NatSpec
-      --struct-params      Enforce that structs have `@param` for each member
-      --enum-params        Enforce that enums have `@param` for each variant
-  -f, --enforce <TYPE>     Enforce NatSpec on items even if they don't have params/returns/members (can be used more than once)
-                           [possible values: constructor, enum, error, event, function, modifier, struct, variable]
-      --enforce-all        Enforce NatSpec for all item types, even if they don't have params/returns/members
-      --json               Output diagnostics in JSON format
-      --compact            Compact output
-      --sort               Sort the results by file path
-  -h, --help               Print help (see more with '--help')
-  -V, --version            Print version
+  -e, --exclude <EXCLUDE>        Path to a file or folder to exclude (can be used more than once)
+  -o, --out <OUT>                Write output to a file instead of stderr
+      --inheritdoc               Enforce that all public and external items have `@inheritdoc`
+      --notice-or-dev            Do not distinguish between `@notice` and `@dev` when considering "required" validation rules
+      --notice-ignored <TYPE>    Ignore `@notice` for these items (can be used more than once)
+      --notice-required <TYPE>   Enforce `@notice` for these items (can be used more than once)
+      --notice-forbidden <TYPE>  Forbid `@notice` for these items (can be used more than once)
+      --dev-ignored <TYPE>       Ignore `@dev` for these items (can be used more than once)
+      --dev-required <TYPE>      Enforce `@dev` for these items (can be used more than once)
+      --dev-forbidden <TYPE>     Forbid `@dev` for these items (can be used more than once)
+      --param-ignored <TYPE>     Ignore `@param` for these items (can be used more than once)
+      --param-required <TYPE>    Enforce `@param` for these items (can be used more than once)
+      --param-forbidden <TYPE>   Forbid `@param` for these items (can be used more than once)
+      --return-ignored <TYPE>    Ignore `@return` for these items (can be used more than once)
+      --return-required <TYPE>   Enforce `@return` for these items (can be used more than once)
+      --return-forbidden <TYPE>  Forbid `@return` for these items (can be used more than once)
+      --json                     Output diagnostics in JSON format
+      --compact                  Compact output
+      --sort                     Sort the results by file path
+  -h, --help                     Print help (see more with '--help')
+  -V, --version                  Print version
 ```
 
 ## Introduction
@@ -174,7 +185,7 @@ Wonderland's implementation:
 | Configure via config file       | ✅          | ✅                |
 | Configure via env variables     | ✅          | ❌                |
 | Respects gitignore files        | ✅          | ❌                |
-| Enforce NatSpec on enums        | ✅          | ❌                |
+| Granular validation rules       | ✅          | ❌                |
 | Pretty output with code excerpt | ✅          | ❌                |
 | JSON output                     | ✅          | ❌                |
 | Output to file                  | ✅          | ❌                |
@@ -183,8 +194,9 @@ Wonderland's implementation:
 
 Most notably, the ability to respect the patterns in `.gitignore` files, and the ability to output structured JSON were
 at the top of my list. I also felt like the default output for the diagnostics (found problems) was a bit terse and
-could benefit from some added flair. Finally, having to install NodeJS and `npm` to run the tool always seemed a bit
-tedious, especially since `npm` is not required to manage Solidity dependencies (thanks,
+could benefit from some added flair. Since `v0.4.0`, the configuration is much more granular and allows to control the
+emitted diagnostics for each source item type. Finally, having to install NodeJS and `npm` to run the tool always
+seemed a bit tedious, especially since `npm` is not required to manage Solidity dependencies (thanks,
 [`soldeer`](https://github.com/mario-eth/soldeer)!).
 
 To produce pretty diagnostic messages, I used the amazing [`miette`](https://crates.io/crates/miette) crate which gives
@@ -241,16 +253,16 @@ capabilities of `lintspec`, the verdict is clear:
 
 ```
 Benchmark 1: npx @defi-wonderland/natspec-smells --include "src/**/*.sol"
-  Time (mean ± σ):     12.223 s ±  0.143 s    [User: 13.377 s, System: 0.547 s]
-  Range (min … max):   12.022 s … 12.463 s    10 runs
+  Time (mean ± σ):     13.034 s ±  0.138 s    [User: 13.349 s, System: 0.560 s]
+  Range (min … max):   12.810 s … 13.291 s    10 runs
 
-Benchmark 2: lintspec src --compact --struct-params
-  Time (mean ± σ):      57.9 ms ±   1.2 ms    [User: 254.6 ms, System: 75.3 ms]
-  Range (min … max):    54.9 ms …  60.2 ms    49 runs
+Benchmark 2: lintspec src --compact --param-required struct
+  Time (mean ± σ):      62.9 ms ±   2.4 ms    [User: 261.9 ms, System: 69.6 ms]
+  Range (min … max):    55.1 ms …  66.5 ms    47 runs
 
 Summary
-  lintspec src --compact --struct-params ran
-  210.98 ± 4.98 times faster than npx @defi-wonderland/natspec-smells --include "src/**/*.sol"
+  lintspec src --compact --param-required struct ran
+  207.34 ± 8.28 times faster than npx @defi-wonderland/natspec-smells --include "src/**/*.sol"
 ```
 
 ## Run It in CI
@@ -305,9 +317,12 @@ experience problems.
 
 Thanks for reading all the way to the end, and talk soon!
 
+## Updated 2025-03-14
+
+Updated usage section to `v0.4`, updated features comparison table, and benchmark results.
+
 *[HTML]: Hypertext Markup Language
 *[API]: Application Programming Interface
 *[CLI]: Command Line Interface
 *[CST]: Concrete Syntax Tree
 *[JSON]: JavaScript Object Notation
-
