@@ -44,5 +44,13 @@
 		"vite-plugin-arraybuffer": "^0.1.0",
 		"vite-plugin-data-url": "^1.0.0"
 	},
-	"type": "module"
+	"type": "module",
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"@biomejs/biome",
+			"esbuild",
+			"sharp",
+			"svelte-preprocess"
+		]
+	}
 }
