@@ -25,7 +25,7 @@
       for interaction)
     </li>
     <li>
-      <a href="https://github.com/beeb" rel="external">Github</a>
+      <a href="https://github.com/beeb" rel="external">GitHub</a>
     </li>
     <li>
       <a href="https://codeberg.org/beeb" rel="external">Codeberg</a>
