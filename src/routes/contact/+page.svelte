@@ -40,4 +40,12 @@
     Accounts I may have on other social networks are seldom checked, don't
     expect a reply.
   </p>
+
+  <p>
+    My GPG key ID is <a
+      href="https://keyserver.ubuntu.com/pks/lookup?search=0x4592122C5C6B53B1&fingerprint=on&op=index"
+      rel="external"><code>0x4592122C5C6B53B1</code></a
+    >
+    (pubkey also available on <a href="https://github.com/beeb.gpg">GitHub</a>).
+  </p>
 </div>
