@@ -12,8 +12,8 @@ importers:
         specifier: ^1.9.4
         version: 1.9.4
       '@formatjs/intl-locale':
-        specifier: ^4.2.10
-        version: 4.2.10
+        specifier: ^4.2.11
+        version: 4.2.11
       '@iconify-json/lucide':
         specifier: ^1.2.29
         version: 1.2.29
@@ -323,23 +323,23 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@formatjs/ecma402-abstract@2.3.3':
-    resolution: {integrity: sha512-pJT1OkhplSmvvr6i3CWTPvC/FGC06MbN5TNBfRO6Ox62AEz90eMq+dVvtX9Bl3jxCEkS0tATzDarRZuOLw7oFg==}
+  '@formatjs/ecma402-abstract@2.3.4':
+    resolution: {integrity: sha512-qrycXDeaORzIqNhBOx0btnhpD1c+/qFIHAN9znofuMJX6QBwtbrmlpWfD4oiUUD2vJUOIYFA/gYtg2KAMGG7sA==}
 
-  '@formatjs/fast-memoize@2.2.6':
-    resolution: {integrity: sha512-luIXeE2LJbQnnzotY1f2U2m7xuQNj2DA8Vq4ce1BY9ebRZaoPB1+8eZ6nXpLzsxuW5spQxr7LdCg+CApZwkqkw==}
+  '@formatjs/fast-memoize@2.2.7':
+    resolution: {integrity: sha512-Yabmi9nSvyOMrlSeGGWDiH7rf3a7sIwplbvo/dlz9WCIjzIQAfy1RMf4S0X3yG724n5Ghu2GmEl5NJIV6O9sZQ==}
 
-  '@formatjs/intl-enumerator@1.8.9':
-    resolution: {integrity: sha512-/3MV4NnURpOX5o7N275X418H8ahUd+qwV8kxtMyZx26pXLCZ729Ubw0LzgyPWOoYwQoRJoGfyIjB6yJ1QYz1HQ==}
+  '@formatjs/intl-enumerator@1.8.10':
+    resolution: {integrity: sha512-/iDm5v5809LN6GiEwT7gU/0lVuKbpyRh3l9USL205mi1kcunvY8eo4mooNr/3/cV4zWG9aUuPwrzukgSCaYlcg==}
 
-  '@formatjs/intl-getcanonicallocales@2.5.4':
-    resolution: {integrity: sha512-vSDOsAcc3U+Kl/0b3de8wCQkb3W30H8LUuslyz67wTAHOPSQhPimZyquhwxXpJR+K5yy9CkzTgk5YE5kFT+PFg==}
+  '@formatjs/intl-getcanonicallocales@2.5.5':
+    resolution: {integrity: sha512-sxosgiLSGhf3So3hf4nk223G+qxWEZytAWVmgwuK5k16698N6jMbndzLL0R51i54aTTIp+UyIC+VKjns2eil3w==}
 
-  '@formatjs/intl-locale@4.2.10':
-    resolution: {integrity: sha512-T+uLDxCzm4fm6/7u1Jy2oQxxfJAJeBVp+zJisYKv9pjNJrCWYe6mbVTWuyppYa9DkA6P1+MlLGjSA7AHCyKhtw==}
+  '@formatjs/intl-locale@4.2.11':
+    resolution: {integrity: sha512-8OtGsxPawRF8D6I9SPVhoS/tNSAD0KO/9BywbaP3YNHeoI3qxsK7IR0bN7BCjW6qHZZD7U3VnXVHHteVk12zMA==}
 
-  '@formatjs/intl-localematcher@0.6.0':
-    resolution: {integrity: sha512-4rB4g+3hESy1bHSBG3tDFaMY2CH67iT7yne1e+0CLTsGLDcmoEWWpJjjpWVaYgYfYuohIRuo0E+N536gd2ZHZA==}
+  '@formatjs/intl-localematcher@0.6.1':
+    resolution: {integrity: sha512-ePEgLgVCqi2BBFnTMWPfIghu6FkbZnnBVhO2sSxvLfrdFw7wCHAHiDoM2h4NRgjbaY7+B7HgOLZGkK187pZTZg==}
 
   '@iconify-json/lucide@1.2.29':
     resolution: {integrity: sha512-bMrbX2zNnm+i601Yd5i7EClpOS4dWCe3q2B9k+f3RUFLOknQP1oj3D9upEN7ATbCJ/AmkKnFW5ND17ppX/Be8Q==}
@@ -1725,34 +1725,34 @@ snapshots:
   '@esbuild/win32-x64@0.25.1':
     optional: true
 
-  '@formatjs/ecma402-abstract@2.3.3':
+  '@formatjs/ecma402-abstract@2.3.4':
     dependencies:
-      '@formatjs/fast-memoize': 2.2.6
-      '@formatjs/intl-localematcher': 0.6.0
+      '@formatjs/fast-memoize': 2.2.7
+      '@formatjs/intl-localematcher': 0.6.1
       decimal.js: 10.5.0
       tslib: 2.8.1
 
-  '@formatjs/fast-memoize@2.2.6':
+  '@formatjs/fast-memoize@2.2.7':
     dependencies:
       tslib: 2.8.1
 
-  '@formatjs/intl-enumerator@1.8.9':
+  '@formatjs/intl-enumerator@1.8.10':
     dependencies:
-      '@formatjs/ecma402-abstract': 2.3.3
+      '@formatjs/ecma402-abstract': 2.3.4
       tslib: 2.8.1
 
-  '@formatjs/intl-getcanonicallocales@2.5.4':
+  '@formatjs/intl-getcanonicallocales@2.5.5':
     dependencies:
       tslib: 2.8.1
 
-  '@formatjs/intl-locale@4.2.10':
+  '@formatjs/intl-locale@4.2.11':
     dependencies:
-      '@formatjs/ecma402-abstract': 2.3.3
-      '@formatjs/intl-enumerator': 1.8.9
-      '@formatjs/intl-getcanonicallocales': 2.5.4
+      '@formatjs/ecma402-abstract': 2.3.4
+      '@formatjs/intl-enumerator': 1.8.10
+      '@formatjs/intl-getcanonicallocales': 2.5.5
       tslib: 2.8.1
 
-  '@formatjs/intl-localematcher@0.6.0':
+  '@formatjs/intl-localematcher@0.6.1':
     dependencies:
       tslib: 2.8.1
 
