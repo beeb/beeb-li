@@ -30,7 +30,7 @@
 		"rehype-slug": "^6.0.0",
 		"remark-abbr": "^1.4.2",
 		"remark-toc": "^9.0.0",
-		"satori": "^0.12.1",
+		"satori": "^0.12.2",
 		"shiki": "^3.2.1",
 		"svelte": "^5.23.0",
 		"svelte-check": "^4.1.5",
