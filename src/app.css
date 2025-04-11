@@ -152,3 +152,7 @@ html:has(input.theme-controller[value='light']:not(:checked)) .shiki span {
 :is(dl > :not(:last-child).separation)::after {
   @apply content-[''] border-b border-base-content/30 bottom-0 absolute inset-3;
 }
+
+.chat-bubble figcaption {
+  @apply text-base-content/80;
+}
