@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { siteAuthor } from "$lib/config";
-  import Mastodon from "virtual:icons/mingcute/mastodon-fill";
-  import Github from "virtual:icons/mingcute/github-fill";
-  import Rss from "virtual:icons/mingcute/rss-fill";
-  import RssLine from "virtual:icons/mingcute/rss-line";
+import { siteAuthor } from '$lib/config'
+import Mastodon from 'virtual:icons/mingcute/mastodon-fill'
+import Github from 'virtual:icons/mingcute/github-fill'
+import Rss from 'virtual:icons/mingcute/rss-fill'
+import RssLine from 'virtual:icons/mingcute/rss-line'
 </script>
 
 <footer class="text-center mt-8 pb-8">

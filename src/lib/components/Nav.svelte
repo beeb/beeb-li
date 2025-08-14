@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { navItems } from '$lib/config'
-  import { page } from '$app/state'
+import { navItems } from '$lib/config'
+import { page } from '$app/state'
 
-  const { ...allProps } = $props()
+const { ...allProps } = $props()
 </script>
 
 <ul {...allProps}>

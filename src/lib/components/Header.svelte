@@ -1,16 +1,16 @@
 <script lang="ts">
-  import type { MouseEventHandler } from "svelte/elements";
-  import Nav from "$lib/components/Nav.svelte";
-  import ThemeSwitcher from "$lib/components/ThemeSwitcher.svelte";
-  import Logo from "$lib/components/Logo.svelte";
-  import { siteTitle } from "$lib/config";
-  import Hamburger from "virtual:icons/mingcute/menu-fill";
+import type { MouseEventHandler } from 'svelte/elements'
+import Nav from '$lib/components/Nav.svelte'
+import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte'
+import Logo from '$lib/components/Logo.svelte'
+import { siteTitle } from '$lib/config'
+import Hamburger from 'virtual:icons/mingcute/menu-fill'
 
-  const focusMain: MouseEventHandler<HTMLAnchorElement> = (e) => {
-    e.preventDefault();
-    const main = document.querySelector("main");
-    main?.focus();
-  };
+const focusMain: MouseEventHandler<HTMLAnchorElement> = (e) => {
+	e.preventDefault()
+	const main = document.querySelector('main')
+	main?.focus()
+}
 </script>
 
 <div class="text-center">
