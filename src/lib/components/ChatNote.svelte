@@ -19,7 +19,16 @@ const { children }: Props = $props()
       ></enhanced:img>
     </div>
   </div>
-  <div class="chat-bubble rounded-box">
+  <div class="chat-bubble chat-bubble-neutral rounded-box">
     {@render children()}
   </div>
 </div>
+
+<style>
+  :global(html[data-theme="light"] .chat-bubble-neutral a) {
+    color: oklch(0.8585 0.0792 182.75) !important;
+  }
+  :global(html[data-theme="light"] .chat-bubble-neutral a:visited) {
+    color: oklch(0.7871 0.1187 304.77) !important;
+  }
+</style>
