@@ -1,21 +1,21 @@
 <script lang="ts">
-  interface Props {
-    path?: string
-    loading?: boolean
-    total: number
-    currentPage: number
-    perPage: number
-    neighbors?: number
-  }
+interface Props {
+	path?: string
+	loading?: boolean
+	total: number
+	currentPage: number
+	perPage: number
+	neighbors?: number
+}
 
-  const { path = '/blog/page', loading = false, total, currentPage, perPage, neighbors = 3 }: Props = $props()
+const { path = '/blog/page', loading = false, total, currentPage, perPage, neighbors = 3 }: Props = $props()
 
-  const totalPages = $derived(Math.ceil(total / perPage))
-  let startNumber = $derived(Math.max(currentPage - neighbors, 1))
-  let endNumber = $derived(Math.min(currentPage + neighbors, totalPages))
-  let showFirstDots = $derived(startNumber > 1)
-  let showLastDots = $derived(endNumber < totalPages)
-  const range = $derived(Array.from({ length: endNumber - startNumber + 1 }, (_, i) => i + startNumber))
+const totalPages = $derived(Math.ceil(total / perPage))
+let startNumber = $derived(Math.max(currentPage - neighbors, 1))
+let endNumber = $derived(Math.min(currentPage + neighbors, totalPages))
+let showFirstDots = $derived(startNumber > 1)
+let showLastDots = $derived(endNumber < totalPages)
+const range = $derived(Array.from({ length: endNumber - startNumber + 1 }, (_, i) => i + startNumber))
 </script>
 
 {#if totalPages > 1 && currentPage <= totalPages && currentPage > 0}

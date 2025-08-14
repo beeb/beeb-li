@@ -1,15 +1,15 @@
 <script lang="ts">
-  import { building } from '$app/environment'
-  import CopyButton from '$lib/components/CopyButton.svelte'
+import { building } from '$app/environment'
+import CopyButton from '$lib/components/CopyButton.svelte'
 
-  interface Props {
-    entry: Entry | string
-  }
+interface Props {
+	entry: Entry | string
+}
 
-  const { entry }: Props = $props()
+const { entry }: Props = $props()
 
-  const entryText = $derived(typeof entry === 'string' ? entry : entry.text)
-  const copy = $derived(typeof entry === 'string' ? true : entry.copy)
+const entryText = $derived(typeof entry === 'string' ? entry : entry.text)
+const copy = $derived(typeof entry === 'string' ? true : entry.copy)
 </script>
 
 <div class="flex flex-nowrap items-center text-lg">

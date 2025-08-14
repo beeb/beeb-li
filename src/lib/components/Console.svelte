@@ -1,11 +1,11 @@
 <script lang="ts">
-  import ConsoleLine from '$lib/components/ConsoleLine.svelte'
+import ConsoleLine from '$lib/components/ConsoleLine.svelte'
 
-  interface Props {
-    entries: Entry[]
-  }
+interface Props {
+	entries: Entry[]
+}
 
-  const { entries }: Props = $props()
+const { entries }: Props = $props()
 </script>
 
 <div class="flex justify-center">

@@ -1,12 +1,12 @@
 <script lang="ts">
-  import type { Snippet } from "svelte";
-  import cartoon from "$lib/assets/beeb_cartoon.png?enhanced";
+import type { Snippet } from 'svelte'
+import cartoon from '$lib/assets/beeb_cartoon.png?enhanced'
 
-  interface Props {
-    children: Snippet;
-  }
+interface Props {
+	children: Snippet
+}
 
-  const { children }: Props = $props();
+const { children }: Props = $props()
 </script>
 
 <div class="chat chat-end">
