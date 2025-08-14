@@ -25,7 +25,7 @@ export const GET: RequestHandler = async ({ url, params }) => {
 			props: {
 				tw: 'flex flex-col justify-end items-start p-16 pb-28 w-full h-full text-7xl text-white',
 				style: {
-					backgroundColor: '#1d232a',
+					backgroundColor: '#0a0b10',
 				},
 				children: [
 					{
