@@ -27,4 +27,7 @@
   :global(html[data-theme='light'] .chat-bubble-neutral a:visited) {
     color: oklch(0.7871 0.1187 304.77) !important;
   }
+  :global(html[data-theme='light'] .chat-bubble-neutral strong) {
+    color: var(--color-neutral-content) !important;
+  }
 </style>
