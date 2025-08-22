@@ -1,9 +1,9 @@
 <script lang="ts">
   interface Props {
-    posts: PostData[];
+    posts: PostData[]
   }
 
-  const { posts = [] }: Props = $props();
+  const { posts = [] }: Props = $props()
 </script>
 
 <ul class="flex flex-col gap-6">
@@ -12,14 +12,11 @@
       <article class="card md:card-side bg-base-200 shadow-sm">
         {#if post.coverImage}
           <figure class="max-h-72 md:max-h-none">
-            <a
-              href="/blog/{post.slug}"
-              class="flex justify-center items-center"
-            >
+            <a href="/blog/{post.slug}" class="flex justify-center items-center">
               <!-- TODO: fix sizes taking aspect ratio into account (cover) -->
               <enhanced:img
                 src={post.enhancedImage}
-                alt={post.coverAlt ?? ""}
+                alt={post.coverAlt ?? ''}
                 class="object-cover w-full h-full"
                 sizes="
                   (min-width: 1024px) 415px,
@@ -46,9 +43,7 @@
                 </a>
               {/each}
             </div>
-            <a class="btn btn-primary btn-outline" href="/blog/{post.slug}"
-              >Read more</a
-            >
+            <a class="btn btn-primary btn-outline" href="/blog/{post.slug}">Read more</a>
           </div>
         </div>
       </article>

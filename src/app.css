@@ -1,9 +1,9 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 @plugin 'daisyui';
 
 @plugin 'daisyui/theme' {
-  name: "light";
+  name: 'light';
   --color-base-100: oklch(0.906 0.0117 264.51);
   --color-base-200: oklch(0.95 0.0087 264.52);
   --color-base-300: oklch(1 0 0);
@@ -18,7 +18,7 @@
 }
 
 @plugin 'daisyui/theme' {
-  name: "dark";
+  name: 'dark';
   default: true;
   --color-base-100: oklch(0.24 0.012 283.91);
   --color-base-200: oklch(0.18 0.012 283.91);
@@ -101,59 +101,54 @@ abbr[title]:focus::after {
 
 @font-face {
   font-display: swap;
-  font-family: "JetBrains Mono";
+  font-family: 'JetBrains Mono';
   font-style: normal;
   font-weight: 400;
-  src: url("/fonts/jetbrains-mono-v18-latin_latin-ext-regular.woff2")
-    format("woff2");
+  src: url('/fonts/jetbrains-mono-v18-latin_latin-ext-regular.woff2') format('woff2');
 }
 
 @font-face {
   font-display: swap;
-  font-family: "JetBrains Mono";
+  font-family: 'JetBrains Mono';
   font-style: italic;
   font-weight: 400;
-  src: url("/fonts/jetbrains-mono-v18-latin_latin-ext-italic.woff2")
-    format("woff2");
+  src: url('/fonts/jetbrains-mono-v18-latin_latin-ext-italic.woff2') format('woff2');
 }
 
 @font-face {
   font-display: swap;
-  font-family: "JetBrains Mono";
+  font-family: 'JetBrains Mono';
   font-style: normal;
   font-weight: 700;
-  src: url("/fonts/jetbrains-mono-v18-latin_latin-ext-700.woff2")
-    format("woff2");
+  src: url('/fonts/jetbrains-mono-v18-latin_latin-ext-700.woff2') format('woff2');
 }
 
 @font-face {
   font-display: swap;
-  font-family: "JetBrains Mono";
+  font-family: 'JetBrains Mono';
   font-style: italic;
   font-weight: 700;
-  src: url("/fonts/jetbrains-mono-v18-latin_latin-ext-700italic.woff2")
-    format("woff2");
+  src: url('/fonts/jetbrains-mono-v18-latin_latin-ext-700italic.woff2') format('woff2');
 }
 
 @font-face {
   font-display: swap;
-  font-family: "TASA Orbiter";
+  font-family: 'TASA Orbiter';
   font-weight: 100 900;
-  src: url("/fonts/tasa-orbiter-vf.woff2") format("woff2-variations");
+  src: url('/fonts/tasa-orbiter-vf.woff2') format('woff2-variations');
 }
 
 @theme {
   --font-sans:
-    "TASA Orbiter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    'TASA Orbiter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
   --font-mono:
-    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
 /* code highlighting */
-html:has(input.theme-controller[value="light"]:not(:checked)) .shiki,
-html:has(input.theme-controller[value="light"]:not(:checked)) .shiki span {
+html:has(input.theme-controller[value='light']:not(:checked)) .shiki,
+html:has(input.theme-controller[value='light']:not(:checked)) .shiki span {
   color: var(--shiki-dark) !important;
   background-color: var(--shiki-dark-bg) !important;
   /* Optional, if you also want font styles */

@@ -1,44 +1,26 @@
 <script lang="ts">
-  import { siteAuthor } from "$lib/config";
-  import Mastodon from "virtual:icons/mingcute/mastodon-fill";
-  import Github from "virtual:icons/mingcute/github-fill";
-  import Rss from "virtual:icons/mingcute/rss-fill";
-  import RssLine from "virtual:icons/mingcute/rss-line";
+  import { siteAuthor } from '$lib/config'
+  import Mastodon from 'virtual:icons/mingcute/mastodon-fill'
+  import Github from 'virtual:icons/mingcute/github-fill'
+  import Rss from 'virtual:icons/mingcute/rss-fill'
+  import RssLine from 'virtual:icons/mingcute/rss-line'
 </script>
 
 <footer class="text-center mt-8 pb-8">
   <p>
-    <a
-      class="btn text-lg btn-ghost"
-      href="https://hachyderm.io/@beeb"
-      rel="external"
-    >
+    <a class="btn text-lg btn-ghost" href="https://hachyderm.io/@beeb" rel="external">
       <Mastodon />
       Mastodon
     </a>
-    <a
-      class="btn text-lg btn-ghost"
-      href="https://github.com/beeb"
-      rel="external"
-    >
+    <a class="btn text-lg btn-ghost" href="https://github.com/beeb" rel="external">
       <Github />
       Github
     </a>
-    <a
-      class="btn text-lg btn-ghost"
-      href="/rss.xml"
-      rel="alternate"
-      data-sveltekit-reload
-    >
+    <a class="btn text-lg btn-ghost" href="/rss.xml" rel="alternate" data-sveltekit-reload>
       <Rss />
       RSS
     </a>
-    <a
-      class="btn text-lg btn-ghost"
-      href="/index.xml"
-      rel="alternate"
-      data-sveltekit-reload
-    >
+    <a class="btn text-lg btn-ghost" href="/index.xml" rel="alternate" data-sveltekit-reload>
       <RssLine />
       Atom
     </a>

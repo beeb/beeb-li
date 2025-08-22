@@ -1,9 +1,9 @@
 <script lang="ts">
-  import PostsList from "$lib/components/PostsList.svelte";
-  import Pagination from "$lib/components/Pagination.svelte";
-  import { siteTitle, siteDescription, postsPerPage } from "$lib/config";
+  import PostsList from '$lib/components/PostsList.svelte'
+  import Pagination from '$lib/components/Pagination.svelte'
+  import { siteTitle, siteDescription, postsPerPage } from '$lib/config'
 
-  const { data } = $props();
+  const { data } = $props()
 </script>
 
 <svelte:head>
