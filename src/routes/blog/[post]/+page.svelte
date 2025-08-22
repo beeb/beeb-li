@@ -81,45 +81,37 @@ $effect(() => {
     <h1 class="text-balance">{data.meta.title}</h1>
   </div>
 
-  <aside class="flow-root rounded-box bg-base-200 py-3 shadow-sm mb-8 max-w-lg">
-    <dl class="-my-3 divide-y divide-base-200 text-sm">
-      <div
-        class="relative grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4 separation"
-      >
+  <aside class="mb-8 flex flex-wrap gap-4 justify-between items-center text-sm">
+    <dl class="flex gap-6 flex-wrap">
+      <div class="flex gap-2">
         <dt class="font-medium">Published</dt>
         <dd class="sm:col-span-2 opacity-80">
           {new Date(data.meta.date).toISOString().slice(0, 10)}
         </dd>
       </div>
       {#if data.meta.updated}
-        <div
-          class="relative grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4 separation"
-        >
+        <div class="flex gap-2">
           <dt class="font-medium">Updated</dt>
           <dd class="sm:col-span-2 opacity-80">
             {new Date(data.meta.updated).toISOString().slice(0, 10)}
           </dd>
         </div>
       {/if}
-      {#if data.meta.categories}
-        <div
-          class="relative grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4 separation"
-        >
-          <dt class="font-medium">Posted in</dt>
-          <dd class="sm:col-span-2">
-            <ul class="flex gap-2 flex-wrap">
-              {#each data.meta.categories as category}
-                <li>
-                  <a class="badge" href="/blog/category/{category}/page/1">
-                    {category}
-                  </a>
-                </li>
-              {/each}
-            </ul>
-          </dd>
-        </div>
-      {/if}
     </dl>
+    <figure class="flex gap-2 items-center">
+      {#if data.meta.categories}
+        <figcaption class="font-medium shrink-0">Posted in</figcaption>
+        <ul class="flex gap-2 flex-wrap">
+          {#each data.meta.categories as category}
+            <li>
+              <a class="badge" href="/blog/category/{category}/page/1">
+                {category}
+              </a>
+            </li>
+          {/each}
+        </ul>
+      {/if}
+    </figure>
   </aside>
 
   <div
