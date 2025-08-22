@@ -14,9 +14,9 @@ const { data, children } = $props()
   <meta name="author" content="Valentin Bersier" />
 </svelte:head>
 
-<div class="max-w-(--breakpoint-lg) mx-auto px-6">
+<div class="px-6">
   <Header />
-  <main id="main" tabindex="-1">
+  <main id="main" tabindex="-1" class="max-w-(--breakpoint-lg) mx-auto">
     {@render children()}
   </main>
   <Footer />
