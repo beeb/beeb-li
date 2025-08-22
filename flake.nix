@@ -17,6 +17,7 @@
         {
           default = pkgs.mkShell {
             packages = with pkgs; [
+              biome
               nodejs-slim
               pnpm
               typescript
