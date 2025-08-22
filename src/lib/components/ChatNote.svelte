@@ -33,4 +33,7 @@
   :global(html[data-theme='light'] .chat-bubble-neutral code) {
     color: var(--tw-prose-code) !important;
   }
+  :global(html[data-theme='light'] .chat-bubble-neutral figcaption) {
+    color: var(--color-neutral-content) !important;
+  }
 </style>
