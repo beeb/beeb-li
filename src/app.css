@@ -1,172 +1,172 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 @plugin 'daisyui';
 
 @plugin 'daisyui/theme' {
-	name: "light";
-	--color-base-100: oklch(0.906 0.0117 264.51);
-	--color-base-200: oklch(0.95 0.0087 264.52);
-	--color-base-300: oklch(1 0 0);
-	--color-neutral: oklch(0.2429 0.0304 283.91);
-	--color-primary: oklch(0.6023 0.0981 201.1);
-	--color-secondary: oklch(0.5547 0.2503 297.02);
-	--color-accent: oklch(0.6252 0.1967 20.27);
-	--color-info: oklch(0.5586 0.2255 262.09);
-	--color-success: oklch(0.625 0.1772 140.44);
-	--color-warning: oklch(0.714 0.1494 67.78);
-	--color-error: oklch(0.5505 0.2155 19.81);
+  name: 'light';
+  --color-base-100: oklch(0.906 0.0117 264.51);
+  --color-base-200: oklch(0.95 0.0087 264.52);
+  --color-base-300: oklch(1 0 0);
+  --color-neutral: oklch(0.2429 0.0304 283.91);
+  --color-primary: oklch(0.6023 0.0981 201.1);
+  --color-secondary: oklch(0.5547 0.2503 297.02);
+  --color-accent: oklch(0.6252 0.1967 20.27);
+  --color-info: oklch(0.5586 0.2255 262.09);
+  --color-success: oklch(0.625 0.1772 140.44);
+  --color-warning: oklch(0.714 0.1494 67.78);
+  --color-error: oklch(0.5505 0.2155 19.81);
 }
 
 @plugin 'daisyui/theme' {
-	name: "dark";
-	default: true;
-	--color-base-100: oklch(0.24 0.012 283.91);
-	--color-base-200: oklch(0.18 0.012 283.91);
-	--color-base-300: oklch(0.15 0.012 283.91);
-	--color-neutral: oklch(0.2429 0.0304 283.91);
-	--color-base-content: oklch(0.8787 0.0426 272.28);
-	--color-primary: oklch(88.64% 0.185 165.54);
-	--color-primary-content: oklch(14% 0.005 285.823);
-	--color-secondary: oklch(0.7 0.156 284.08);
-	--color-accent: oklch(65.43% 0.227 35.17);
-	--color-info: oklch(68.47% 0.148 237.32);
-	--color-success: oklch(76.81% 0.204 130.85);
-	--color-warning: oklch(79.52% 0.162 86.05);
-	--color-error: oklch(66.61% 0.175 23.1);
+  name: 'dark';
+  default: true;
+  --color-base-100: oklch(0.24 0.012 283.91);
+  --color-base-200: oklch(0.18 0.012 283.91);
+  --color-base-300: oklch(0.15 0.012 283.91);
+  --color-neutral: oklch(0.2429 0.0304 283.91);
+  --color-base-content: oklch(0.8787 0.0426 272.28);
+  --color-primary: oklch(88.64% 0.185 165.54);
+  --color-primary-content: oklch(14% 0.005 285.823);
+  --color-secondary: oklch(0.7 0.156 284.08);
+  --color-accent: oklch(65.43% 0.227 35.17);
+  --color-info: oklch(68.47% 0.148 237.32);
+  --color-success: oklch(76.81% 0.204 130.85);
+  --color-warning: oklch(79.52% 0.162 86.05);
+  --color-error: oklch(66.61% 0.175 23.1);
 }
 
 :root {
-	background-color: var(--color-base-300);
+  background-color: var(--color-base-300);
 }
 
 /* links in text */
 
 .prose :not(h1, h2, h3, h4, h5, h6) a,
 .prose-lg :not(h1, h2, h3, h4, h5, h6) a {
-	@apply link-primary;
+  @apply link-primary;
 }
 
 .prose :not(h1, h2, h3, h4, h5, h6) a:visited,
 .prose-lg :not(h1, h2, h3, h4, h5, h6) a:visited {
-	@apply link-secondary;
+  @apply link-secondary;
 }
 
 /* table of contents */
 
 h2#contents + ul {
-	@apply list-decimal;
+  @apply list-decimal;
 }
 
 h2#contents + ul a {
-	@apply text-base-content font-normal;
+  @apply text-base-content font-normal;
 }
 
 h2#contents + ul ul {
-	@apply list-none my-0;
+  @apply list-none my-0;
 }
 
 h2#contents + ul li {
-	@apply my-1;
+  @apply my-1;
 }
 
 h2#contents + ul ul > li:last-child {
-	@apply mb-0;
+  @apply mb-0;
 }
 
 /* re-style to override tailwind's styling */
 .mockup-code pre {
-	padding: 0;
-	margin: 0;
-	padding-right: 1.25rem;
+  padding: 0;
+  margin: 0;
+  padding-right: 1.25rem;
 }
 
 /* abbreviations */
 
 abbr[title] {
-	position: relative;
+  position: relative;
 }
 
 abbr[title]:hover::after,
 abbr[title]:focus::after {
-	content: attr(title);
-	position: absolute;
-	left: 0;
-	top: -2.5rem;
-	width: auto;
-	white-space: nowrap;
-	@apply bg-base-200 rounded-box shadow-xs py-1 px-2;
+  content: attr(title);
+  position: absolute;
+  left: 0;
+  top: -2.5rem;
+  width: auto;
+  white-space: nowrap;
+  @apply bg-base-200 rounded-box shadow-xs py-1 px-2;
 }
 
 /* fonts */
 
 @font-face {
-	font-display: swap;
-	font-family: "JetBrains Mono";
-	font-style: normal;
-	font-weight: 400;
-	src: url("/fonts/jetbrains-mono-v18-latin_latin-ext-regular.woff2") format("woff2");
+  font-display: swap;
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/jetbrains-mono-v18-latin_latin-ext-regular.woff2') format('woff2');
 }
 
 @font-face {
-	font-display: swap;
-	font-family: "JetBrains Mono";
-	font-style: italic;
-	font-weight: 400;
-	src: url("/fonts/jetbrains-mono-v18-latin_latin-ext-italic.woff2") format("woff2");
+  font-display: swap;
+  font-family: 'JetBrains Mono';
+  font-style: italic;
+  font-weight: 400;
+  src: url('/fonts/jetbrains-mono-v18-latin_latin-ext-italic.woff2') format('woff2');
 }
 
 @font-face {
-	font-display: swap;
-	font-family: "JetBrains Mono";
-	font-style: normal;
-	font-weight: 700;
-	src: url("/fonts/jetbrains-mono-v18-latin_latin-ext-700.woff2") format("woff2");
+  font-display: swap;
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/jetbrains-mono-v18-latin_latin-ext-700.woff2') format('woff2');
 }
 
 @font-face {
-	font-display: swap;
-	font-family: "JetBrains Mono";
-	font-style: italic;
-	font-weight: 700;
-	src: url("/fonts/jetbrains-mono-v18-latin_latin-ext-700italic.woff2") format("woff2");
+  font-display: swap;
+  font-family: 'JetBrains Mono';
+  font-style: italic;
+  font-weight: 700;
+  src: url('/fonts/jetbrains-mono-v18-latin_latin-ext-700italic.woff2') format('woff2');
 }
 
 @font-face {
-	font-display: swap;
-	font-family: "TASA Orbiter";
-	font-weight: 100 900;
-	src: url("/fonts/tasa-orbiter-vf.woff2") format("woff2-variations");
+  font-display: swap;
+  font-family: 'TASA Orbiter';
+  font-weight: 100 900;
+  src: url('/fonts/tasa-orbiter-vf.woff2') format('woff2-variations');
 }
 
 @theme {
-	--font-sans:
-		"TASA Orbiter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-		"Noto Color Emoji";
-	--font-mono:
-		"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-sans:
+    'TASA Orbiter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+  --font-mono:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
 /* code highlighting */
-html:has(input.theme-controller[value="light"]:not(:checked)) .shiki,
-html:has(input.theme-controller[value="light"]:not(:checked)) .shiki span {
-	color: var(--shiki-dark) !important;
-	background-color: var(--shiki-dark-bg) !important;
-	/* Optional, if you also want font styles */
-	font-style: var(--shiki-dark-font-style) !important;
-	font-weight: var(--shiki-dark-font-weight) !important;
-	text-decoration: var(--shiki-dark-text-decoration) !important;
+html:has(input.theme-controller[value='light']:not(:checked)) .shiki,
+html:has(input.theme-controller[value='light']:not(:checked)) .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  /* Optional, if you also want font styles */
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
 .prose pre[data-language]::before {
-	content: attr(data-language);
-	@apply absolute right-2 bottom-2 text-sm border rounded-sm p-1 opacity-60;
+  content: attr(data-language);
+  @apply absolute right-2 bottom-2 text-sm border rounded-sm p-1 opacity-60;
 }
 
 /* various */
 :is(dl > :not(:last-child).separation)::after {
-	@apply content-[''] border-b border-base-content/30 bottom-0 absolute inset-3;
+  @apply content-[''] border-b border-base-content/30 bottom-0 absolute inset-3;
 }
 
 .prose figcaption {
-	@apply text-base-content/80;
+  @apply text-base-content/80;
 }

@@ -1,10 +1,10 @@
 <script lang="ts">
-import '../app.css'
-import Header from '$lib/components/Header.svelte'
-import Footer from '$lib/components/Footer.svelte'
-import { siteDescription } from '$lib/config'
+  import '../app.css'
+  import Header from '$lib/components/Header.svelte'
+  import Footer from '$lib/components/Footer.svelte'
+  import { siteDescription } from '$lib/config'
 
-const { data, children } = $props()
+  const { data, children } = $props()
 </script>
 
 <svelte:head>

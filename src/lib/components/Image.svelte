@@ -1,22 +1,22 @@
 <script lang="ts">
-import type { Picture } from 'vite-imagetools'
+  import type { Picture } from 'vite-imagetools'
 
-interface Props {
-	src: Picture
-	caption?: string
-	alt: string
-	maxWidth?: number
-	link?: boolean
-	source?: string
-}
+  interface Props {
+    src: Picture
+    caption?: string
+    alt: string
+    maxWidth?: number
+    link?: boolean
+    source?: string
+  }
 
-const { src, caption, alt, maxWidth, link = true, source, ...restProps }: Props = $props()
+  const { src, caption, alt, maxWidth, link = true, source, ...restProps }: Props = $props()
 
-const sizes = $derived(
-	maxWidth
-		? `(min-width: ${maxWidth + 48}px) ${maxWidth}px, calc(100vw - 48px)`
-		: '(min-width: 1024px) 976px, calc(100vw - 48px)',
-)
+  const sizes = $derived(
+    maxWidth
+      ? `(min-width: ${maxWidth + 48}px) ${maxWidth}px, calc(100vw - 48px)`
+      : '(min-width: 1024px) 976px, calc(100vw - 48px)',
+  )
 </script>
 
 {#snippet image()}

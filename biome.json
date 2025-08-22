@@ -60,6 +60,9 @@
 						"noUnusedImports": "off"
 					}
 				}
+			},
+			"formatter": {
+				"enabled": false
 			}
 		}
 	]

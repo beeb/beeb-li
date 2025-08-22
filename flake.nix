@@ -20,6 +20,7 @@
               biome
               nodejs-slim
               pnpm
+              prettier
               typescript
             ];
             shellHook = ''

@@ -1,29 +1,29 @@
 <script lang="ts">
-import { mount } from 'svelte'
-import { siteTitle } from '$lib/config'
-import CopyButton from '$lib/components/CopyButton.svelte'
+  import { mount } from 'svelte'
+  import { siteTitle } from '$lib/config'
+  import CopyButton from '$lib/components/CopyButton.svelte'
 
-const { data } = $props()
+  const { data } = $props()
 
-let article: HTMLElement
+  let article: HTMLElement
 
-const ogDate = $derived((data.meta.updated ? new Date(data.meta.updated) : new Date(data.meta.date)).toISOString())
+  const ogDate = $derived((data.meta.updated ? new Date(data.meta.updated) : new Date(data.meta.date)).toISOString())
 
-$effect(() => {
-	for (const node of article.querySelectorAll('pre.shiki')) {
-		const wrapper = document.createElement('div')
-		wrapper.className = 'relative'
-		node.parentNode?.insertBefore(wrapper, node)
-		wrapper.appendChild(node)
-		mount(CopyButton, {
-			target: wrapper,
-			props: {
-				content: node.textContent ?? '',
-				class: 'absolute top-2 right-2 btn-outline btn-square text-base-content!', // requires <pre> to have position: relative;
-			},
-		})
-	}
-})
+  $effect(() => {
+    for (const node of article.querySelectorAll('pre.shiki')) {
+      const wrapper = document.createElement('div')
+      wrapper.className = 'relative'
+      node.parentNode?.insertBefore(wrapper, node)
+      wrapper.appendChild(node)
+      mount(CopyButton, {
+        target: wrapper,
+        props: {
+          content: node.textContent ?? '',
+          class: 'absolute top-2 right-2 btn-outline btn-square text-base-content!', // requires <pre> to have position: relative;
+        },
+      })
+    }
+  })
 </script>
 
 <svelte:head>
@@ -34,16 +34,10 @@ $effect(() => {
   <meta name="twitter:title" content={data.meta.title} />
   <meta property="og:description" content={data.meta.excerpt} />
   <meta name="twitter:description" content={data.meta.excerpt} />
-  <meta
-    property="og:image"
-    content={`${data.baseUrl}/blog/${data.meta.slug}/og.png?modified=${ogDate}`}
-  />
+  <meta property="og:image" content={`${data.baseUrl}/blog/${data.meta.slug}/og.png?modified=${ogDate}`} />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta
-    property="twitter:image"
-    content={`${data.baseUrl}/blog/${data.meta.slug}/og.png?modified=${ogDate}`}
-  />
+  <meta property="twitter:image" content={`${data.baseUrl}/blog/${data.meta.slug}/og.png?modified=${ogDate}`} />
   {#if data.meta.categories}
     {#each data.meta.categories as category}
       <meta name="article:tag" content={category} />
@@ -62,7 +56,7 @@ $effect(() => {
         <enhanced:img
           class="object-cover"
           src={data.meta.enhancedImage}
-          alt={data.meta.coverAlt ?? ""}
+          alt={data.meta.coverAlt ?? ''}
           sizes="
           (min-width: 1024px) 976px,
           calc(100vw - 48px)
@@ -114,9 +108,7 @@ $effect(() => {
     </figure>
   </aside>
 
-  <div
-    class="prose prose-lg max-w-none prose-p:text-justify prose-headings:text-balance"
-  >
+  <div class="prose prose-lg max-w-none prose-p:text-justify prose-headings:text-balance">
     <data.PostContent />
   </div>
 </article>
