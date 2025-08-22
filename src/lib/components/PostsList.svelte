@@ -1,9 +1,9 @@
 <script lang="ts">
-interface Props {
-	posts: PostData[]
-}
+  interface Props {
+    posts: PostData[];
+  }
 
-const { posts = [] }: Props = $props()
+  const { posts = [] }: Props = $props();
 </script>
 
 <ul class="flex flex-col gap-6">

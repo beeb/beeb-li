@@ -1,16 +1,16 @@
 <script lang="ts">
-interface Props {
-	handler: (newValue: string) => void
-}
+  interface Props {
+    handler: (newValue: string) => void;
+  }
 
-let { handler }: Props = $props()
+  let { handler }: Props = $props();
 
-const locales = ['en-US', 'en-GB', 'dv-MV', 'fr-CH', 'kab']
-let locale = $state(locales[0])
+  const locales = ["en-US", "en-GB", "dv-MV", "fr-CH", "kab"];
+  let locale = $state(locales[0]);
 
-$effect(() => {
-	handler(locale)
-})
+  $effect(() => {
+    handler(locale);
+  });
 </script>
 
 <div class="flex justify-center mb-4">

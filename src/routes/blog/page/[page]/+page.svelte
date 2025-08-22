@@ -1,12 +1,12 @@
 <script lang="ts">
-import PostsList from '$lib/components/PostsList.svelte'
-import Pagination from '$lib/components/Pagination.svelte'
-import { postsPerPage, siteTitle, siteDescription } from '$lib/config'
+  import PostsList from "$lib/components/PostsList.svelte";
+  import Pagination from "$lib/components/Pagination.svelte";
+  import { postsPerPage, siteTitle, siteDescription } from "$lib/config";
 
-const { data } = $props()
+  const { data } = $props();
 
-const lowerBound = $derived((data.page - 1) * postsPerPage + 1)
-const upperBound = $derived(Math.min(data.page * postsPerPage, data.total))
+  const lowerBound = $derived((data.page - 1) * postsPerPage + 1);
+  const upperBound = $derived(Math.min(data.page * postsPerPage, data.total));
 </script>
 
 <svelte:head>
@@ -29,9 +29,17 @@ const upperBound = $derived(Math.min(data.page * postsPerPage, data.total))
     </div>
     <a class="link text-lg" href="/blog/category">All blog categories</a>
   </div>
-  <Pagination currentPage={data.page} total={data.total} perPage={postsPerPage} />
+  <Pagination
+    currentPage={data.page}
+    total={data.total}
+    perPage={postsPerPage}
+  />
   <PostsList posts={data.posts} />
-  <Pagination currentPage={data.page} total={data.total} perPage={postsPerPage} />
+  <Pagination
+    currentPage={data.page}
+    total={data.total}
+    perPage={postsPerPage}
+  />
 {:else}
   <div class="flex flex-col items-center gap-2 text-xl">
     <p><strong>Oops!</strong> Sorry, no posts to show.</p>

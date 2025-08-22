@@ -1,29 +1,35 @@
 <script lang="ts">
-import { mount } from 'svelte'
-import { siteTitle } from '$lib/config'
-import CopyButton from '$lib/components/CopyButton.svelte'
+  import { mount } from "svelte";
+  import { siteTitle } from "$lib/config";
+  import CopyButton from "$lib/components/CopyButton.svelte";
 
-const { data } = $props()
+  const { data } = $props();
 
-let article: HTMLElement
+  let article: HTMLElement;
 
-const ogDate = $derived((data.meta.updated ? new Date(data.meta.updated) : new Date(data.meta.date)).toISOString())
+  const ogDate = $derived(
+    (data.meta.updated
+      ? new Date(data.meta.updated)
+      : new Date(data.meta.date)
+    ).toISOString(),
+  );
 
-$effect(() => {
-	for (const node of article.querySelectorAll('pre.shiki')) {
-		const wrapper = document.createElement('div')
-		wrapper.className = 'relative'
-		node.parentNode?.insertBefore(wrapper, node)
-		wrapper.appendChild(node)
-		mount(CopyButton, {
-			target: wrapper,
-			props: {
-				content: node.textContent ?? '',
-				class: 'absolute top-2 right-2 btn-outline btn-square text-base-content!', // requires <pre> to have position: relative;
-			},
-		})
-	}
-})
+  $effect(() => {
+    for (const node of article.querySelectorAll("pre.shiki")) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "relative";
+      node.parentNode?.insertBefore(wrapper, node);
+      wrapper.appendChild(node);
+      mount(CopyButton, {
+        target: wrapper,
+        props: {
+          content: node.textContent ?? "",
+          class:
+            "absolute top-2 right-2 btn-outline btn-square text-base-content!", // requires <pre> to have position: relative;
+        },
+      });
+    }
+  });
 </script>
 
 <svelte:head>
