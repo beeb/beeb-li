@@ -22,18 +22,18 @@
 
 <style>
   :global(html[data-theme='light'] .chat-bubble-neutral a) {
-    color: oklch(0.8585 0.0792 182.75) !important;
+    color: oklch(0.8585 0.0792 182.75);
   }
   :global(html[data-theme='light'] .chat-bubble-neutral a:visited) {
-    color: oklch(0.7871 0.1187 304.77) !important;
+    color: oklch(0.7871 0.1187 304.77);
   }
   :global(html[data-theme='light'] .chat-bubble-neutral strong) {
-    color: var(--color-neutral-content) !important;
+    color: var(--color-neutral-content);
   }
-  :global(html[data-theme='light'] .chat-bubble-neutral code) {
-    color: var(--tw-prose-code) !important;
+  :global(html[data-theme='light'] .chat-bubble-neutral a code) {
+    color: var(--color-primary);
   }
   :global(html[data-theme='light'] .chat-bubble-neutral figcaption) {
-    color: var(--color-neutral-content) !important;
+    color: var(--color-neutral-content);
   }
 </style>
