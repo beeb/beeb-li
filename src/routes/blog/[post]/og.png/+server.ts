@@ -52,7 +52,7 @@ export const GET: RequestHandler = async ({ url, params }) => {
 					{
 						type: 'div',
 						props: {
-							tw: 'absolute right-16 top-16 text-3xl rounded-lg bg-black/50 p-2 text-white',
+							tw: 'absolute right-16 top-16 text-3xl p-2 text-white',
 							children: url.host,
 						},
 					},
