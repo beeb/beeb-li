@@ -170,7 +170,7 @@ JavaScript provides an API to retrieve information about the week structure for 
 [`Intl.Locale.getWeekInfo()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getWeekInfo)
 method. Browser support is not exactly great for this API (some browsers expose it via a `weekInfo` property instead,
 some browsers don't have it at all), so we use the following polyfill to level the playing field:
-[`@formatjs/intl-locale`](https://www.npmjs.com/package/@formatjs/intl-locale).
+[`@formatjs/intl-locale`](https://github.com/formatjs/formatjs).
 
 According to the API docs, this method returns an object with a `firstDay` key as an integer, where `1` is Monday and
 `7` is Sunday:
