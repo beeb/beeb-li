@@ -1,4 +1,4 @@
-I'm **Valentin Bersier**, a software developer out of Switzerland.
+I'm **Valentin Bersier**, a software engineer out of Switzerland.
 
 Having studied Materials Science and Engineering at EPFL in Lausanne, I was however always passionate about software 
 and have been writing code since about 2005.
