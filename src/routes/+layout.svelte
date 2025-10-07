@@ -1,11 +1,22 @@
 <script lang="ts">
   import '../app.css'
   import { page } from '$app/state'
+  import { afterNavigate } from '$app/navigation'
   import Header from '$lib/components/Header.svelte'
   import Footer from '$lib/components/Footer.svelte'
   import { siteDescription } from '$lib/config'
 
   const { data, children } = $props()
+
+  afterNavigate(({ to }) => {
+    const url = to?.url
+    if (url) {
+      console.log(window.goatcounter)
+      window.goatcounter.count({
+        path: url.pathname + url.search + url.hash,
+      })
+    }
+  })
 </script>
 
 <svelte:head>
