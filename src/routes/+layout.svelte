@@ -1,15 +1,28 @@
 <script lang="ts">
   import '../app.css'
+  import { page } from '$app/state'
+  import { afterNavigate } from '$app/navigation'
   import Header from '$lib/components/Header.svelte'
   import Footer from '$lib/components/Footer.svelte'
   import { siteDescription } from '$lib/config'
 
   const { data, children } = $props()
+
+  afterNavigate(({ to }) => {
+    const url = to?.url
+    if (url) {
+      console.log(window.goatcounter)
+      window.goatcounter.count({
+        path: url.pathname + url.search + url.hash,
+      })
+    }
+  })
 </script>
 
 <svelte:head>
   <link rel="alternate" type="application/atom+xml" title="Sitewide Atom Feed" href={`${data.baseUrl}/index.xml`} />
   <link rel="alternate" type="application/rss+xml" title="RSS Feed" href={`${data.baseUrl}/rss.xml`} />
+  <link rel="canonical" href={`${page.url}`} />
   <meta data-key="description" name="description" content={siteDescription} />
   <meta name="author" content="Valentin Bersier" />
   <meta name="robots" content="noarchive" />

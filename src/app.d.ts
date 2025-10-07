@@ -10,7 +10,12 @@ declare global {
 	}
 	namespace Intl {
 		interface Locale {
-			getWeekInfo: () => { firstDay: number, weekend: number[], minimalDays: number }
+			getWeekInfo: () => { firstDay: number; weekend: number[]; minimalDays: number }
+		}
+	}
+	interface Window {
+		goatcounter: {
+			count: (vars: { path: string; title?: string; referrer?: string; event?: bool }) => {}
 		}
 	}
 }
