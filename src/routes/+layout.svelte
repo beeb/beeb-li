@@ -1,5 +1,6 @@
 <script lang="ts">
   import '../app.css'
+  import { page } from '$app/state'
   import Header from '$lib/components/Header.svelte'
   import Footer from '$lib/components/Footer.svelte'
   import { siteDescription } from '$lib/config'
@@ -10,6 +11,7 @@
 <svelte:head>
   <link rel="alternate" type="application/atom+xml" title="Sitewide Atom Feed" href={`${data.baseUrl}/index.xml`} />
   <link rel="alternate" type="application/rss+xml" title="RSS Feed" href={`${data.baseUrl}/rss.xml`} />
+  <link rel="canonical" href={`${page.url}`} />
   <meta data-key="description" name="description" content={siteDescription} />
   <meta name="author" content="Valentin Bersier" />
   <meta name="robots" content="noarchive" />
