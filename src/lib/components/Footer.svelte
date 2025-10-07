@@ -9,7 +9,7 @@
 
   const counterUrl = $derived.by(() => {
     let url = new URL('count', 'https://goat.beeb.li')
-    const path = building ? page.url.pathname : page.url.pathname + page.url.hash
+    const path = building ? page.url.pathname : page.url.pathname + page.url.search + page.url.hash
     url.searchParams.set('p', path)
     return url.toString()
   })
