@@ -1,18 +1,9 @@
 <script lang="ts">
-  import { page } from '$app/state'
-  import { building } from '$app/environment'
   import { siteAuthor } from '$lib/config'
   import Mastodon from 'virtual:icons/mingcute/mastodon-fill'
   import Github from 'virtual:icons/mingcute/github-fill'
   import Rss from 'virtual:icons/mingcute/rss-fill'
   import RssLine from 'virtual:icons/mingcute/rss-line'
-
-  const counterUrl = $derived.by(() => {
-    let url = new URL('count', 'https://goat.beeb.li')
-    const path = building ? page.url.pathname : page.url.pathname + page.url.search + page.url.hash
-    url.searchParams.set('p', path)
-    return url.toString()
-  })
 </script>
 
 <footer class="text-center mt-8 pb-8">
@@ -37,8 +28,5 @@
   <p>
     &copy; {new Date().getFullYear()}
     {siteAuthor}. No cookies are used by this website =)
-    <noscript>
-      <img alt="goat" src={counterUrl} />
-    </noscript>
   </p>
 </footer>

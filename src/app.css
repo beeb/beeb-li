@@ -62,23 +62,23 @@
 
 /* table of contents */
 
-h2#contents + ul {
+h2#contents+ul {
   @apply list-decimal;
 }
 
-h2#contents + ul a {
+h2#contents+ul a {
   @apply text-base-content font-normal;
 }
 
-h2#contents + ul ul {
+h2#contents+ul ul {
   @apply list-none my-0;
 }
 
-h2#contents + ul li {
+h2#contents+ul li {
   @apply my-1;
 }
 
-h2#contents + ul ul > li:last-child {
+h2#contents+ul ul>li:last-child {
   @apply mb-0;
 }
 
