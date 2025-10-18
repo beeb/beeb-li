@@ -1,6 +1,6 @@
 ---
 title: Optimizing Text Offset Calculations
-date: 2025-10-17T08:00:00Z
+date: 2025-10-18T19:46:00Z
 categories:
   - rust
   - simd
