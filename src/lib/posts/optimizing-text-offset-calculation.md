@@ -405,10 +405,9 @@ the files are mostly ASCII and the interesting indices are sparse, we could chec
 Since this is my first time actually using SIMD, I went for a pretty naive optimization, which only uses these
 instructions to find contiguous blocks of ASCII characters until a Unicode character or line break shows up. We still
 defer to the old algorithm to account for Unicode characters and newlines, because I couldn't be bothered (yet!) to
-handle multi-byte characters spanning across 16-byte chunks. I also know from looking at crates like
-[memchr](https://crates.io/crates/memchr) that apparently, SIMD is more efficient if the addresses loaded into the
-wide registers are aligned (i.e. they are multiples of 128 if loaded into a 128-bit register), but it would have made
-the algorithm significantly more complex.
+handle multi-byte characters spanning across 16-byte chunks. It seems there might be a slight performance advantage
+if the data loaded into the wide registers is aligned (i.e. the address is a multiple of 128?), but if we believe
+[this StackOverflow comment](https://stackoverflow.com/questions/52147378/choice-between-aligned-vs-unaligned-x86-simd-instructions#comment91244838_52147378), it's largely similar to unaligned loads nowadays.
 
 ### The SIMD Helper
 
