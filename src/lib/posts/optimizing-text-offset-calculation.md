@@ -204,10 +204,10 @@ I tested the algorithm on two different source files:
 - The first, a pretty long file with 1400 lines of code (marked "long" below), which yields 42 `Definition` items and **426 byte offsets** of interest in the file;
 - The second ("short"), a much shorter file with 190 lines of code, which contains only 13 `Definition` items and **126 byte offsets**.
 
-| Implementation | Fastest | Median | Mean | Slowest |
-| --- | --- | --- | --- | --- |
-| Baseline (long) | 102.1 µs | 103.2 µs | 105.6 µs | 149.8 µ |
-| Baseline (short) | 16.44 μs | 16.83 µs | 17.1 µs | 26.8 µs |
+| Implementation         | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] |
+| ---------------------- | ------------ | ----------- | --------- | ------------ |
+| Baseline (short)       | 21.42        | 21.69       | 22.27     | 35.39        |
+| Baseline (long)        | 138.2        | 140.3       | 146.4     | 255          |
 
 ## Optimized `advance`
 
@@ -260,14 +260,12 @@ impl TextIndex {
 }
 ```
 
-This simple change yields a decent speed-up versus the baseline already:
+This simple change yields a decent speedup versus the baseline already:
 
-
-| Implementation | Fastest | Median | Mean | Slowest | Speed-up (median) |
-| --- | --- | --- | --- | --- | --- |
-| Better Advance (long) | 83.85 µs | 85.16 µs | 86.81 µs | 112.7 µs | 21.2% |
-| Better Advance (short) | 14.12 µs | 14.45 µs | 14.69 µs | 21.81 µs | 16.5% |
-
+| Implementation         | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] | Speedup vs. baseline |
+| ---------------------- | ------------ | ----------- | --------- | ------------ | -------------------- |
+| Better advance (short) | 16.54        | 16.85       | 17.42     | 43.82        | 1.29x                |
+| Better advance (long)  | 100.6        | 102.1       | 104       | 126.9        | 1.37x                |
 
 <Image
   src={shadow}
@@ -381,10 +379,10 @@ fn populate(text_indices: &[TextIndex], definitions: &mut Vec<Definition>) {
 This little maneuver further improves the performance, albeit more for the small file. This is probably due to the
 overhead of sorting the larger offsets array.
 
-| Implementation | Fastest | Median | Mean | Slowest | Speed-up vs. previous (median) |
-| --- | --- | --- | --- | --- | --- |
-| Only Vec (long) | 78.4 µs | 78.48 µs | 79.69 µs | 109.5 µs | 8.5% |
-| Only Vec (short) | 10.09 µs | 10.12 µs | 10.4 µs | 24.87 µs | 42.8% |
+| Implementation         | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] | Speedup vs. previous | Speedup vs. baseline |
+| ---------------------- | ------------ | ----------- | --------- | ------------ | -------------------- | -------------------- |
+| Only Vec (short)       | 10.58        | 10.63       | 10.9      | 21.85        | 1.59x                | 2.04x                |
+| Only Vec (long)        | 82.65        | 83.08       | 86.94     | 152.9        | 1.23x                | 1.69x                |
 
 ## SIMDid You Say ASCII?
 
@@ -393,27 +391,26 @@ What's that I hear? Yes, you. You in the back. Sim-who? SIMD? Never heard of him
 </ChatNote>
 
 If you were looking at that hot loop in `gather_text_indices` and shouting "You can parallelize that!" then you'd be
-right. Comparing a bunch of bytes is something modern CPUs can parallelize via special "wide" registers of 128 bits or
-more. The process of operating on those registers is called SIMD (single instruction, multiple data) and allows to
+right. Comparing a bunch of bytes is something modern CPUs can parallelize via special "wide" registers of 128-512 bits.
+The process of operating on those registers is called SIMD (single instruction, multiple data) and allows to
 operate on subsets of those wide register bits (often called "lanes") in parallel via special architecture-dependent
 instructions.
 
 In our case, we know we can optimize the advance of the `utf-8`, `utf-16` fields of `TextIndex` if the characters are in
-the ASCII range (+1 for each character/byte). Wouldn't it be nice if we could check like 16 of those at a time? Since
+the ASCII range (+1 for each character/byte). Wouldn't it be nice if we could check like 32 of those at a time? Since
 the files are mostly ASCII and the interesting indices are sparse, we could check the whole file in no time.
 
 Since this is my first time actually using SIMD, I went for a pretty naive optimization, which only uses these
 instructions to find contiguous blocks of ASCII characters until a Unicode character or line break shows up. We still
 defer to the old algorithm to account for Unicode characters and newlines, because I couldn't be bothered (yet!) to
-handle multi-byte characters spanning across 16-byte chunks. It seems there might be a slight performance advantage
-if the data loaded into the wide registers is aligned (i.e. the address is a multiple of 128?), but if we believe
-[this StackOverflow comment](https://stackoverflow.com/questions/52147378/choice-between-aligned-vs-unaligned-x86-simd-instructions#comment91244838_52147378), it's largely similar to unaligned loads nowadays.
+handle multi-byte characters spanning across chunks.
 
-### The SIMD Helper
+### The Helper
 
 The first task is to create a small helper that will use the [`wide`](https://crates.io/crates/wide) crate for portable
-SIMD. Specifically, we'll use [`i8x16`](https://docs.rs/wide/latest/wide/struct.i8x16.html) because 128-bit registers
-are well supported on consumer CPUs, which I target with `lintspec`.
+SIMD. Specifically, we'll use [`i8x32`](https://docs.rs/wide/latest/wide/struct.i8x32.html) because 256-bit registers
+are pretty common on consumer CPUs (AVX2 instruction set), which I target with `lintspec`. What's more, if only SSE2 is
+supported, `wide` uses two `i8x16` internally.
 
 <ChatNote>
 Remember how each processor architecture have their own instructions? Well that crate abstracts that away and performs
@@ -422,10 +419,10 @@ runtime checks to see which of those are available on the machine running the co
 
 This function simply takes a slice of `i8` (many SIMD instructions somehow operate on signed integers, probably because
 they are more versatile than their unsigned counterparts would be?) and returns a bit mask (a number where each bit
-represents a boolean state, either on or off) indicating which of the first 16 items in the slice match a newline or
+represents a boolean state, either on or off) indicating which of the first 32 items in the slice match a newline or
 Unicode character.
 
-The first thing to do is to load 16 bytes into one of those special registers. Because our bytes are `u8`, but the type
+The first thing to do is to load 32 bytes into one of those special registers. Because our bytes are `u8`, but the type
 expects `i8`, we had to cast those into signed integers, which maps values greater than 127 (non-ASCII) into the
 negative range.
 How convenient, to check if the bytes are non-ASCII, we simply need to check if the corresponding `i8` value is
@@ -433,39 +430,43 @@ negative!
 
 We thus put all zeroes into another one of those registers and perform a `simd_lt` operation, which will compare each
 byte of the first operand with the bytes in the second, and set the corresponding byte in the result to `0xFF` if lower,
-or `0x00` if equal or higher. At this point, our result is still a `i8x16`, but we can convert that to a bit mask with
+or `0x00` if equal or higher. At this point, our result is still a `i8x32`, but we can convert that to a bit mask with
 yet another special SIMD instruction. In `wide`, it's as easy as invoking `to_bitmask`. This will map each of the bytes
-in the result to a _bit_ in a regular 32-bit number. In fact, we'll only need the 16 lower bits, so we can ignore half
-of them.
+in the result to a _bit_ in a regular 32-bit integer.
 
 We then do the same to check if some of the input bytes are equal to `\n` or `\r`, and merge all 3 masks with a simple
 bit-wise `OR`. The `splat` operation fills a wide register with multiple copies of the same byte, and `simd_eq` puts
 `0xFF` in the result if the bytes match.
 
 With this function, it's now trivial to know how many bytes at the start of the slice are contiguous ASCII characters,
-we simply call `mask.trailing_zeros()` (the lower bit in the mask corresponds to the first byte in the slice).
+we simply call `mask.trailing_zeros()` (the lowest bit in the mask corresponds to the first byte in the slice).
 
 ```rust
-/// Check the first 16 bytes of the input slice for non-ASCII characters and newline characters.
+const SIMD_LANES: usize = i8x32::LANES as usize;
+
+/// Check the first 32 bytes of the input slice for non-ASCII characters and newline characters.
 ///
 /// The function returns a mask with bits flipped to 1 for items which correspond to `\n` or `\r` or non-ASCII
 /// characters. The least significant bit in the mask corresponds to the first byte in the input.
 ///
 /// This function uses SIMD to accelerate the checks.
-fn find_non_ascii_and_newlines(chunk: &[i8]) -> u16 {
-    let bytes = i8x16::from_slice_unaligned(chunk);
+fn find_non_ascii_and_newlines(chunk: &[i8]) -> u32 {
+    let bytes = i8x32::new(
+        chunk[..SIMD_LANES]
+            .try_into()
+            .expect("slice to contain enough bytes"),
+    );
 
     // find non-ASCII
     // u8 values from 128 to 255 correspond to i8 values -128 to -1
-    let nonascii_mask = bytes.simd_lt(i8x16::ZERO).to_bitmask();
+    let nonascii_mask = bytes.simd_lt(i8x32::ZERO).to_bitmask();
     // find newlines
-    let lf_bytes = i8x16::splat(b'\n' as i8);
-    let cr_bytes = i8x16::splat(b'\r' as i8);
+    let lf_bytes = i8x32::splat(b'\n' as i8);
+    let cr_bytes = i8x32::splat(b'\r' as i8);
     let lf_mask = bytes.simd_eq(lf_bytes).to_bitmask();
     let cr_mask = bytes.simd_eq(cr_bytes).to_bitmask();
     // combine masks
-    let mask = nonascii_mask | lf_mask | cr_mask;
-    mask as u16
+    nonascii_mask | lf_mask | cr_mask
 }
 ```
 
@@ -475,12 +476,12 @@ Armed with our helper function, we now need to iterate on the source code and ga
 correspond to the offsets of interest.
 
 The process goes something like this:
-1. Check if there are 16 bytes remaining in the input;
+1. Check if there are 32 bytes remaining in the input;
 1. If so, count how many of those are ASCII with the helper;
 1. Also check if the next offset of interest is within this chunk;
 1. If the next offset comes before the next non-ASCII or newline, advance the current `TextIndex` and save a copy;
 1. Otherwise, advance the `TextIndex` to the next non-ASCII or newline;
-1. After processing this 16-byte chunk, if we stopped because of non-ASCII or newline character, we process those
+1. After processing this 32-byte chunk, if we stopped because of non-ASCII or newline character, we process those
    with the default routine (`char` iterator and `TextIndex::advance`), else we go for the next chunk;
 1. When we're done processing line endings and Unicode characters (if any), we go back to the SIMD routine.
 
@@ -502,8 +503,8 @@ fn gather_text_indices(source: &str, offsets: &[usize]) -> Vec<TextIndex> {
     // original slice.
     let bytes: &[i8] = unsafe { slice::from_raw_parts(bytes.as_ptr().cast::<i8>(), bytes.len()) };
     'outer: loop {
-        // check whether we can try to process a 16-bytes chunk with SIMD
-        while current.utf8 + 16 < bytes.len() {
+        // check whether we can try to process a 32-bytes chunk with SIMD
+        while current.utf8 + SIMD_LANES < bytes.len() {
             debug_assert!(next_offset >= &current.utf8);
             let newline_non_ascii_mask = find_non_ascii_and_newlines(&bytes[current.utf8..]);
             let bytes_until_nl_na = newline_non_ascii_mask.trailing_zeros() as usize;
@@ -511,7 +512,7 @@ fn gather_text_indices(source: &str, offsets: &[usize]) -> Vec<TextIndex> {
                 // we hit a newline or non-ASCII char, need to go into per-char processing routine
                 break;
             }
-            if next_offset < &(current.utf8 + 16) {
+            if next_offset < &(current.utf8 + SIMD_LANES) {
                 // a desired offset is present in this chunk
                 let bytes_until_target = (*next_offset).saturating_sub(current.utf8);
                 if bytes_until_nl_na < bytes_until_target {
@@ -532,7 +533,7 @@ fn gather_text_indices(source: &str, offsets: &[usize]) -> Vec<TextIndex> {
             // else, no offset of interest in this chunk
             // fast forward current to before any newline/non-ASCII
             current.advance_by_ascii(bytes_until_nl_na);
-            if bytes_until_nl_na < 16 {
+            if bytes_until_nl_na < SIMD_LANES {
                 // we hit a newline or non-ASCII char, need to go into per-char processing routine
                 break;
             }
@@ -585,30 +586,30 @@ fn gather_text_indices(source: &str, offsets: &[usize]) -> Vec<TextIndex> {
 
 The numbers are in, and they look great:
 
-| Implementation | Fastest | Median | Mean | Slowest | Speed-up vs. previous (median) |
-| --- | --- | --- | --- | --- | --- |
-| SIMD (long) | 16.8 µs | 16.86 µs | 17.33 µs | 28.96 µs | 366% |
-| SIMD (short) | 2.432 µs | 2.452 µs | 2.583 µs | 9.69 µs | 313% |
+| Implementation         | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] | Speedup vs. previous | Speedup vs. baseline |
+| ---------------------- | ------------ | ----------- | --------- | ------------ | -------------------- | -------------------- |
+| SIMD (short)           | 1.951        | 1.972       | 2.036     | 6.321        | 5.39x                | 11.00x               |
+| SIMD (long)            | 12.74        | 12.82       | 13.24     | 26.36        | 6.48x                | 10.94x               |
 
 ## Final Performance
 
 Here is the final comparison between the baseline and each of the optimization steps:
 
-| Long file | Median | Speed-up vs. baseline |
-| --- | --- | --- |
-| Baseline | 103.2 µs | 0% |
-| Better Advance | 85.16 µs | 21.2% |
-| Only Vec | 78.48 µs | 31.5% |
-| SIMD | 16.86 µs | 512% |
+| Short file             | Median [µs] | Speedup vs. baseline |
+| ---------------------- | ----------- | -------------------- |
+| Baseline (short)       | 21.69       | 1.00x                |
+| Better advance (short) | 16.85       | 1.29x                |
+| Only Vec (short)       | 10.63       | 2.04x                |
+| SIMD (short)           | 1.972       | 11.00x               |
 
-| Short file | Median | Speed-up vs. baseline |
-| --- | --- | --- |
-| Baseline | 16.83 µs | 0% |
-| Better Advance | 14.45 µs | 16.5% |
-| Only Vec | 10.12 µs | 66.3% |
-| SIMD | 2.452 µs | 586% |
+| Long file              | Median [µs] | Speedup vs. baseline |
+| ---------------------- | ----------- | -------------------- |
+| Baseline (long)        | 140.3       | 1.00x                |
+| Better advance (long)  | 102.1       | 1.37x                |
+| Only Vec (long)        | 83.08       | 1.69x                |
+| SIMD (long)            | 12.82       | 10.94x               |
 
-With all these steps, we managed to improve the speed of the algorithm by 6-7x! 😎
+With all these steps, we managed to improve the speed of the algorithm by 11x! 😎
 
 I hope you found this article interesting, it was certainly fun to write.
 Having never used SIMD before, this demystified the topic for me and I'm looking forward to putting this new skill to
