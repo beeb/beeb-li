@@ -13,6 +13,10 @@ excerpt: >
   final implementation leverages SIMD and fixes several inefficiencies in the original solution.
 ---
 
+<script lang="ts">
+  import ChatNote from '$lib/components/ChatNote.svelte'
+</script>
+
 ## Contents
 
 ## Introduction
@@ -274,7 +278,8 @@ means that our cache access pattern in `populate` is hardly random. As such, we 
 data structures completely and use a `Vec` instead.
 
 Sorting algorithms are _very_ good nowadays, so I anticipate that sorting the offsets `Vec` will be much faster than
-constructing the B-Tree. By trying out `sort` and `sort_unstable`, the unstable variant comes on top.
+constructing the B-Tree. By trying out `sort` and `sort_unstable`, the unstable variant comes on top, meaning the data
+is not pre-sorted enough that the stable algorithm prevails.
 
 Gathering the text indices is almost the same as with the B-tree, with the exception that we might encounter duplicates.
 This is easily fixed by consuming the iterator until it yields a different offset through `find`.
@@ -370,6 +375,193 @@ overhead of sorting the larger offsets array.
 | Only Vec (long) | 78.4 µs | 78.48 µs | 79.69 µs | 109.5 µs | 8.5% |
 | Only Vec (short) | 10.09 µs | 10.12 µs | 10.4 µs | 24.87 µs | 42.8% |
 
+## SIMDid You Say ASCII?
+
+<ChatNote>
+What's that I hear? Yes, you. You in the back. Sim-who? SIMD? Never heard of him.
+</ChatNote>
+
+If you were looking at that hot loop in `gather_text_indices` and shouting "You can parallelize that!" then you'd be
+right. Comparing a bunch of bytes is something modern CPUs can parallelize via special "wide" registers of 128 bits or
+more. The process of operating on those registers is called SIMD (single instruction, multiple data) and allows to
+operate on subsets of those wide register bits (often called "lanes") in parallel via special architecture-dependent
+instructions.
+
+In our case, we know we can optimize the advance of the `utf-8`, `utf-16` fields of `TextIndex` if the characters are in
+the ASCII range (+1 for each character/byte). Wouldn't it be nice if we could check like 16 of those at a time? Since
+the files are mostly ASCII and the interesting indices are sparse, we could check the whole file in no time.
+
+Since this is my first time actually using SIMD, I went for a pretty naive optimization, which only uses these
+instructions to find contiguous blocks of ASCII characters until a Unicode character or line break shows up. We still
+defer to the old algorithm to account for Unicode characters and newlines, because I couldn't be bothered (yet!) to
+handle multi-byte characters spanning across 16-byte chunks. I also know from looking at crates like
+[memchr](https://crates.io/crates/memchr) that apparently, SIMD is more efficient if the addresses loaded into the
+wide registers are aligned (i.e. they are multiples of 128 if loaded into a 128-bit register), but it would have made
+the algorithm significantly more complex.
+
+### The SIMD Helper
+
+The first task is to create a small helper that will use the [`wide`](https://crates.io/crates/wide) crate for portable
+SIMD. Specifically, we'll use [`i8x16`](https://docs.rs/wide/latest/wide/struct.i8x16.html) because 128-bit registers
+are well supported on consumer CPUs, which I target with `lintspec`.
+
+<ChatNote>
+Remember how each processor architecture have their own instructions? Well that crate abstracts that away and performs
+runtime checks to see which of those are available on the machine running the code.
+</ChatNote>
+
+This function simply takes a slice of `i8` (many SIMD instructions somehow operate on signed integers, probably because
+they are more versatile than their unsigned counterparts would be?) and returns a bit mask (a number where each bit
+represents a boolean state, either on or off) indicating which of the first 16 items in the slice match a newline or
+Unicode character.
+
+The first thing to do is to load 16 bytes into one of those special registers. Because our bytes are `u8`, but the type
+expects `i8`, we had to cast those into signed integers, which maps values greater than 127 (non-ASCII) into the
+negative range.
+How convenient, to check if the bytes are non-ASCII, we simply need to check if the corresponding `i8` value is
+negative!
+
+We thus put all zeroes into another one of those registers and perform a `simd_lt` operation, which will compare each
+byte of the first operand with the bytes in the second, and set the corresponding byte in the result to `0xFF` if lower,
+or `0x00` if equal or higher. At this point, our result is still a `i8x16`, but we can convert that to a bit mask with
+yet another special SIMD instruction. In `wide`, it's as easy as invoking `to_bitmask`. This will map each of the bytes
+in the result to a _bit_ in a regular 32-bit number. In fact, we'll only need the 16 lower bits, so we can ignore half
+of them.
+
+We then do the same to check if some of the input bytes are equal to `\n` or `\r`, and merge all 3 masks with a simple
+bit-wise `OR`. The `splat` operation fills a wide register with multiple copies of the same byte, and `simd_eq` puts
+`0xFF` in the result if the bytes match.
+
+With this function, it's now trivial to know how many bytes at the start of the slice are contiguous ASCII characters,
+we simply call `mask.trailing_zeros()` (the lower bit in the mask corresponds to the first byte in the slice).
+
+```rust
+/// Check the first 16 bytes of the input slice for non-ASCII characters and newline characters.
+///
+/// The function returns a mask with bits flipped to 1 for items which correspond to `\n` or `\r` or non-ASCII
+/// characters. The least significant bit in the mask corresponds to the first byte in the input.
+///
+/// This function uses SIMD to accelerate the checks.
+fn find_non_ascii_and_newlines(chunk: &[i8]) -> u16 {
+    let bytes = i8x16::from_slice_unaligned(chunk);
+
+    // find non-ASCII
+    // u8 values from 128 to 255 correspond to i8 values -128 to -1
+    let nonascii_mask = bytes.simd_lt(i8x16::ZERO).to_bitmask();
+    // find newlines
+    let lf_bytes = i8x16::splat(b'\n' as i8);
+    let cr_bytes = i8x16::splat(b'\r' as i8);
+    let lf_mask = bytes.simd_eq(lf_bytes).to_bitmask();
+    let cr_mask = bytes.simd_eq(cr_bytes).to_bitmask();
+    // combine masks
+    let mask = nonascii_mask | lf_mask | cr_mask;
+    mask as u16
+}
+```
+
+### The Iteration
+
+Armed with our helper function, we now need to iterate on the source code and gather a list of `TextIndex` that
+correspond to the offsets of interest.
+
+Are you ready for the Wall of Code™?
+
+```rust
+fn gather_text_indices(source: &str, offsets: &[usize]) -> Vec<TextIndex> {
+    assert!(!source.is_empty(), "source cannot be empty");
+    let mut text_indices = Vec::with_capacity(offsets.len()); // upper bound for the size
+    let mut current = TextIndex::ZERO;
+
+    let mut ofs_iter = offsets.iter();
+    let mut next_offset = ofs_iter
+        .next()
+        .expect("there should be one element at least");
+    let bytes = source.as_bytes();
+    // SAFETY: this is safe as we're re-interpreting a valid slice of u8 as i8.
+    // All slice invariants are already upheld by the original slice and we use the same pointer and length as the
+    // original slice.
+    let bytes: &[i8] = unsafe { slice::from_raw_parts(bytes.as_ptr().cast::<i8>(), bytes.len()) };
+    'outer: loop {
+        // check whether we can try to process a 16-bytes chunk with SIMD
+        while current.utf8 + 16 < bytes.len() {
+            debug_assert!(next_offset >= &current.utf8);
+            let newline_non_ascii_mask = find_non_ascii_and_newlines(&bytes[current.utf8..]);
+            let bytes_until_nl_na = newline_non_ascii_mask.trailing_zeros() as usize;
+            if bytes_until_nl_na == 0 {
+                // we hit a newline or non-ASCII char, need to go into per-char processing routine
+                break;
+            }
+            if next_offset < &(current.utf8 + 16) {
+                // a desired offset is present in this chunk
+                let bytes_until_target = (*next_offset).saturating_sub(current.utf8);
+                if bytes_until_nl_na < bytes_until_target {
+                    // we hit a newline or non-ASCII char, need to go into per-char processing routine
+                    current.advance_by_ascii(bytes_until_nl_na); // advance because there are ASCII bytes we can process
+                    break;
+                }
+                // else, we reached the target position and it's an ASCII char, store it
+                current.advance_by_ascii(bytes_until_target);
+                text_indices.push(current);
+                // get the next offset of interest, ignoring any duplicates
+                next_offset = match ofs_iter.find(|o| o != &next_offset) {
+                    Some(o) => o,
+                    None => break 'outer, // all interesting offsets have been found
+                };
+                continue;
+            }
+            // else, no offset of interest in this chunk
+            // fast forward current to before any newline/non-ASCII
+            current.advance_by_ascii(bytes_until_nl_na);
+            if bytes_until_nl_na < 16 {
+                // we hit a newline or non-ASCII char, need to go into per-char processing routine
+                break;
+            }
+        }
+        if &current.utf8 == next_offset {
+            // we reached a target position, store it
+            text_indices.push(current);
+            // skip duplicates and advance to next offset
+            next_offset = match ofs_iter.find(|o| o != &next_offset) {
+                Some(o) => o,
+                None => break 'outer, // all interesting offsets have been found
+            };
+        }
+        // normally, the next byte is either part of a Unicode char or line ending
+        // fall back to character-by-character processing
+        let remaining_source = &source[current.utf8..];
+        let mut char_iter = remaining_source.chars().peekable();
+        let mut found_na_nl = false;
+        while let Some(c) = char_iter.next() {
+            debug_assert!(
+                next_offset >= &current.utf8,
+                "next offset {next_offset} is smaller than current {}",
+                current.utf8
+            );
+            current.advance(c, char_iter.peek());
+            if !c.is_ascii() || c == '\n' {
+                found_na_nl = true;
+            }
+            if &current.utf8 == next_offset {
+                // we reached a target position, store it
+                text_indices.push(current);
+                // skip duplicates and advance to next offset
+                next_offset = match ofs_iter.find(|o| o != &next_offset) {
+                    Some(o) => o,
+                    None => break 'outer, // all interesting offsets have been found
+                };
+            }
+            if found_na_nl && char_iter.peek().is_some_and(char::is_ascii) {
+                // we're done processing the non-ASCII / newline characters, let's go back to SIMD-optimized processing
+                break;
+            }
+        }
+        if current.utf8 >= bytes.len() - 1 {
+            break; // done with the input
+        }
+    }
+    text_indices
+}
+```
 
 <!-- Raw results:
 Timer precision: 10 ns
@@ -394,3 +586,5 @@ complete_text_ranges                fastest       │ slowest       │ median  
 *[LSP]: Language Server Protocol
 *[UTF]: Unicode Transformation Format
 *[AST]: Abstract Syntax Tree
+*[ASCII]: American Standard Code for Information Interchange
+*[SIMD]: Single Instruction, Multiple Data
