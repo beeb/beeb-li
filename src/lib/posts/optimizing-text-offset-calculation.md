@@ -14,6 +14,8 @@ excerpt: >
 ---
 
 <script lang="ts">
+  import shadow from './optimizing-text-offset-calculation/shadow.jpg?enhanced&imgSizes=true'
+  import Image from '$lib/components/Image.svelte'
   import ChatNote from '$lib/components/ChatNote.svelte'
 </script>
 
@@ -264,6 +266,14 @@ This simple change yields a decent speed-up versus the baseline already:
 | --- | --- | --- | --- | --- | --- |
 | Better Advance (long) | 83.85 µs | 85.16 µs | 86.81 µs | 112.7 µs | 21.2% |
 | Better Advance (short) | 14.12 µs | 14.45 µs | 14.69 µs | 21.81 µs | 16.5% |
+
+
+<Image
+  src={shadow}
+  maxWidth={800}
+  alt="A picture of a sleeping orange and white cat with his face burried in his paws."
+  caption="This picture of Shadow, my recently adopted cat, serves solely to break up the continuity of the article."
+/>
 
 ## `Vec` is All You Need
 
@@ -598,7 +608,7 @@ Here is the final comparison between the baseline and each of the optimization s
 | Only Vec | 10.12 µs | 66.3% |
 | SIMD | 2.452 µs | 586% |
 
-With all these steps, we managed to improve the speed of the algorithm by 6-7x!
+With all these steps, we managed to improve the speed of the algorithm by 6-7x! 😎
 
 *[LSP]: Language Server Protocol
 *[UTF]: Unicode Transformation Format
