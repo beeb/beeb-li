@@ -464,6 +464,16 @@ fn find_non_ascii_and_newlines(chunk: &[i8]) -> u16 {
 Armed with our helper function, we now need to iterate on the source code and gather a list of `TextIndex` that
 correspond to the offsets of interest.
 
+The process goes something like this:
+1. Check if there are 16 bytes remaining in the input;
+1. If so, count how many of those are ASCII with the helper;
+1. Also check if the next offset of interest is within this chunk;
+1. If the next offset comes before the next non-ASCII or newline, advance the current `TextIndex` and save a copy;
+1. Otherwise, advance the `TextIndex` to the next non-ASCII or newline;
+1. After processing this 16-byte chunk, if we stopped because of non-ASCII or newline character, we process those
+   with the default routine (`char` iterator and `TextIndex::advance`), else we go for the next chunk;
+1. When we're done processing line endings and Unicode characters (if any), we go back to the SIMD routine.
+
 Are you ready for the Wall of Code™?
 
 ```rust
@@ -563,25 +573,32 @@ fn gather_text_indices(source: &str, offsets: &[usize]) -> Vec<TextIndex> {
 }
 ```
 
-<!-- Raw results:
-Timer precision: 10 ns
-complete_text_ranges                fastest       │ slowest       │ median        │ mean          │ samples │ iters
-├─ a_initial_implementation                       │               │               │               │         │
-│  ├─ ./benches/Test2.sol           16.44 µs      │ 26.8 µs       │ 16.83 µs      │ 17.1 µs       │ 100     │ 100
-│  ╰─ ./benches/Test.sol            102.1 µs      │ 149.8 µs      │ 103.2 µs      │ 105.6 µs      │ 100     │ 100
-├─ b_better_advance_implementation                │               │               │               │         │
-│  ├─ ./benches/Test2.sol           14.12 µs      │ 21.81 µs      │ 14.45 µs      │ 14.69 µs      │ 100     │ 100
-│  ╰─ ./benches/Test.sol            83.85 µs      │ 112.7 µs      │ 85.16 µs      │ 86.81 µs      │ 100     │ 100
-├─ c_only_vec_implementation                      │               │               │               │         │
-│  ├─ ./benches/Test2.sol           10.09 µs      │ 24.87 µs      │ 10.12 µs      │ 10.4 µs       │ 100     │ 100
-│  ╰─ ./benches/Test.sol            78.4 µs       │ 109.5 µs      │ 78.48 µs      │ 79.69 µs      │ 100     │ 100
-├─ d_precise_vec_implementation                   │               │               │               │         │
-│  ├─ ./benches/Test2.sol           14.62 µs      │ 23.97 µs      │ 14.65 µs      │ 14.8 µs       │ 100     │ 100
-│  ╰─ ./benches/Test.sol            114 µs        │ 139.2 µs      │ 114.1 µs      │ 115.8 µs      │ 100     │ 100
-╰─ e_final_implementation                         │               │               │               │         │
-   ├─ ./benches/Test2.sol           2.432 µs      │ 9.69 µs       │ 2.452 µs      │ 2.583 µs      │ 100     │ 100
-   ╰─ ./benches/Test.sol            16.8 µs       │ 28.96 µs      │ 16.86 µs      │ 17.33 µs      │ 100     │ 100
--->
+The numbers are in, and they look great:
+
+| Implementation | Fastest | Median | Mean | Slowest | Speed-up vs. previous (median) |
+| --- | --- | --- | --- | --- | --- |
+| SIMD (long) | 16.8 µs | 16.86 µs | 17.33 µs | 28.96 µs | 366% |
+| SIMD (short) | 2.432 µs | 2.452 µs | 2.583 µs | 9.69 µs | 313% |
+
+## Final Performance
+
+Here is the final comparison between the baseline and each of the optimization steps:
+
+| Long file | Median | Speed-up vs. baseline |
+| --- | --- | --- |
+| Baseline | 103.2 µs | 0% |
+| Better Advance | 85.16 µs | 21.2% |
+| Only Vec | 78.48 µs | 31.5% |
+| SIMD | 16.86 µs | 512% |
+
+| Short file | Median | Speed-up vs. baseline |
+| --- | --- | --- |
+| Baseline | 16.83 µs | 0% |
+| Better Advance | 14.45 µs | 16.5% |
+| Only Vec | 10.12 µs | 66.3% |
+| SIMD | 2.452 µs | 586% |
+
+With all these steps, we managed to improve the speed of the algorithm by 6-7x!
 
 *[LSP]: Language Server Protocol
 *[UTF]: Unicode Transformation Format
