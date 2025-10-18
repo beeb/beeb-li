@@ -281,7 +281,7 @@ non-negligible amount spent in `BTreeSet::insert` and `HashMap::insert`. This ma
 operations, requiring to either balance a B-Tree or calculate a hash of the key.
 
 When the parser visits the AST to gather `Definition` items, it encounters each source item in the same order as they
-appear in the source code. That is, the start of each span is greater than (or equal to) the span of the previous item.
+appear in the source code. That is, the start of each span is greater than the span of the previous item.
 This means that our `gather_offsets` function yields a mostly-sorted list of offsets with its natural iteration order.
 This also means that our cache access pattern in `populate` is hardly random. As such, we can probably ditch those
 advanced data structures completely and use a `Vec` instead.
