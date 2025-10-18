@@ -15,7 +15,7 @@
       <enhanced:img class="m-0" src={cartoon} alt="A cartoon portrait of the author"></enhanced:img>
     </div>
   </div>
-  <div class="chat-bubble chat-bubble-neutral rounded-box">
+  <div class="chat-bubble chat-bubble-neutral">
     {@render children()}
   </div>
 </div>

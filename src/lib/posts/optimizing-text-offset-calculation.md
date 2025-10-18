@@ -24,7 +24,7 @@ excerpt: >
 ## Introduction
 
 Over the past few months, I've been working on a [linter for the Solidity language](/blog/announcing-lintspec).
-Initially, the tool, written in Rust, used [slang](https://nomicfoundation.github.io/slang/) as its parser because that
+The tool, written in Rust, initially used [slang](https://nomicfoundation.github.io/slang/) as its parser because that
 was the best option at the time. Slang provides a very useful type to identify a position in the text (like the start
 or end of a source item's span):
 
@@ -615,7 +615,7 @@ I hope you found this article interesting, it was certainly fun to write.
 Having never used SIMD before, this demystified the topic for me and I'm looking forward to putting this new skill to
 good use in the near future.
 
-See you next time!
+Until next time!
 
 *[LSP]: Language Server Protocol
 *[UTF]: Unicode Transformation Format
