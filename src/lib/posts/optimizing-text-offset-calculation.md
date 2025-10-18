@@ -610,6 +610,12 @@ Here is the final comparison between the baseline and each of the optimization s
 
 With all these steps, we managed to improve the speed of the algorithm by 6-7x! 😎
 
+I hope you found this article interesting, it was certainly fun to write.
+Having never used SIMD before, this demystified the topic for me and I'm looking forward to putting this new skill to
+good use in the near future.
+
+See you next time!
+
 *[LSP]: Language Server Protocol
 *[UTF]: Unicode Transformation Format
 *[AST]: Abstract Syntax Tree
