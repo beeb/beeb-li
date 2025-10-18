@@ -201,8 +201,8 @@ fn populate(text_indices: &HashMap<usize, TextIndex>, definitions: &mut Vec<Defi
 These should not be considered absolute numbers but will serve to compare the impact of each improvement.
 
 I tested the algorithm on two different source files:
-- The first, a pretty long file with 1400 lines of code (marked "long" below), which yields 42 `Definition` items and **426 byte offsets** of interest in the file;
-- The second ("short"), a much shorter file with 190 lines of code, which contains only 13 `Definition` items and **126 byte offsets**.
+- The first, a pretty short file with 190 lines of code (marked "short" below), which yields 13 `Definition` items and **126 byte offsets** of interest in the file;
+- The second "long" file with 1400 lines of code, which contains 42 `Definition` items and **426 byte offsets**.
 
 | Implementation         | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] |
 | ---------------------- | ------------ | ----------- | --------- | ------------ |
