@@ -305,7 +305,7 @@ fn gather_offsets(definitions: &[Definition]) -> Vec<usize> {
     }
     // looking at the data, this capacity is a good guess
     // it should almost always be enough to store all the offsets without growing the array
-    let mut offsets = Vec::with_capacity(definitions.len() * 10); 
+    let mut offsets = Vec::with_capacity(definitions.len() * 16); 
     // ... rest of the function remains untouched ...
     offsets.sort_unstable();
     offsets
