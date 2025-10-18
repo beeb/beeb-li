@@ -72,7 +72,8 @@ Here are the steps:
 
 ### Gathering All Byte Offsets
 
-Since there might be duplicate offsets in the spans of all the source items, we'll ideally want to deduplicate them.
+Since there might be duplicate offsets in the spans of all the source items, we'll ideally want to deduplicate them and
+sort them to facilitate iteration alongside our source code content.
 The original implementation uses a [`BTreeSet`](https://doc.rust-lang.org/std/collections/struct.BTreeSet.html) which
 sorts the items and deduplicates them at the same time:
 
@@ -282,10 +283,10 @@ non-negligible amount spent in `BTreeSet::insert` and `HashMap::insert`. This ma
 operations, requiring to either balance a B-Tree or calculate a hash of the key.
 
 When the parser visits the AST to gather `Definition` items, it encounters each source item in the same order as they
-appear in the source code. That is, the start of each span is greater than the span of the previous item. This means
-that our `gather_offsets` function yields a mostly-sorted list of offsets with its natural iteration order. This also
-means that our cache access pattern in `populate` is hardly random. As such, we can probably ditch those complex
-data structures completely and use a `Vec` instead.
+appear in the source code. That is, the start of each span is greater than (or equal to) the span of the previous item.
+This means that our `gather_offsets` function yields a mostly-sorted list of offsets with its natural iteration order.
+This also means that our cache access pattern in `populate` is hardly random. As such, we can probably ditch those
+advanced data structures completely and use a `Vec` instead.
 
 Sorting algorithms are _very_ good nowadays, so I anticipate that sorting the offsets `Vec` will be much faster than
 constructing the B-Tree. By trying out `sort` and `sort_unstable`, the unstable variant comes on top, meaning the data
