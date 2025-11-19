@@ -1,7 +1,7 @@
 ---
 title: Localized Calendar Component with Svelte and TailwindCSS
 date: 2024-08-01T15:36:00Z
-# updated:
+updated: 2025-11-19T07:46:00Z
 categories:
   - svelte
   - tailwind
@@ -362,13 +362,12 @@ And the table is generated with:
 
 Since we dynamically generate the class name for the column offset, the Tailwind compiler doesn't pick them up and will
 tree-shake them out of your CSS (depending on your config). In order to ensure they stay present in the final bundle,
-the `tailwind.config.js` file can be edited to include the
-[`safelist`](https://tailwindcss.com/docs/content-configuration#safelisting-classes) key:
+the CSS file can be edited to
+[inline them](https://tailwindcss.com/docs/detecting-classes-in-source-files#safelisting-specific-utilities):
 
-```typescript
-export default {
-  safelist: [{ pattern: /^col-start-/, variants: ["first"] }],
-};
+```css
+@import "tailwindcss";
+@source inline("first:col-start-{1..7}");
 ```
 
 ## The Result
@@ -392,6 +391,10 @@ I hope you found this article useful and could learn a thing or two about using 
 your front-end applications.
 
 'Till next time!
+
+## Updated 2025-11-19
+
+Instructions have been changed to align with TailwindCSS v4 (regarding safelisting some classes).
 
 *[API]: Application Programming Interface
 
