@@ -90,8 +90,8 @@ Options:
 ## Introduction
 
 The Solidity language provides a [succinct specification](https://docs.soliditylang.org/en/latest/natspec-format.html)
-for documentation comments used to provide rich documentation for functions, arguments, return values, and more.
-These were apparently inspired by [Doxygen](https://www.doxygen.nl/) and look like so (example taken from the
+for documentation comments used to provide rich documentation for functions, arguments, return values, and more. These
+were apparently inspired by [Doxygen](https://en.wikipedia.org/wiki/Doxygen) and look like so (example taken from the
 official Solidity documentation linked above):
 
 ```solidity
@@ -122,7 +122,7 @@ contract Tree {
 ```
 
 Toolchains like [Foundry](https://github.com/foundry-rs/foundry/) (which, by the way, reached
-[`v1.0` recently](https://book.getfoundry.sh/guides/v1.0-migration) 🎉) can use those comments to automatically generate
+[`v1.0` recently](https://getfoundry.sh/misc/v1.0-migration/) 🎉) can use those comments to automatically generate
 Markdown and HTML files for documentating a project's API.
 
 **As such, it's pretty important to make sure that these comments stay in sync with the actual code, and even more
@@ -134,8 +134,8 @@ I'm not the first one to identify this need, and the good folks over at [Wonderl
 did so a while ago, and provide a CLI tool that can be used to validate those comments:
 [natspec-smells](https://github.com/defi-wonderland/natspec-smells).
 
-Having used this tool pretty much since its inception in January 2024, I was always a bit disappointed by its speed
-and the fact that it sometimes errors for seemingly unrelated reasons, like it
+Having used this tool pretty much since its inception in January 2024, I was always a bit disappointed by its speed and
+the fact that it sometimes errors for seemingly unrelated reasons, like it
 [not being able to understand](https://github.com/defi-wonderland/natspec-smells/issues/65) the path to a source file's
 dependencies. Another lacking feature, as of writing this, is the verification of `enum` NatSpec.
 
@@ -166,8 +166,8 @@ the features I wanted in the tool. This didn't include much unit and intergratio
 shortly followed.
 
 One of the important parts of the development was to create a parser for NatSpec comments, which was done with the help
-of [`winnow`](https://docs.rs/winnow/). Since the `lintspec` crate is both a binary and a library, the parser can and
-will be re-used for future projects!
+of [`winnow`](https://docs.rs/winnow/latest/winnow/). Since the `lintspec` crate is both a binary and a library, the
+parser can and will be re-used for future projects!
 
 ## Features
 
@@ -175,28 +175,28 @@ Below is a comparison table highlighting the features that were added in `lintsp
 Wonderland's implementation:
 
 | Feature                         | `lintspec` | `natspec-smells` |
-|---------------------------------|------------|------------------|
-| Identify missing NatSpec        | ✅          | ✅                |
-| Identify duplicate NatSpec      | ✅          | ✅                |
-| Include files/folders           | ✅          | ✅                |
-| Exclude files/folders           | ✅          | ✅                |
-| Enforce usage of `@inheritdoc`  | ✅          | ✅                |
-| Enforce NatSpec on constructors | ✅          | ✅                |
-| Configure via config file       | ✅          | ✅                |
-| Configure via env variables     | ✅          | ❌                |
-| Respects gitignore files        | ✅          | ❌                |
-| Granular validation rules       | ✅          | ❌                |
-| Pretty output with code excerpt | ✅          | ❌                |
-| JSON output                     | ✅          | ❌                |
-| Output to file                  | ✅          | ❌                |
-| Multithreaded                   | ✅          | ❌                |
-| No pre-requisites (node/npm)    | ✅          | ❌                |
+| ------------------------------- | ---------- | ---------------- |
+| Identify missing NatSpec        | ✅         | ✅               |
+| Identify duplicate NatSpec      | ✅         | ✅               |
+| Include files/folders           | ✅         | ✅               |
+| Exclude files/folders           | ✅         | ✅               |
+| Enforce usage of `@inheritdoc`  | ✅         | ✅               |
+| Enforce NatSpec on constructors | ✅         | ✅               |
+| Configure via config file       | ✅         | ✅               |
+| Configure via env variables     | ✅         | ❌               |
+| Respects gitignore files        | ✅         | ❌               |
+| Granular validation rules       | ✅         | ❌               |
+| Pretty output with code excerpt | ✅         | ❌               |
+| JSON output                     | ✅         | ❌               |
+| Output to file                  | ✅         | ❌               |
+| Multithreaded                   | ✅         | ❌               |
+| No pre-requisites (node/npm)    | ✅         | ❌               |
 
 Most notably, the ability to respect the patterns in `.gitignore` files, and the ability to output structured JSON were
 at the top of my list. I also felt like the default output for the diagnostics (found problems) was a bit terse and
 could benefit from some added flair. Since `v0.4.0`, the configuration is much more granular and allows to control the
-emitted diagnostics for each source item type. Finally, having to install NodeJS and `npm` to run the tool always
-seemed a bit tedious, especially since `npm` is not required to manage Solidity dependencies (thanks,
+emitted diagnostics for each source item type. Finally, having to install NodeJS and `npm` to run the tool always seemed
+a bit tedious, especially since `npm` is not required to manage Solidity dependencies (thanks,
 [`soldeer`](https://github.com/mario-eth/soldeer)!).
 
 To produce pretty diagnostic messages, I used the amazing [`miette`](https://crates.io/crates/miette) crate which gives
@@ -212,13 +212,14 @@ really good results with very little work.
 
 ## Benchmark
 
-Now, since performance has been identified as one goal for the tool, I can hear you from here: "how does it compare
-to the competition?". Feat not, reader, I have benchmarked the tool against <code>natspec-smells</code> after pretty much every development step. And the results are pretty good, dare I say!
+Now, since performance has been identified as one goal for the tool, I can hear you from here: "how does it compare to
+the competition?". Feat not, reader, I have benchmarked the tool against <code>natspec-smells</code> after pretty much
+every development step. And the results are pretty good, dare I say!
 
 I used the [Uniswap v4 codebase](https://github.com/Uniswap/v4-core) for this, because it includes (at the time of
 writing) 83 Solidity source files totaling about 6600 lines of code and comments, which is pretty representative of a
-large project where you'd be worried about the performance of a linter, and they don't strictly enforce NatSpec for
-all items, which gives us a nice amount of diagnostics to output (487 of them!).
+large project where you'd be worried about the performance of a linter, and they don't strictly enforce NatSpec for all
+items, which gives us a nice amount of diagnostics to output (487 of them!).
 
 I set up `lintspec`'s output format to be as close as possible to what `natspec-smells` is doing, that is including
 validation of `struct` members and using the compact text output format seen below:
@@ -296,24 +297,20 @@ The action even generates some annotations on the code, which appear during the 
 />
 </ChatNote>
 
-
 Thanks to the JSON output generated by the tool, it's easy to extract information about the found problems with
-utilities like [`jq`](https://jqlang.org/) and make your own if you don't use Github Actions.
-The CLI exits with code `1` if some diagnostics were found, and `0` if everything is good. This makes it even easier to
-fail a workflow run if problems are found. Note that diagnostics are by default emitted in `stderr` and so you might
-need to redirect output to `stdout` for piping into `jq`. Here are a couple of queries you might be interested in:
+utilities like [`jq`](https://jqlang.org/) and make your own if you don't use Github Actions. The CLI exits with code
+`1` if some diagnostics were found, and `0` if everything is good. This makes it even easier to fail a workflow run if
+problems are found. Note that diagnostics are by default emitted in `stderr` and so you might need to redirect output to
+`stdout` for piping into `jq`. Here are a couple of queries you might be interested in:
 
-<Console entries={[
-"lintspec src --json 2>&1 | jq 'length' # number of files with problems",
-"lintspec src --json 2>&1 | jq '[.[].items[].diags | length] | add // 0' # total number of problems",
-]} />
+<Console entries={[ "lintspec src --json 2>&1 | jq 'length' # number of files with problems", "lintspec src --json 2>&1
+| jq '[.[].items[].diags | length] | add // 0' # total number of problems", ]} />
 
 ## What's Next
 
 Although the test suite is now pretty extensive, I'm sure there are some bugs I didn't find yet. I would be extremely
-greateful if you could consider using the tool and letting me know how it goes!
-Please do [open an issue on GitHub](https://github.com/beeb/lintspec/issues/new) if you have suggestions or
-experience problems.
+greateful if you could consider using the tool and letting me know how it goes! Please do
+[open an issue on GitHub](https://github.com/beeb/lintspec/issues/new) if you have suggestions or experience problems.
 
 Thanks for reading all the way to the end, and talk soon!
 
@@ -321,8 +318,5 @@ Thanks for reading all the way to the end, and talk soon!
 
 Updated usage section to `v0.4`, updated features comparison table, and benchmark results.
 
-*[HTML]: Hypertext Markup Language
-*[API]: Application Programming Interface
-*[CLI]: Command Line Interface
-*[CST]: Concrete Syntax Tree
-*[JSON]: JavaScript Object Notation
+*[HTML]: Hypertext Markup Language *[API]: Application Programming Interface *[CLI]: Command Line Interface *[CST]:
+Concrete Syntax Tree *[JSON]: JavaScript Object Notation

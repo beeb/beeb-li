@@ -31,22 +31,21 @@ excerpt: >
 Differential testing (or diff-testing for short) is a fuzzing technique which aims at detecting bugs by comparing two
 different implementations of the same algorithm and checking for inconsistencies in their output or execution.
 
-In the context of [Solidity](https://soliditylang.org/) smart-contract development, where optimizations in the form
+In the context of [Solidity](https://www.soliditylang.org/) smart-contract development, where optimizations in the form
 of [gas usage](https://docs.soliditylang.org/en/v0.8.26/introduction-to-smart-contracts.html#gas) reduction lead to
 cheaper blockchain transactions, diff-testing is particularly interesting. In order to optimize execution, blockchain
 programmers will often resort to implementing their algorithms in the low-level
 [YUL](https://docs.soliditylang.org/en/v0.8.26/yul.html) language, with instructions closer to the final bytecode that
-gets interpreted by the EVM. Collections of libraries and tools such as
-[Solady](https://github.com/Vectorized/solady) are even being developed to make maximum usage of YUL in common
-smart-contract use cases.
+gets interpreted by the EVM. Collections of libraries and tools such as [Solady](https://github.com/Vectorized/solady)
+are even being developed to make maximum usage of YUL in common smart-contract use cases.
 
-YUL, while allowing for great control over the stack and memory usage, is harder to write and comprehend, and also
-skips some of the safety checks that Solidity natively adds behind the scenes (like overflow checks in math operations).
-It comes to no surprise that diff-testing can greatly improve the developers' confidence in their low-level and highly
+YUL, while allowing for great control over the stack and memory usage, is harder to write and comprehend, and also skips
+some of the safety checks that Solidity natively adds behind the scenes (like overflow checks in math operations). It
+comes to no surprise that diff-testing can greatly improve the developers' confidence in their low-level and highly
 optimized implementations.
 
-For such programs, diff-testing against a naive and trusted Solidity implementation is common practice. However, when
-it comes to algorithms written in Solidity, there isn't always a way to efficiently compare the implementation against
+For such programs, diff-testing against a naive and trusted Solidity implementation is common practice. However, when it
+comes to algorithms written in Solidity, there isn't always a way to efficiently compare the implementation against
 another. Sure, one could implement another version of the algorithm in Solidity to compare against, but there isn't
 always one and naive/alternative approaches are not always easy to implement in the constrained EVM runtime.
 
@@ -54,10 +53,10 @@ If only we could compare algorithms in diff-testing between different languages.
 
 ## Enter FFI
 
-The [Foundry](https://github.com/foundry-rs/foundry/) development toolkit has transformed the developer experience
-of blockchain programmers since its inception in 2021, as seen by the wide adoption it got over the last couple of
-years. The ability to use the Solidity language across the full development cycle, from testing to deploying contracts
-is surely to thank for that.
+The [Foundry](https://github.com/foundry-rs/foundry/) development toolkit has transformed the developer experience of
+blockchain programmers since its inception in 2021, as seen by the wide adoption it got over the last couple of years.
+The ability to use the Solidity language across the full development cycle, from testing to deploying contracts is
+surely to thank for that.
 
 <Image
   src={stars}
@@ -69,8 +68,8 @@ is surely to thank for that.
   the previously popular toolkit Hardhat, demonstrates the shifting preference of the Solidity ecosystem."
 />
 
-One extremely powerful feature of the Foundry test utilities is its ability to call external binaries through a
-Foreign Function Interface with the `vm.ffi` [cheatcode](https://book.getfoundry.sh/cheatcodes/ffi).
+One extremely powerful feature of the Foundry test utilities is its ability to call external binaries through a Foreign
+Function Interface with the `vm.ffi` [cheatcode](https://getfoundry.sh/reference/cheatcodes/ffi/).
 
 ```solidity
 function testFuzz_echo(uint256 rand) public {
@@ -92,8 +91,8 @@ an implementation in another programming language.
 
 ## A Wild "Rust" Appears
 
-It will be obvious to those who know me personally that my language of choice for implementing FFI test utilities
-(well, really, for implementing anything!) is Rust.
+It will be obvious to those who know me personally that my language of choice for implementing FFI test utilities (well,
+really, for implementing anything!) is Rust.
 
 In the context of today however, Rust is particularly interesting because, it being a compiled language with a focus on
 correctness and performance, the **startup times and memory footprint** are relatively small, and the expansive crate
@@ -106,20 +105,17 @@ increase the time spent running our test.
 
 ### Testing Overhead
 
-The above example calling the `echo` command takes **192ms** on my machine for 256 fuzzing runs. Compared to this,
-the same test which doesn't call `echo` (but performs otherwise all the same operations of building the array in memory
-and the assert) takes **9ms**. The FFI test is a noticeably slower of course, which is why we have to make our
-executable as fast as possible.
+The above example calling the `echo` command takes **192ms** on my machine for 256 fuzzing runs. Compared to this, the
+same test which doesn't call `echo` (but performs otherwise all the same operations of building the array in memory and
+the assert) takes **9ms**. The FFI test is a noticeably slower of course, which is why we have to make our executable as
+fast as possible.
 
 ## Project Setup
 
-Let's setup a project to demonstrate some basic uses of the techniques described above. First, we create a new Foundry project and initiate a Rust project inside:
+Let's setup a project to demonstrate some basic uses of the techniques described above. First, we create a new Foundry
+project and initiate a Rust project inside:
 
-<Console entries={[
-"forge init diff-testing",
-"cd diff-testing",
-"cargo new utils",
-]} />
+<Console entries={[ "forge init diff-testing", "cd diff-testing", "cargo new utils", ]} />
 
 Since we want to be able to invoke `cargo` commands directly from the root of the `diff-testing` project and have the
 built binary reside inside the `target/release` folder, we will add a `Cargo.toml` file at the root:
@@ -132,10 +128,7 @@ members = ["utils"]
 
 Now, running the following inside our project should compile and run the Rust binary in release mode:
 
-<Console entries={[
-"cargo run -qr",
-{ text: "Hello, world!", prefix: "", cl: "text-info" }
-]} />
+<Console entries={[ "cargo run -qr", { text: "Hello, world!", prefix: "", cl: "text-info" } ]} />
 
 ## Example: Solady's `DateTimeLib`
 
@@ -147,8 +140,8 @@ We add the Solady dependency to the project:
 
 ### Rust reference implementation
 
-Let's start by creating our reference implementation in Rust. We first add a dependency on `alloy-core` for
-Solidity types and ABI encoding, and `chrono` for date/time manipulations:
+Let's start by creating our reference implementation in Rust. We first add a dependency on `alloy-core` for Solidity
+types and ABI encoding, and `chrono` for date/time manipulations:
 
 <Console entries={["cargo add -p utils chrono alloy-core -F alloy-core/sol-types"]} />
 
@@ -202,16 +195,12 @@ year, month and day are then ABI-encoded into a tuple of 3 unsigned 256-bit inte
 
 When we invoke our binary, we should see the following:
 
-<Console entries={[
-"cargo build -r",
-"target/release/utils timestamp_to_date 1717200000",
-{
-  text: "0x00000000000000000000000000000000000000000000000000000000000007e800000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000001",
-  prefix: "", cl: "text-info" }
-]} />
+<Console entries={[ "cargo build -r", "target/release/utils timestamp_to_date 1717200000", { text:
+"0x00000000000000000000000000000000000000000000000000000000000007e800000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000001",
+prefix: "", cl: "text-info" } ]} />
 
-Benchmarking this command with [hyperfine](https://github.com/sharkdp/hyperfine) gives us an average execution time
-of **298μs** on my system. Not too bad! For 256 fuzzing runs, this would translate to a total time of roughly 76ms, not
+Benchmarking this command with [hyperfine](https://github.com/sharkdp/hyperfine) gives us an average execution time of
+**298μs** on my system. Not too bad! For 256 fuzzing runs, this would translate to a total time of roughly 76ms, not
 accounting for the overhead of the `vm.ffi` call.
 
 ### Foundry Test
@@ -253,15 +242,13 @@ practice however, it would be good to test the full range of acceptable values a
 
 And here's the result. Seems our test is even faster than the `echo` example we've seen before! 🎉
 
-<Console entries={[
-"forge test --ffi",
-{
-text: "Ran 1 test for test/Diff.t.sol:DiffTest\n[PASS] testFuzz_soladyTimestampToDate(uint256) (runs: 257, μ: 13136, ~: 12816)\nSuite result: ok. 1 passed; 0 failed; 0 skipped; finished in 131.61ms (131.39ms CPU time)\n\nRan 1 test suite in 135.05ms (131.61ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)",
-prefix: "", cl: "text-info"}
-]} />
+<Console entries={[ "forge test --ffi", { text: "Ran 1 test for test/Diff.t.sol:DiffTest\n[PASS]
+testFuzz_soladyTimestampToDate(uint256) (runs: 257, μ: 13136, ~: 12816)\nSuite result: ok. 1 passed; 0 failed; 0
+skipped; finished in 131.61ms (131.39ms CPU time)\n\nRan 1 test suite in 135.05ms (131.61ms CPU time): 1 tests passed, 0
+failed, 0 skipped (1 total tests)", prefix: "", cl: "text-info"} ]} />
 
-Note that we added the `--ffi` argument to `forge test` to enable the feature. This could also be enabled by default
-via the `foundry.toml` configuration file:
+Note that we added the `--ffi` argument to `forge test` to enable the feature. This could also be enabled by default via
+the `foundry.toml` configuration file:
 
 ```toml
 [profile.default]
@@ -279,6 +266,4 @@ overhead to the test suite execution.
 
 I hope you found something useful in this piece and that you'll come back for more articles! Thanks for reading.
 
-*[FFI]: Foreign Function Interface
-*[EVM]: Ethereum Virtual Machine
-*[ABI]: Application Binary Interface
+*[FFI]: Foreign Function Interface *[EVM]: Ethereum Virtual Machine *[ABI]: Application Binary Interface
