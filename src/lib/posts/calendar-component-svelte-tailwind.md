@@ -45,8 +45,9 @@ surprisingly easy to achieve a satisfactory result that works for most locales w
 ## HTML Markup
 
 We want to display our monthly calendar view as a table, like you're probably used to seeing. Each column will represent
-a day, and each row will represent a week. Since we want our view to update according to the locale's preferences,
-the first column will sometimes represent Monday, sometimes Sunday or Saturday, sometimes even [Friday](https://en.m.wikipedia.org/wiki/Week).
+a day, and each row will represent a week. Since we want our view to update according to the locale's preferences, the
+first column will sometimes represent Monday, sometimes Sunday or Saturday, sometimes even
+[Friday](https://en.wikipedia.org/wiki/Week).
 
 <Image
   src={map}
@@ -113,8 +114,8 @@ The base of our layout will be the following:
 </div>
 ```
 
-The first thing to note is that we use the `.grid .grid-cols-7` classes for the heading row (with the day names) and
-the main table-like `<div>`. This creates a grid with 7 columns as you might expect (gotta love Tailwind for this).
+The first thing to note is that we use the `.grid .grid-cols-7` classes for the heading row (with the day names) and the
+main table-like `<div>`. This creates a grid with 7 columns as you might expect (gotta love Tailwind for this).
 
 The `.justify-items-center` ensures that each child `<div>` is horizontally centered inside of its grid cell.
 
@@ -133,14 +134,15 @@ the element if it's the first child of its parent.
 
 Ok, we have a markup template, we now need to populate it with localized data. For this, we need to have the following,
 knowing the currently displayed month and year:
+
 - the month title (with year),
 - which day is the first day of the week for the locale,
 - the list of the day names, starting with the first day of the week for the locale,
 - the last day of the month, or how many days are in the displayed month,
 - and in which column should the first day of the displayed month land.
 
-There is a bit of math below, but I promise it's not going to be too complicated! I'm going to do my best to explain
-how it works.
+There is a bit of math below, but I promise it's not going to be too complicated! I'm going to do my best to explain how
+it works.
 
 ### Month Title
 
@@ -152,9 +154,10 @@ method:
 ```typescript
 const monthTitle = $derived(
   new Date(year, month, 1).toLocaleString(locale, {
-    month: 'long', year: 'numeric'
-  })
-)
+    month: "long",
+    year: "numeric",
+  }),
+);
 ```
 
 <ChatNote>
@@ -177,8 +180,8 @@ According to the API docs, this method returns an object with a `firstDay` key a
 
 ```typescript
 const firstDayOfWeek = $derived(
-  new Intl.Locale(locale).getWeekInfo().firstDay
-)
+  new Intl.Locale(locale).getWeekInfo().firstDay,
+);
 ```
 
 ### List of Day Names
@@ -192,16 +195,17 @@ loaded once instead of once per call.
 
 ```typescript
 const dateTimeFormat = $derived(
-  new Intl.DateTimeFormat(locale, { weekday: 'short' })
-)
+  new Intl.DateTimeFormat(locale, { weekday: "short" }),
+);
 const dayNames = $derived(
   Array.from(
     { length: 7 },
-    (_, i) => dateTimeFormat.format(
-      new Date(2018, 0, i + firstDayOfWeek)
-    )
-  )
-)
+    (_, i) =>
+      dateTimeFormat.format(
+        new Date(2018, 0, i + firstDayOfWeek),
+      ),
+  ),
+);
 ```
 
 The list must start with the correct day according to `firstDayOfWeek` defined above. We leverage the fact that year
@@ -212,9 +216,9 @@ indexes months starting at zero, so month `0` is January (for some reason...).
 ### Last Day of the Month
 
 To get the number of days in the displayed month, we use another JavaScript trick. The `Date()` object will not complain
-if we give it a day or month index that is invalid (_e.g._ `32` for the day number), and will instead wrap as necessary to
-land on a valid date. As such, `Date(2018, 0, 32)` gives `Thu Feb 01 2018`. Likewise, we can retrieve the last
-day of January with `Date(2018, 1, 0)` (remember that days start at 1 normally), which gives `Wed Jan 31 2018`.
+if we give it a day or month index that is invalid (_e.g._ `32` for the day number), and will instead wrap as necessary
+to land on a valid date. As such, `Date(2018, 0, 32)` gives `Thu Feb 01 2018`. Likewise, we can retrieve the last day of
+January with `Date(2018, 1, 0)` (remember that days start at 1 normally), which gives `Wed Jan 31 2018`.
 
 If we now were to try `Date(2018, 12, 1)`, we would get `Tue Jan 01 2019` (remember that months start at 0).
 
@@ -222,8 +226,8 @@ Armed with this knowledge, we can now find the last day in `month` (1-indexed):
 
 ```typescript
 const lastDay = $derived(
-  new Date(year, month + 1, 0).getDate()
-)
+  new Date(year, month + 1, 0).getDate(),
+);
 ```
 
 ### Column Offset for the First Day
@@ -237,8 +241,8 @@ const firstDayColumn = $derived(
     (
       new Date(year, month, 1).getDay() + 7 - firstDayOfWeek
     ) % 7
-  ) + 1
-)
+  ) + 1,
+);
 ```
 
 First, we construct a date object for the first day of the displayed month, then we retrieve the corresponding day of
@@ -267,16 +271,16 @@ The default value will be `en`:
 
 ```typescript
 interface Props {
-  locale?: string
+  locale?: string;
 }
-let { locale = 'en' }: Props = $props()
+let { locale = "en" }: Props = $props();
 ```
 
 Then, I need two state variables to store the year and month, and we will initialize them with the current date:
 
 ```typescript
-let year = $state(new Date().getFullYear())
-let month = $state(new Date().getMonth())
+let year = $state(new Date().getFullYear());
+let month = $state(new Date().getMonth());
 ```
 
 It could be interesting to also expose those as props and would be easy enough to do, but it's not required for this
@@ -288,8 +292,8 @@ we calculated previously. We create a helper `range` function:
 ```typescript
 // Helper method to generate a range of integers from `start` to `end`, inclusive
 const range = (start: number, end: number) => {
-  return Array.from({ length: end - start + 1 }, (_, i) => i + start)
-}
+  return Array.from({ length: end - start + 1 }, (_, i) => i + start);
+};
 ```
 
 We should also be able to increment and decrement the month and year counters. Knowing how the `Date()` object works, we
@@ -311,19 +315,19 @@ to the `Date` constructor:
 
 ```typescript
 const prevMonth = () => {
-  month--
+  month--;
   if (month < 0) {
-    month = 11
-    year--
+    month = 11;
+    year--;
   }
-}
+};
 const nextMonth = () => {
-  month++
+  month++;
   if (month > 11) {
-    month = 0
-    year++
+    month = 0;
+    year++;
   }
-}
+};
 ```
 
 The title is simply:
@@ -363,14 +367,13 @@ the `tailwind.config.js` file can be edited to include the
 
 ```typescript
 export default {
-  safelist: [{ pattern: /^col-start-/, variants: ['first'] }]
-}
+  safelist: [{ pattern: /^col-start-/, variants: ["first"] }],
+};
 ```
 
 ## The Result
 
-Here's the final result after implementing all the things discussed in this article. You can play with it below!<br>
-The
+Here's the final result after implementing all the things discussed in this article. You can play with it below!<br> The
 [full component source code](https://github.com/beeb/beeb-li/blob/main/src/lib/posts/calendar-component-svelte-tailwind/Calendar.svelte)
 is available on GitHub.
 
@@ -391,6 +394,9 @@ your front-end applications.
 'Till next time!
 
 *[API]: Application Programming Interface
+
 *[HTML]: Hypertext Markup Language
+
 *[CSS]: Cascading Style Sheets
+
 *[i18n]: internationalization

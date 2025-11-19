@@ -23,10 +23,10 @@ excerpt: >
 
 ## Introduction
 
-Over the past few months, I've been working on a [linter for the Solidity language](/blog/announcing-lintspec).
-The tool, written in Rust, initially used [slang](https://nomicfoundation.github.io/slang/) as its parser because that
-was the best option at the time. Slang provides a very useful type to identify a position in the text (like the start
-or end of a source item's span):
+Over the past few months, I've been working on a [linter for the Solidity language](/blog/announcing-lintspec). The
+tool, written in Rust, initially used [slang](https://nomicfoundation.github.io/slang/) as its parser because that was
+the best option at the time. Slang provides a very useful type to identify a position in the text (like the start or end
+of a source item's span):
 
 ```rust
 #[derive(Debug, Default, Hash, Copy, Clone, PartialEq, Eq)]
@@ -43,12 +43,11 @@ This is because the parser is used by Nomic for their LSP implementation, which
 for exchanging text offsets with the clients (mostly text editors). This is also something I want to support with
 `lintspec`, I could well see it integrated into a language server at some point.
 
-However, I have moved towards using [`solar-parse`](https://github.com/paradigmxyz/solar) as the default parser, because it's
-very performant and production ready (used in [Foundry](https://github.com/foundry-rs/foundry)). It also doesn't help
-that `slang` has not published a release on [crates.io](https://crates.io) in a long while, so I kept it only as a
+However, I have moved towards using [`solar-parse`](https://github.com/paradigmxyz/solar) as the default parser, because
+it's very performant and production ready (used in [Foundry](https://github.com/foundry-rs/foundry)). It also doesn't
+help that `slang` has not published a release on [crates.io](https://crates.io) in a long while, so I kept it only as a
 legacy parser backend just in case. Now `solar` doesn't provide an equivalent of the `TextIndex` we've seen above, only
 byte offsets, so I had to make my own.
-
 
 ## The Algorithm
 
@@ -62,6 +61,7 @@ The UTF-8 offset is simply the number of bytes since the start of the text (whic
 Rust), so we have that already from the parser's output.
 
 Here are the steps:
+
 - Gather all byte offsets for the start and end of each item's span(s);
 - Iterate over each character in the source code, keeping track of the current UTF-16 position and line/column by
   advancing the `TextIndex` (incrementing by 1 or more each counter);
@@ -73,9 +73,9 @@ Here are the steps:
 ### Gathering All Byte Offsets
 
 Since there might be duplicate offsets in the spans of all the source items, we'll ideally want to deduplicate them and
-sort them to facilitate iteration alongside our source code content.
-The original implementation uses a [`BTreeSet`](https://doc.rust-lang.org/std/collections/struct.BTreeSet.html) which
-sorts the items and deduplicates them at the same time:
+sort them to facilitate iteration alongside our source code content. The original implementation uses a
+[`BTreeSet`](https://doc.rust-lang.org/std/collections/struct.BTreeSet.html) which sorts the items and deduplicates them
+at the same time:
 
 ```rust
 fn gather_offsets(definitions: &[Definition]) -> BTreeSet<usize> {
@@ -133,8 +133,8 @@ impl TextIndex {
 
 ### Iterating over the Source
 
-Here's where most the work is (should be) done. We iterate over the source and collect fully-fledged `TextIndex` for
-all interesting offsets into a `HashMap` for fast lookups:
+Here's where most the work is (should be) done. We iterate over the source and collect fully-fledged `TextIndex` for all
+interesting offsets into a `HashMap` for fast lookups:
 
 ```rust
 fn gather_text_indices(source: &str, offsets: &BTreeSet<usize>) -> HashMap<usize, TextIndex> {
@@ -201,19 +201,21 @@ fn populate(text_indices: &HashMap<usize, TextIndex>, definitions: &mut Vec<Defi
 These should not be considered absolute numbers but will serve to compare the impact of each improvement.
 
 I tested the algorithm on two different source files:
-- The first, a pretty short file with 190 lines of code (marked "short" below), which yields 13 `Definition` items and **126 byte offsets** of interest in the file;
+
+- The first, a pretty short file with 190 lines of code (marked "short" below), which yields 13 `Definition` items and
+  **126 byte offsets** of interest in the file;
 - The second "long" file with 1400 lines of code, which contains 42 `Definition` items and **426 byte offsets**.
 
-| Implementation         | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] |
-| ---------------------- | ------------ | ----------- | --------- | ------------ |
-| Baseline (short)       | 21.42        | 21.69       | 22.27     | 35.39        |
-| Baseline (long)        | 138.2        | 140.3       | 146.4     | 255          |
+| Implementation   | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] |
+| ---------------- | ------------ | ----------- | --------- | ------------ |
+| Baseline (short) | 21.42        | 21.69       | 22.27     | 35.39        |
+| Baseline (long)  | 138.2        | 140.3       | 146.4     | 255          |
 
 ## Optimized `advance`
 
-Because most of a Solidity codebase (or any language, really) consists of ASCII characters, we might be able to add
-a fast path to the `TextIndex::advance` function we've seen above. This is because we do not need to call `len_utf8`
-or `len_utf16` for those characters (they are always 1 byte/code unit). Instead of having to branch twice for each
+Because most of a Solidity codebase (or any language, really) consists of ASCII characters, we might be able to add a
+fast path to the `TextIndex::advance` function we've seen above. This is because we do not need to call `len_utf8` or
+`len_utf16` for those characters (they are always 1 byte/code unit). Instead of having to branch twice for each
 character (those functions each have a `match` statement), we only branch once on a very simple condition (whether the
 char value is lower than `0xFF`). For the `else` case, we can also skip checking for `\r` and `\n`.
 
@@ -281,10 +283,10 @@ non-negligible amount spent in `BTreeSet::insert` and `HashMap::insert`. This ma
 operations, requiring to either balance a B-Tree or calculate a hash of the key.
 
 When the parser visits the AST to gather `Definition` items, it encounters each source item in the same order as they
-appear in the source code. That is, the start of each span is greater than the span of the previous item.
-This means that our `gather_offsets` function yields a mostly-sorted list of offsets with its natural iteration order.
-This also means that our cache access pattern in `populate` is hardly random. As such, we can probably ditch those
-advanced data structures completely and use a `Vec` instead.
+appear in the source code. That is, the start of each span is greater than the span of the previous item. This means
+that our `gather_offsets` function yields a mostly-sorted list of offsets with its natural iteration order. This also
+means that our cache access pattern in `populate` is hardly random. As such, we can probably ditch those advanced data
+structures completely and use a `Vec` instead.
 
 Sorting algorithms are _very_ good nowadays, so I anticipate that sorting the offsets `Vec` will be much faster than
 constructing the B-Tree. By trying out `sort` and `sort_unstable`, the unstable variant comes on top, meaning the data
@@ -379,10 +381,10 @@ fn populate(text_indices: &[TextIndex], definitions: &mut Vec<Definition>) {
 This little maneuver further improves the performance, albeit more for the small file. This is probably due to the
 overhead of sorting the larger offsets array.
 
-| Implementation         | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] | Speedup vs. previous | Speedup vs. baseline |
-| ---------------------- | ------------ | ----------- | --------- | ------------ | -------------------- | -------------------- |
-| Only Vec (short)       | 10.58        | 10.63       | 10.9      | 21.85        | 1.59x                | 2.04x                |
-| Only Vec (long)        | 82.65        | 83.08       | 86.94     | 152.9        | 1.23x                | 1.69x                |
+| Implementation   | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] | Speedup vs. previous | Speedup vs. baseline |
+| ---------------- | ------------ | ----------- | --------- | ------------ | -------------------- | -------------------- |
+| Only Vec (short) | 10.58        | 10.63       | 10.9      | 21.85        | 1.59x                | 2.04x                |
+| Only Vec (long)  | 82.65        | 83.08       | 86.94     | 152.9        | 1.23x                | 1.69x                |
 
 ## SIMDid You Say ASCII?
 
@@ -392,9 +394,8 @@ What's that I hear? Yes, you. You in the back. Sim-who? SIMD? Never heard of him
 
 If you were looking at that hot loop in `gather_text_indices` and shouting "You can parallelize that!" then you'd be
 right. Comparing a bunch of bytes is something modern CPUs can parallelize via special "wide" registers of 128-512 bits.
-The process of operating on those registers is called SIMD (single instruction, multiple data) and allows to
-operate on subsets of those wide register bits (often called "lanes") in parallel via special architecture-dependent
-instructions.
+The process of operating on those registers is called SIMD (single instruction, multiple data) and allows to operate on
+subsets of those wide register bits (often called "lanes") in parallel via special architecture-dependent instructions.
 
 In our case, we know we can optimize the advance of the `utf-8`, `utf-16` fields of `TextIndex` if the characters are in
 the ASCII range (+1 for each character/byte). Wouldn't it be nice if we could check like 32 of those at a time? Since
@@ -424,9 +425,8 @@ Unicode character.
 
 The first thing to do is to load 32 bytes into one of those special registers. Because our bytes are `u8`, but the type
 expects `i8`, we had to cast those into signed integers, which maps values greater than 127 (non-ASCII) into the
-negative range.
-How convenient, to check if the bytes are non-ASCII, we simply need to check if the corresponding `i8` value is
-negative!
+negative range. How convenient, to check if the bytes are non-ASCII, we simply need to check if the corresponding `i8`
+value is negative!
 
 We thus put all zeroes into another one of those registers and perform a `simd_lt` operation, which will compare each
 byte of the first operand with the bytes in the second, and set the corresponding byte in the result to `0xFF` if lower,
@@ -476,13 +476,14 @@ Armed with our helper function, we now need to iterate on the source code and ga
 correspond to the offsets of interest.
 
 The process goes something like this:
+
 1. Check if there are 32 bytes remaining in the input;
 1. If so, count how many of those are ASCII with the helper;
 1. Also check if the next offset of interest is within this chunk;
 1. If the next offset comes before the next non-ASCII or newline, advance the current `TextIndex` and save a copy;
 1. Otherwise, advance the `TextIndex` to the next non-ASCII or newline;
-1. After processing this 32-byte chunk, if we stopped because of non-ASCII or newline character, we process those
-   with the default routine (`char` iterator and `TextIndex::advance`), else we go for the next chunk;
+1. After processing this 32-byte chunk, if we stopped because of non-ASCII or newline character, we process those with
+   the default routine (`char` iterator and `TextIndex::advance`), else we go for the next chunk;
 1. When we're done processing line endings and Unicode characters (if any), we go back to the SIMD routine.
 
 Are you ready for the Wall of Code™?
@@ -586,10 +587,10 @@ fn gather_text_indices(source: &str, offsets: &[usize]) -> Vec<TextIndex> {
 
 The numbers are in, and they look great:
 
-| Implementation         | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] | Speedup vs. previous | Speedup vs. baseline |
-| ---------------------- | ------------ | ----------- | --------- | ------------ | -------------------- | -------------------- |
-| SIMD (short)           | 1.951        | 1.972       | 2.036     | 6.321        | 5.39x                | 11.00x               |
-| SIMD (long)            | 12.74        | 12.82       | 13.24     | 26.36        | 6.48x                | 10.94x               |
+| Implementation | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] | Speedup vs. previous | Speedup vs. baseline |
+| -------------- | ------------ | ----------- | --------- | ------------ | -------------------- | -------------------- |
+| SIMD (short)   | 1.951        | 1.972       | 2.036     | 6.321        | 5.39x                | 11.00x               |
+| SIMD (long)    | 12.74        | 12.82       | 13.24     | 26.36        | 6.48x                | 10.94x               |
 
 ## Final Performance
 
@@ -602,23 +603,26 @@ Here is the final comparison between the baseline and each of the optimization s
 | Only Vec (short)       | 10.63       | 2.04x                |
 | SIMD (short)           | 1.972       | 11.00x               |
 
-| Long file              | Median [µs] | Speedup vs. baseline |
-| ---------------------- | ----------- | -------------------- |
-| Baseline (long)        | 140.3       | 1.00x                |
-| Better advance (long)  | 102.1       | 1.37x                |
-| Only Vec (long)        | 83.08       | 1.69x                |
-| SIMD (long)            | 12.82       | 10.94x               |
+| Long file             | Median [µs] | Speedup vs. baseline |
+| --------------------- | ----------- | -------------------- |
+| Baseline (long)       | 140.3       | 1.00x                |
+| Better advance (long) | 102.1       | 1.37x                |
+| Only Vec (long)       | 83.08       | 1.69x                |
+| SIMD (long)           | 12.82       | 10.94x               |
 
 With all these steps, we managed to improve the speed of the algorithm by 11x! 😎
 
-I hope you found this article interesting, it was certainly fun to write.
-Having never used SIMD before, this demystified the topic for me and I'm looking forward to putting this new skill to
-good use in the near future.
+I hope you found this article interesting, it was certainly fun to write. Having never used SIMD before, this
+demystified the topic for me and I'm looking forward to putting this new skill to good use in the near future.
 
 Until next time!
 
 *[LSP]: Language Server Protocol
+
 *[UTF]: Unicode Transformation Format
+
 *[AST]: Abstract Syntax Tree
+
 *[ASCII]: American Standard Code for Information Interchange
+
 *[SIMD]: Single Instruction, Multiple Data
