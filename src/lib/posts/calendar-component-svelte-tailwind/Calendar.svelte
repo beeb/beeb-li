@@ -21,8 +21,8 @@
   // Since the first column of the view is the first day of the week, we need to offset the first cell so that it lands
   // in the right column.
   // We add 7 before subtracting the first day index to ensure we get a positive number.
-  // Column 0 is the first column
-  const firstDayColumn = $derived((new Date(year, month, 1).getDay() + 7 - firstDayOfWeek) % 7)
+  // The first column is 1, so that we can pass it directly to the `col-start-` tailwind utility class.
+  const firstDayColumn = $derived(((new Date(year, month, 1).getDay() + 7 - firstDayOfWeek) % 7) + 1)
 
   // The localized month name and year
   const monthTitle = $derived(
@@ -48,18 +48,6 @@
   const range = (start: number, end: number) => {
     return Array.from({ length: end - start + 1 }, (_, i) => i + start)
   }
-
-  // The `col-start` classes for the `firstDayColumn` offset
-  // This is hard-coded to help tailwindcss find the classes to include
-  const colStartClass = [
-    'first:col-start-1',
-    'first:col-start-2',
-    'first:col-start-3',
-    'first:col-start-4',
-    'first:col-start-5',
-    'first:col-start-6',
-    'first:col-start-7',
-  ]
 </script>
 
 <div class="w-full max-w-lg mx-auto overflow-x-scroll card bg-base-200 shadow-sm p-4">
@@ -86,7 +74,7 @@
     </div>
     <div class="grid grid-cols-7 justify-items-center">
       {#each range(1, lastDay) as day}
-        <div class={`${colStartClass[firstDayColumn]} h-10 text-base sm:text-lg`}>
+        <div class={`first:col-start-${firstDayColumn} h-10 text-base sm:text-lg`}>
           {day}
         </div>
       {/each}
