@@ -393,5 +393,10 @@ your front-end applications.
 
 'Till next time!
 
-*[API]: Application Programming Interface *[HTML]: Hypertext Markup Language *[CSS]: Cascading Style Sheets *[i18n]:
-internationalization
+*[API]: Application Programming Interface
+
+*[HTML]: Hypertext Markup Language
+
+*[CSS]: Cascading Style Sheets
+
+*[i18n]: internationalization

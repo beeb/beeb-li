@@ -617,5 +617,12 @@ demystified the topic for me and I'm looking forward to putting this new skill t
 
 Until next time!
 
-*[LSP]: Language Server Protocol *[UTF]: Unicode Transformation Format *[AST]: Abstract Syntax Tree *[ASCII]: American
-Standard Code for Information Interchange *[SIMD]: Single Instruction, Multiple Data
+*[LSP]: Language Server Protocol
+
+*[UTF]: Unicode Transformation Format
+
+*[AST]: Abstract Syntax Tree
+
+*[ASCII]: American Standard Code for Information Interchange
+
+*[SIMD]: Single Instruction, Multiple Data

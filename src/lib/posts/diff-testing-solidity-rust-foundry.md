@@ -242,10 +242,14 @@ practice however, it would be good to test the full range of acceptable values a
 
 And here's the result. Seems our test is even faster than the `echo` example we've seen before! 🎉
 
-<Console entries={[ "forge test --ffi", { text: "Ran 1 test for test/Diff.t.sol:DiffTest\n[PASS]
-testFuzz_soladyTimestampToDate(uint256) (runs: 257, μ: 13136, ~: 12816)\nSuite result: ok. 1 passed; 0 failed; 0
-skipped; finished in 131.61ms (131.39ms CPU time)\n\nRan 1 test suite in 135.05ms (131.61ms CPU time): 1 tests passed, 0
-failed, 0 skipped (1 total tests)", prefix: "", cl: "text-info"} ]} />
+<!-- deno-fmt-ignore-start -->
+<Console entries={[
+"forge test --ffi",
+{
+text: "Ran 1 test for test/Diff.t.sol:DiffTest\n[PASS] testFuzz_soladyTimestampToDate(uint256) (runs: 257, μ: 13136, ~: 12816)\nSuite result: ok. 1 passed; 0 failed; 0 skipped; finished in 131.61ms (131.39ms CPU time)\n\nRan 1 test suite in 135.05ms (131.61ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)",
+prefix: "", cl: "text-info"}
+]} />
+<!-- deno-fmt-ignore-end -->
 
 Note that we added the `--ffi` argument to `forge test` to enable the feature. This could also be enabled by default via
 the `foundry.toml` configuration file:
@@ -266,4 +270,8 @@ overhead to the test suite execution.
 
 I hope you found something useful in this piece and that you'll come back for more articles! Thanks for reading.
 
-*[FFI]: Foreign Function Interface *[EVM]: Ethereum Virtual Machine *[ABI]: Application Binary Interface
+*[FFI]: Foreign Function Interface
+
+*[EVM]: Ethereum Virtual Machine
+
+*[ABI]: Application Binary Interface

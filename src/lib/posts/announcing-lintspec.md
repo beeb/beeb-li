@@ -303,8 +303,12 @@ utilities like [`jq`](https://jqlang.org/) and make your own if you don't use Gi
 problems are found. Note that diagnostics are by default emitted in `stderr` and so you might need to redirect output to
 `stdout` for piping into `jq`. Here are a couple of queries you might be interested in:
 
-<Console entries={[ "lintspec src --json 2>&1 | jq 'length' # number of files with problems", "lintspec src --json 2>&1
-| jq '[.[].items[].diags | length] | add // 0' # total number of problems", ]} />
+<!-- deno-fmt-ignore-start -->
+<Console entries={[
+"lintspec src --json 2>&1 | jq 'length' # number of files with problems",
+"lintspec src --json 2>&1 | jq '[.[].items[].diags | length] | add // 0' # total number of problems",
+]} />
+<!-- deno-fmt-ignore-end -->
 
 ## What's Next
 
@@ -318,5 +322,12 @@ Thanks for reading all the way to the end, and talk soon!
 
 Updated usage section to `v0.4`, updated features comparison table, and benchmark results.
 
-*[HTML]: Hypertext Markup Language *[API]: Application Programming Interface *[CLI]: Command Line Interface *[CST]:
-Concrete Syntax Tree *[JSON]: JavaScript Object Notation
+*[HTML]: Hypertext Markup Language
+
+*[API]: Application Programming Interface
+
+*[CLI]: Command Line Interface
+
+*[CST]: Concrete Syntax Tree
+
+*[JSON]: JavaScript Object Notation

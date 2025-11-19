@@ -198,11 +198,12 @@ It took me a while to find this information because I didn't really know what I 
 If we send this request to the container, we get a response from our function 🎉 (albeit wrapped in the API Gateway
 response format).
 
-<Console entries={[ "curl -X POST --data
-'{\"version\":\"2.0\",\"rawQueryString\":\"name=beeb\",\"requestContext\":{\"http\":{\"method\":\"GET\"},\"timeEpoch\":0}}'
-http://localhost:8080/2015-03-31/functions/function/invocations", { text:
-"{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html\"},\"multiValueHeaders\":{},\"body\":\"Hello beeb, this
-is an AWS Lambda HTTP request\",\"isBase64Encoded\":false,\"cookies\":[]}", prefix: "", cl: "text-info" }, ]} />
+<!-- deno-fmt-ignore-start -->
+<Console entries={[
+"curl -X POST --data '{\"version\":\"2.0\",\"rawQueryString\":\"name=beeb\",\"requestContext\":{\"http\":{\"method\":\"GET\"},\"timeEpoch\":0}}' http://localhost:8080/2015-03-31/functions/function/invocations",
+{ text: "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html\"},\"multiValueHeaders\":{},\"body\":\"Hello beeb, this is an AWS Lambda HTTP request\",\"isBase64Encoded\":false,\"cookies\":[]}", prefix: "", cl: "text-info" },
+]} />
+<!-- deno-fmt-ignore-end -->
 
 ## Final Words
 
@@ -210,5 +211,10 @@ Just like that, we have cross-compiled our Lambda for ARM and have a container i
 
 I hope you found something useful in this article. Talk soon!
 
-*[CLI]: Command Line Interface *[HTTP]: Hypertext Transfer Protocol *[URL]: Uniform Resource Locator *[API]: Application
-Programming Interface
+*[CLI]: Command Line Interface
+
+*[HTTP]: Hypertext Transfer Protocol
+
+*[URL]: Uniform Resource Locator
+
+*[API]: Application Programming Interface
