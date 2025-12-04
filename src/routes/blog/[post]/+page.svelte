@@ -2,15 +2,14 @@
   import { mount } from 'svelte'
   import { siteTitle } from '$lib/config'
   import CopyButton from '$lib/components/CopyButton.svelte'
+  import type { Attachment } from 'svelte/attachments'
 
   const { data } = $props()
 
-  let article: HTMLElement
-
   const ogDate = $derived((data.meta.updated ? new Date(data.meta.updated) : new Date(data.meta.date)).toISOString())
 
-  $effect(() => {
-    for (const node of article.querySelectorAll('pre.shiki')) {
+  const copyButtonAttachment: Attachment = (element) => {
+    for (const node of element.querySelectorAll('pre.shiki')) {
       const wrapper = document.createElement('div')
       wrapper.className = 'relative'
       node.parentNode?.insertBefore(wrapper, node)
@@ -23,7 +22,7 @@
         },
       })
     }
-  })
+  }
 </script>
 
 <svelte:head>
@@ -46,7 +45,7 @@
   <meta property="article:published_time" content={data.meta.date} />
 </svelte:head>
 
-<article bind:this={article}>
+<article {@attach copyButtonAttachment}>
   {#if data.meta.enhancedImage}
     <div class="mb-8 flex flex-col items-end gap-1">
       <figure
