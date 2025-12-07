@@ -1,9 +1,11 @@
 <script lang="ts">
+  import { fetchPosts } from '$lib/posts'
   import PostsList from '$lib/components/PostsList.svelte'
   import Pagination from '$lib/components/Pagination.svelte'
   import { siteTitle, siteDescription, postsPerPage } from '$lib/config'
 
   const { data } = $props()
+  const { posts, total } = await fetchPosts()
 </script>
 
 <svelte:head>
@@ -25,6 +27,6 @@
   <a class="link text-lg" href="/blog/category">All blog categories</a>
 </div>
 
-<PostsList posts={data.posts} />
+<PostsList {posts} />
 
-<Pagination currentPage={1} total={data.total} perPage={postsPerPage} />
+<Pagination currentPage={1} {total} perPage={postsPerPage} />
