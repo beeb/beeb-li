@@ -17,6 +17,12 @@ const highlighter = await createHighlighter({
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
+	compilerOptions: {
+		experimental: {
+			async: true,
+		},
+	},
+
 	// Ensures both .svelte and .md files are treated as components (can be imported and used anywhere, or used as pages)
 	extensions: ['.svelte', '.md'],
 

@@ -1,7 +1,9 @@
 <script lang="ts">
+  import { fetchCategories } from '$lib/posts'
   import { siteTitle, siteDescription } from '$lib/config.js'
 
   const { data } = $props()
+  const categories = await fetchCategories({ sort: true })
 </script>
 
 <svelte:head>
@@ -22,7 +24,7 @@
   </div>
   <div class="prose prose-lg">
     <ul>
-      {#each data.categories as [category, count]}
+      {#each categories as [category, count]}
         <li>
           <a href="/blog/category/{category}/page/1">
             {category}

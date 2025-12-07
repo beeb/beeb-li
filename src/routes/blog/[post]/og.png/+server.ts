@@ -5,11 +5,12 @@ import satori from 'satori'
 import logo from '../../../../../static/favicon.svg?raw'
 import fontBlack from '../../../../../static/fonts/tasa-orbiter-display-black.otf?arraybuffer'
 import font from '../../../../../static/fonts/tasa-orbiter-display-semibold.otf?arraybuffer'
-import type { RequestHandler } from './$types'
+import type { EntryGenerator, RequestHandler } from './$types'
 
 export const prerender = true
 
-export const entries = async () => {
+// for page crawling
+export const entries: EntryGenerator = async () => {
 	const { posts } = await fetchPosts({ limit: -1 })
 	return posts.map((p) => ({ post: p.slug }))
 }

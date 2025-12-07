@@ -1,8 +1,9 @@
 import { error } from '@sveltejs/kit'
-import type { PageLoad } from './$types'
+import type { EntryGenerator, PageLoad } from './$types'
 import { fetchCover, fetchPosts } from '$lib/posts'
 
-export const entries = async () => {
+// for page crawling
+export const entries: EntryGenerator = async () => {
 	const { posts } = await fetchPosts({ limit: -1 })
 	return posts.map((p) => ({ post: p.slug }))
 }

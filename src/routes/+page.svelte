@@ -2,6 +2,7 @@
   import { siteTitle, siteDescription } from '$lib/config'
 
   const { data } = $props()
+  const ReadmeFile = await import('../../README.md')
 </script>
 
 <svelte:head>
@@ -20,5 +21,5 @@
   <h1>Hi there!</h1>
 </div>
 <div class="prose prose-lg w-full max-w-full">
-  <data.Readme />
+  <ReadmeFile.default />
 </div>

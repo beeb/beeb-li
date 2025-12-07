@@ -22,13 +22,16 @@
 </svelte:head>
 
 {#if data.posts.length}
-  <div class="flex justify-between items-center mb-12">
+  <div class="flex justify-between items-center mb-2">
     <div class="prose sm:prose-lg">
-      <h1 class="mb-1">Blog</h1>
-      <small>Posts {lowerBound}-{upperBound} of {data.total}</small>
+      <h1>Blog</h1>
     </div>
     <a class="link text-lg" href="/blog/category">All blog categories</a>
   </div>
+  <div class="prose sm:prose-lg mb-8">
+    <small>Posts {lowerBound}-{upperBound} of {data.total}</small>
+  </div>
+
   <Pagination currentPage={data.page} total={data.total} perPage={postsPerPage} />
   <PostsList posts={data.posts} />
   <Pagination currentPage={data.page} total={data.total} perPage={postsPerPage} />
