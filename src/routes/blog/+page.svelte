@@ -6,6 +6,8 @@
 
   const { data } = $props()
   const { posts, total } = await fetchPosts()
+
+  const upperBound = $derived(Math.min(postsPerPage, total))
 </script>
 
 <svelte:head>
@@ -20,11 +22,14 @@
   <meta property="twitter:image" content="{data.baseUrl}/og.png" />
 </svelte:head>
 
-<div class="flex justify-between items-center mb-12">
+<div class="flex justify-between items-center mb-2">
   <div class="prose sm:prose-lg">
     <h1>Blog</h1>
   </div>
   <a class="link text-lg" href="/blog/category">All blog categories</a>
+</div>
+<div class="prose sm:prose-lg mb-8">
+  <small>Posts {1}-{upperBound} of {total}</small>
 </div>
 
 <PostsList {posts} />

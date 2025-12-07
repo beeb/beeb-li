@@ -5,7 +5,7 @@
   const { ...allProps } = $props()
 </script>
 
-<ul {...allProps}>
+<ul {...allProps} role="navigation">
   <li>
     <a href="/" class:menu-active={(page.route.id ?? '') === '/'}> Home </a>
   </li>
