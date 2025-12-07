@@ -206,10 +206,14 @@ I tested the algorithm on two different source files:
   **126 byte offsets** of interest in the file;
 - The second "long" file with 1400 lines of code, which contains 42 `Definition` items and **426 byte offsets**.
 
+<div class="overflow-x-auto">
+
 | Implementation   | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] |
 | ---------------- | ------------ | ----------- | --------- | ------------ |
 | Baseline (short) | 21.42        | 21.69       | 22.27     | 35.39        |
 | Baseline (long)  | 138.2        | 140.3       | 146.4     | 255          |
+
+</div>
 
 ## Optimized `advance`
 
