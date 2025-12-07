@@ -19,7 +19,7 @@
 </script>
 
 {#if totalPages > 1 && currentPage <= totalPages && currentPage > 0}
-  <div class="my-8 flex flex-wrap items-center justify-center">
+  <div class="my-8 flex flex-wrap items-center justify-center" role="navigation" aria-label="Pagination Navigation">
     <div class="join">
       <a
         class="join-item btn"
