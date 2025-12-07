@@ -264,10 +264,14 @@ impl TextIndex {
 
 This simple change yields a decent speedup versus the baseline already:
 
+<div class="overflow-x-auto">
+
 | Implementation         | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] | Speedup vs. baseline |
 | ---------------------- | ------------ | ----------- | --------- | ------------ | -------------------- |
 | Better advance (short) | 16.54        | 16.85       | 17.42     | 43.82        | 1.29x                |
 | Better advance (long)  | 100.6        | 102.1       | 104       | 126.9        | 1.37x                |
+
+</div>
 
 <Image
   src={shadow}
@@ -381,10 +385,14 @@ fn populate(text_indices: &[TextIndex], definitions: &mut Vec<Definition>) {
 This little maneuver further improves the performance, albeit more for the small file. This is probably due to the
 overhead of sorting the larger offsets array.
 
+<div class="overflow-x-auto">
+
 | Implementation   | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] | Speedup vs. previous | Speedup vs. baseline |
 | ---------------- | ------------ | ----------- | --------- | ------------ | -------------------- | -------------------- |
 | Only Vec (short) | 10.58        | 10.63       | 10.9      | 21.85        | 1.59x                | 2.04x                |
 | Only Vec (long)  | 82.65        | 83.08       | 86.94     | 152.9        | 1.23x                | 1.69x                |
+
+</div>
 
 ## SIMDid You Say ASCII?
 
@@ -587,14 +595,20 @@ fn gather_text_indices(source: &str, offsets: &[usize]) -> Vec<TextIndex> {
 
 The numbers are in, and they look great:
 
+<div class="overflow-x-auto">
+
 | Implementation | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] | Speedup vs. previous | Speedup vs. baseline |
 | -------------- | ------------ | ----------- | --------- | ------------ | -------------------- | -------------------- |
 | SIMD (short)   | 1.951        | 1.972       | 2.036     | 6.321        | 5.39x                | 11.00x               |
 | SIMD (long)    | 12.74        | 12.82       | 13.24     | 26.36        | 6.48x                | 10.94x               |
 
+</div>
+
 ## Final Performance
 
 Here is the final comparison between the baseline and each of the optimization steps:
+
+<div class="overflow-x-auto">
 
 | Short file             | Median [µs] | Speedup vs. baseline |
 | ---------------------- | ----------- | -------------------- |
@@ -609,6 +623,8 @@ Here is the final comparison between the baseline and each of the optimization s
 | Better advance (long) | 102.1       | 1.37x                |
 | Only Vec (long)       | 83.08       | 1.69x                |
 | SIMD (long)           | 12.82       | 10.94x               |
+
+</div>
 
 With all these steps, we managed to improve the speed of the algorithm by 11x! 😎
 
