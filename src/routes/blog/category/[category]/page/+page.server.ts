@@ -1,8 +1,9 @@
 import { redirect } from '@sveltejs/kit'
-import type { PageServerLoad } from './$types'
+import type { EntryGenerator, PageServerLoad } from './$types'
 import { fetchCategories } from '$lib/posts'
 
-export const entries = async () => {
+// for page crawling
+export const entries: EntryGenerator = async () => {
 	const categories = await fetchCategories()
 	return [...categories].map(([c, _]) => ({ category: c }))
 }

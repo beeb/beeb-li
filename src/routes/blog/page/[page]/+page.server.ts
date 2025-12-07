@@ -1,9 +1,10 @@
 import { fetchPosts } from '$lib/posts'
 import { postsPerPage } from '$lib/config'
 import { error, redirect } from '@sveltejs/kit'
-import type { PageServerLoad } from './$types'
+import type { EntryGenerator, PageServerLoad } from './$types'
 
-export const entries = async () => {
+// for page crawling
+export const entries: EntryGenerator = async () => {
 	const { total } = await fetchPosts({ limit: -1 })
 	const totalPages = Math.ceil(total / postsPerPage)
 	return Array.from({ length: totalPages }, (_, i) => ({ page: `${i + 1}` }))
