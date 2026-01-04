@@ -84,6 +84,17 @@ const config = {
 									pre(node) {
 										node.properties.dataLanguage = lang
 									},
+									root(node) {
+										// Wrap the pre element in a div with class="relative"
+										node.children = [
+											{
+												type: 'element',
+												tagName: 'div',
+												properties: { class: 'relative' },
+												children: node.children,
+											},
+										]
+									},
 								},
 							],
 						}),

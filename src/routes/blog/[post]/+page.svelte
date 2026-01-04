@@ -14,16 +14,13 @@
       wrapper.className = 'relative'
       node.parentNode?.insertBefore(wrapper, node)
       wrapper.appendChild(node)
-
-      if (node.offsetHeight >= 70) {
-        node.classList.add('tall')
-      }
+      const smallPre = (node as HTMLPreElement).offsetHeight < 70
 
       mount(CopyButton, {
         target: wrapper,
         props: {
           content: node.textContent ?? '',
-          class: 'absolute top-2 right-2 btn-outline btn-square text-base-content!', // requires <pre> to have position: relative;
+          class: `absolute ${smallPre ? 'top-2 right-16' : 'top-4 right-4'} btn-outline btn-square text-base-content!`, // requires <pre> to have position: relative;
         },
       })
     }
