@@ -1,6 +1,6 @@
 ---
-title: Fish Tips & Tricks
-date: 2026-01-04T12:00:00Z
+title: Fish Shell Tips & Tricks
+date: 2026-01-04T21:03:00Z
 categories:
   - fish
   - shell
@@ -22,13 +22,14 @@ excerpt: >
   import lastCommand from './fish-shell-tips-and-tricks/last-command.cast?url'
   import sudo from './fish-shell-tips-and-tricks/sudo.cast?url'
   import open from './fish-shell-tips-and-tricks/open.cast?url'
+  import abbr from './fish-shell-tips-and-tricks/abbr.cast?url'
 </script>
 
 ## Contents
 
 ## Introduction
 
-I recently watched a [video by Dreams of Code](https://www.youtube.com/watch?v=3fVAtaGhUyU) which explains nice tips and
+I recently watched a [video by Dreams of Code](https://www.youtube.com/watch?v=3fVAtaGhUyU) which presents nice tips and
 tricks that can be used in the popular [`zsh` shell](https://www.zsh.org/). Since I use [`fish`](https://fishshell.com/)
 instead, I figured it would be a good opportunity to transfer some of those tips over, learn a bit myself, and hopefully
 help you as well.
@@ -74,8 +75,7 @@ abbr -a !! --position anywhere --function last_history_item
 
 <Asciinema url={lastCommand} fallback="https://asciinema.org/a/j124k6CJMKcUp5unlIkx2g5cc" cols={110} rows={11} loop={3} />
 <ChatNote>
-The huge advantage of abbreviations is that they automatically expand when you hit the space key, so they are not
-"blind" and allow you to inspect the command before committing.
+The huge advantage of abbreviations is that they automatically expand when you hit the space key or enter key, so they are not "blind" and allow you to inspect the command before committing.
 We'll go into more details about the <code>abbr</code> command in a later section of this article.
 </ChatNote>
 
@@ -153,12 +153,83 @@ command!
 
 ## Abbreviations (for Commands, Arguments, Paths)
 
+[Abbreviations](https://fishshell.com/docs/current/cmds/abbr.html) are one of the best features in `fish`. Unlike
+aliases, they expand to show their content, thus enabling customization of the command, adding parameters and so on.
+
+Aliases can be forced to only resolve when they are in command position (first word) or anywhere in the line.
+
+This enables some cool features, inspired by the aforementioned video.
+
+### Pipe Suffixes
+
+Since abbreviations can be globally usable anywhere in a command, they can be used to add suffixes to command to pipe
+their standard output or errors to `/dev/null`.
+
+```fish
+abbr -a NE --position anywhere -- "2>/dev/null"
+abbr -a DN --position anywhere -- "> /dev/null"
+abbr -a NUL --position anywhere -- ">/dev/null 2>&1"
+```
+
+### Long Commands
+
+Of course, long commands can be shortened nicely:
+
+```fish
+abbr -a gco -- "git checkout"
+abbr -a gaa -- "git add --all"
+abbr -a gba -- "git branch -a"
+```
+
+### Frequently Used Directories
+
+It can also be useful for bookmarks:
+
+```fish
+abbr -a ~pr -- "cd ~/my-projects/best-project"
+```
+
+However, much like Dreams of Code, I prefer to use [`zoxide`](https://github.com/ajeetdsouza/zoxide) to navigate
+directories, so much so that I have it aliased to `cd`.
+
 ### Setting the Cursor Position
 
-## Batch Moving Files (not with `fish`)
+Even more powerful, it's possible to indicate where the cursor should be position after expansion:
+
+```fish
+abbr -a gcam --set-cursor -- 'git add --all && git commit -am "%"'
+```
+
+The `%` symbols is the default marker for the cursor position (which is used if we don't specify another marker with
+`--set-cursor=MARKER`).
+
+<Asciinema url={abbr} fallback="https://asciinema.org/a/Z3KMXVNhcfh3nNgYztnMlpshs" cols={110} rows={11} loop={3} />
 
 ## Clearing the Screen (Keeping the Buffer)
 
+Sometimes, it's useful to clear the screen while keeping whatever was already written in the command prompt. The default
+binding for this is <kbd class="kbd">ctrl-l</kbd>. In `zsh`, it seems this requires some widget scripting.
+
 ## Copy and Paste
 
-## Bonus: Navigation History
+There are many options to copy and paste parts of the command buffer to the system clipboard or `fish`'s pasteboard
+which is ominously called [the Kill Ring](https://fishshell.com/docs/current/interactive.html#killring).
+
+The one I use the most is to copy the whole content of the buffer into the system clipboard, which is easy enough with
+the <kbd class="kbd">ctrl-x</kbd> shortcut. To paste, a simple <kbd class="kbd">ctrl-v</kbd> does the trick.
+
+<kbd class="kbd">ctrl-k</kbd> puts everything from the cursor position until the end of the line into the Kill Ring,
+which can then be pasted with <kbd class="kbd">ctrl-y</kbd> (the key stands for "yank", apparently a heritage of the
+Emacs edition mode). Since the pasteboard is a ring, we can put multiple things in there, and then rotate between them
+in reverse order, <strong>after pasting</strong>, with <kbd class="kbd">alt-y</kbd> (yank-pop).
+
+## Bonus: Directory History
+
+As a bonus, I just found out about the directory history, which enables navigation to previously visited folders with
+the <kbd class="kbd">alt-left</kbd> shortcut (when the command line is empty). Similarly, one can go forward in the
+history with <kbd class="kbd">alt-right</kbd>. A game-changer when switching between two projects frequently!
+
+## Conclusion
+
+I hope you found something useful in this article. Thanks to [Dreams of Code](https://www.youtube.com/@dreamsofcode) for
+inspiring this article. Until next time!
