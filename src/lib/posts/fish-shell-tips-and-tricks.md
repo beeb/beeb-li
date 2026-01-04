@@ -4,11 +4,12 @@ date: 2026-01-04T12:00:00Z
 categories:
   - fish
   - shell
+  - linux
   - tutorial
   - tips
-coverImage: false
-coverCredits: Photo by .. on Unsplash
-coverAlt: Alt
+coverImage: true
+coverCredits: Photo by Pratik Patel on Unsplash
+coverAlt: A picture of an orange shell from some marine animal, on a black sand beach. The sea can be seen in the background, blurry and desaturated, with some rocks delimiting the other side of a creek.
 excerpt: >
   A collection of tips and tricks for fish shell I wished I knew about a long time ago.
 ---
@@ -17,9 +18,10 @@ excerpt: >
   import Asciinema from "$lib/components/Asciinema.svelte"
   import Image from '$lib/components/Image.svelte'
   import ChatNote from '$lib/components/ChatNote.svelte'
-  import editBuffer from './fish-tips-and-tricks/edit-buffer.cast?url'
-  import lastCommand from './fish-tips-and-tricks/last-command.cast?url'
-  import sudo from './fish-tips-and-tricks/sudo.cast?url'
+  import editBuffer from './fish-shell-tips-and-tricks/edit-buffer.cast?url'
+  import lastCommand from './fish-shell-tips-and-tricks/last-command.cast?url'
+  import sudo from './fish-shell-tips-and-tricks/sudo.cast?url'
+  import open from './fish-shell-tips-and-tricks/open.cast?url'
 </script>
 
 ## Contents
@@ -57,7 +59,7 @@ The `redo` command is bound to <kbd class="kbd">ctrl-r</kbd> by default, but sin
 bind ctrl-shift-Z redo
 ```
 
-## Bash's `!!` for Last Command
+## `!!` for Last Command
 
 In `bash`, there's a convenient alias `!!` to reference the content of the previous command that was run. The same is
 available in `zsh` but there is no equivalent (by default) in `fish`. However, it's trivial to implement it with a
@@ -70,12 +72,12 @@ end
 abbr -a !! --position anywhere --function last_history_item
 ```
 
+<Asciinema url={lastCommand} fallback="https://asciinema.org/a/j124k6CJMKcUp5unlIkx2g5cc" cols={110} rows={11} loop={3} />
+<ChatNote>
 The huge advantage of abbreviations is that they automatically expand when you hit the space key, so they are not
 "blind" and allow you to inspect the command before committing.
-
-<Asciinema url={lastCommand} fallback="https://asciinema.org/a/j124k6CJMKcUp5unlIkx2g5cc" cols={110} rows={11} loop={3} />
-
-We'll go into more details about the `abbr` command in a later section of this article.
+We'll go into more details about the <code>abbr</code> command in a later section of this article.
+</ChatNote>
 
 ## Prepend `sudo`
 
@@ -103,6 +105,51 @@ end
 The function gets run any time the special `$PWD` environment variable changes.
 
 ## Open Files Based on Extension
+
+Another neat trick shown in the video is the ability to enter a filename (without a command before), and `zsh` applies
+some replacement template based on the file extension, allowing one to open the file with the desired binary
+automatically. The feature in question is called "suffix aliases".
+
+The best way to go about this is to create a function which is invoked when the entered command cannot be resolved.
+That's what the special `fish_command_not_found` function does. Here, I chose to view text files with
+[`bat`](https://github.com/sharkdp/bat) and open other files with different editors (those are just examples, in
+practice one might want to add more extensions and programs).
+
+```fish
+function fish_command_not_found
+  set -l filename $argv[1]
+  if test -f $filename
+    set -l ext (string split -r -m1 '.' -- $filename)[-1]
+    switch $ext
+      case rs js ts go py md txt
+        bat $filename
+      case json
+        cat $filename | jaq
+      case pdf
+        open $filename
+      case mp4 mkv avi
+        vlc $filename
+      case jpg png gif
+        feh $filename
+      case '*'
+        __fish_default_command_not_found_handler $argv
+    end
+  else
+    __fish_default_command_not_found_handler $argv
+  end
+end
+```
+
+First, the file extension is extracted out of the filename, and then a different program is chosen depending on the
+extension. This works because entering a filename (without a command preceding it) doesn't normally do anything in fish,
+resulting in a "command not found" error. We catch this error and add behavior in case we find that we have passed a
+valid file.
+
+<Asciinema url={open} fallback="https://asciinema.org/a/zWXcN8MBre7X5g9n7YlumAu3k" cols={110} rows={11} loop={3} />
+
+Unfortunately, I couldn't find an easy way to have arbitrary path autocompletion in first position (command position).
+So the full name must be written by hand. Let me know if you find a way to enable completions for files without a
+command!
 
 ## Abbreviations (for Commands, Arguments, Paths)
 
