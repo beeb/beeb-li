@@ -1,6 +1,6 @@
 ---
 title: Fish Shell Tips & Tricks
-date: 2026-01-04T21:03:00Z
+date: 2026-01-04T21:34:00Z
 categories:
   - fish
   - shell
