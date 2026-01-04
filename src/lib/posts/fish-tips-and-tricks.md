@@ -18,6 +18,8 @@ excerpt: >
   import Image from '$lib/components/Image.svelte'
   import ChatNote from '$lib/components/ChatNote.svelte'
   import editBuffer from './fish-tips-and-tricks/edit-buffer.cast?url'
+  import lastCommand from './fish-tips-and-tricks/last-command.cast?url'
+  import sudo from './fish-tips-and-tricks/sudo.cast?url'
 </script>
 
 ## Contents
@@ -57,7 +59,35 @@ bind ctrl-shift-Z redo
 
 ## Bash's `!!` for Last Command
 
-## Prepend `sudo` (or `doas`)
+In `bash`, there's a convenient alias `!!` to reference the content of the previous command that was run. The same is
+available in `zsh` but there is no equivalent (by default) in `fish`. However, it's trivial to implement it with a
+custom function and associated [abbreviation](https://fishshell.com/docs/current/cmds/abbr.html):
+
+```fish
+function last_history_item
+  echo $history[1]
+end
+abbr -a !! --position anywhere --function last_history_item
+```
+
+The huge advantage of abbreviations is that they automatically expand when you hit the space key, so they are not
+"blind" and allow you to inspect the command before committing.
+
+<Asciinema url={lastCommand} fallback="https://asciinema.org/a/j124k6CJMKcUp5unlIkx2g5cc" cols={110} rows={11} loop={3} />
+
+We'll go into more details about the `abbr` command in a later section of this article.
+
+## Prepend `sudo`
+
+In the video by Dreams of Code, an annoyance that is mentioned is having to re-type a command which was run without
+`sudo` but required it. The proposed solution is to type `sudo !!` to invoke the last command with `sudo`.
+
+In `fish` however, there's a better way! The built-in shortcut <kbd class="kbd">alt-s</kbd> preprends the current
+command with `sudo`, `doas`, `please` or `run0` as available. This can even be combined with the previous tip, by typing
+`!!` followed by <kbd class="kbd">alt-s</kbd> to re-run the last command. Alternatively, bringing up the last history's
+item with the up arrow before hitting the shortcut also works.
+
+<Asciinema url={sudo} fallback="https://asciinema.org/a/m7REJTArn2v2DHIFGZrUerLzq" cols={110} rows={11} loop={3} />
 
 ## Run Hook on Directory Navigation
 
