@@ -43,6 +43,18 @@ In the cast below, the buffer gets opened in [helix](https://helix-editor.com/),
 
 ## Undo and Redo Command Edits
 
+When modifying the command buffer inline, with shortcuts such as <kbd class="kbd">alt-backspace</kbd> (deleting a whole
+argument), it's sometimes convenient to be able to undo the last modification.
+
+`fish` has a default key assignment for this: <kbd class="kbd">ctrl-z</kbd>. You could have guessed that, right?
+
+The `redo` command is bound to <kbd class="kbd">ctrl-r</kbd> by default, but since I use that to open
+[`atuin`](https://atuin.sh/) (a really awesome tool, if you don't know!), I changed the binding:
+
+```fish
+bind ctrl-shift-Z redo
+```
+
 ## Bash's `!!` for Last Command
 
 ## Prepend `sudo` (or `doas`)
