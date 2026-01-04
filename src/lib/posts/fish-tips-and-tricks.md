@@ -91,6 +91,17 @@ item with the up arrow before hitting the shortcut also works.
 
 ## Run Hook on Directory Navigation
 
+`zsh` has `chpwd()`, a hook which runs some code any time the current directory is changed. A very similar thing can be
+done in `fish` with the following syntax:
+
+```fish
+function my_chpwd --on-variable PWD
+  echo "Changed to $PWD"
+end
+```
+
+The function gets run any time the special `$PWD` environment variable changes.
+
 ## Open Files Based on Extension
 
 ## Abbreviations (for Commands, Arguments, Paths)
