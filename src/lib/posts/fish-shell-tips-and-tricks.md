@@ -11,7 +11,7 @@ coverImage: true
 coverCredits: Photo by Pratik Patel on Unsplash
 coverAlt: A picture of an orange shell from some marine animal, on a black sand beach. The sea can be seen in the background, blurry and desaturated, with some rocks delimiting the other side of a creek.
 excerpt: >
-  A collection of tips and tricks for fish shell I wished I knew about a long time ago.
+  A collection of tips and tricks for the fish shell I wish I had known about a long time ago.
 ---
 
 <script lang="ts">
@@ -29,26 +29,26 @@ excerpt: >
 
 ## Introduction
 
-I recently watched a [video by Dreams of Code](https://www.youtube.com/watch?v=3fVAtaGhUyU) which presents nice tips and
-tricks that can be used in the popular [`zsh` shell](https://www.zsh.org/). Since I use [`fish`](https://fishshell.com/)
-instead, I figured it would be a good opportunity to transfer some of those tips over, learn a bit myself, and hopefully
-help you as well.
+I recently watched a [video by Dreams of Code](https://www.youtube.com/watch?v=3fVAtaGhUyU), which presents nice tips
+and tricks that can be used in the popular [`zsh` shell](https://www.zsh.org/). Since I use
+[`fish`](https://fishshell.com/) instead, I figured it would be a good opportunity to transfer some of those tips over,
+learn a bit myself, and hopefully help you as well.
 
-This article will not describe the `zsh` tips (or only briefly), instead I invite you to watch the video linked above.
+This article will not describe the `zsh` tips (or only briefly); instead, I invite you to watch the video linked above.
 They have all been transposed to `fish` in the sections below (and some more).
 
 ## Editing the Command Buffer
 
-Similar to `zsh`'s `edit-command-buffer` widget (which must be bound manually), `fish` allows to edit the command buffer
-in your configured `$VISUAL` or `$EDITOR` tool with the default keybinding <kbd class="kbd">alt-e</kbd>.
+Similar to `zsh`'s `edit-command-buffer` widget (which must be bound manually), `fish` allows one to edit the command
+buffer in your configured `$VISUAL` or `$EDITOR` tool with the default keybinding <kbd class="kbd">alt-e</kbd>.
 
-In the cast below, the buffer gets opened in [helix](https://helix-editor.com/), my modal editor of choice!
+In the cast below, the buffer opens in [helix](https://helix-editor.com/), my modal editor of choice!
 
 <Asciinema url={editBuffer} fallback="https://asciinema.org/a/m7mrUL9LmRoz2AymjVN1DY4LB" cols={110} rows={11} loop={3} />
 
 ## Undo and Redo Command Edits
 
-When modifying the command buffer inline, with shortcuts such as <kbd class="kbd">alt-backspace</kbd> (deleting a whole
+When modifying the command buffer inline with shortcuts such as <kbd class="kbd">alt-backspace</kbd> (deleting a whole
 argument), it's sometimes convenient to be able to undo the last modification.
 
 `fish` has a default key assignment for this: <kbd class="kbd">ctrl-z</kbd>. You could have guessed that, right?
@@ -63,7 +63,7 @@ bind ctrl-shift-Z redo
 ## `!!` for Last Command
 
 In `bash`, there's a convenient alias `!!` to reference the content of the previous command that was run. The same is
-available in `zsh` but there is no equivalent (by default) in `fish`. However, it's trivial to implement it with a
+available in `zsh`, but there is no equivalent (by default) in `fish`. However, it's trivial to implement it with a
 custom function and associated [abbreviation](https://fishshell.com/docs/current/cmds/abbr.html):
 
 ```fish
@@ -75,25 +75,26 @@ abbr -a !! --position anywhere --function last_history_item
 
 <Asciinema url={lastCommand} fallback="https://asciinema.org/a/j124k6CJMKcUp5unlIkx2g5cc" cols={110} rows={11} loop={3} />
 <ChatNote>
-The huge advantage of abbreviations is that they automatically expand when you hit the space key or enter key, so they are not "blind" and allow you to inspect the command before committing.
+The huge advantage of abbreviations is that they automatically expand when you hit the "space" or "enter" key, so they
+are not "blind" and allow you to inspect the command before committing.
 We'll go into more details about the <code>abbr</code> command in a later section of this article.
 </ChatNote>
 
 ## Prepend `sudo`
 
-In the video by Dreams of Code, an annoyance that is mentioned is having to re-type a command which was run without
-`sudo` but required it. The proposed solution is to type `sudo !!` to invoke the last command with `sudo`.
+In the video by Dreams of Code, an annoyance mentioned is having to retype a command that was run without `sudo` but
+required it. The proposed solution is to type `sudo !!` to invoke the last command with `sudo`.
 
-In `fish` however, there's a better way! The built-in shortcut <kbd class="kbd">alt-s</kbd> preprends the current
-command with `sudo`, `doas`, `please` or `run0` as available. This can even be combined with the previous tip, by typing
-`!!` followed by <kbd class="kbd">alt-s</kbd> to re-run the last command. Alternatively, bringing up the last history's
-item with the up arrow before hitting the shortcut also works.
+In `fish`, however, there's a better way! The built-in shortcut <kbd class="kbd">alt-s</kbd> prepends the current
+command with `sudo`, `doas`, `please`, or `run0`, as available. This can even be combined with the previous tip by
+typing `!!` followed by <kbd class="kbd">alt-s</kbd> to re-run the last command. Alternatively, bringing up the last
+history item with the up arrow before hitting the shortcut also works.
 
 <Asciinema url={sudo} fallback="https://asciinema.org/a/m7REJTArn2v2DHIFGZrUerLzq" cols={110} rows={11} loop={3} />
 
 ## Run Hook on Directory Navigation
 
-`zsh` has `chpwd()`, a hook which runs some code any time the current directory is changed. A very similar thing can be
+`zsh` has `chpwd()`, a hook that runs some code any time the current directory is changed. A very similar thing can be
 done in `fish` with the following syntax:
 
 ```fish
@@ -102,7 +103,9 @@ function my_chpwd --on-variable PWD
 end
 ```
 
-The function gets run any time the special `$PWD` environment variable changes.
+The function runs any time the special `$PWD` environment variable changes. In general however, I prefer to rely on
+[`direnv`](https://direnv.net/) for that purpose. That way, the commands to run are defined in a `.envrc` file which can
+be different for each directory.
 
 ## Open Files Based on Extension
 
@@ -110,10 +113,10 @@ Another neat trick shown in the video is the ability to enter a filename (withou
 some replacement template based on the file extension, allowing one to open the file with the desired binary
 automatically. The feature in question is called "suffix aliases".
 
-The best way to go about this is to create a function which is invoked when the entered command cannot be resolved.
-That's what the special `fish_command_not_found` function does. Here, I chose to view text files with
-[`bat`](https://github.com/sharkdp/bat) and open other files with different editors (those are just examples, in
-practice one might want to add more extensions and programs).
+The best way to go about this is to create a function invoked when the entered command cannot be resolved. That's what
+the special `fish_command_not_found` function does. Here, I chose to view text files with
+[`bat`](https://github.com/sharkdp/bat) and open other files with different editors (those are just examples; in
+practice, you might want to add more extensions and programs).
 
 ```fish
 function fish_command_not_found
@@ -140,7 +143,7 @@ function fish_command_not_found
 end
 ```
 
-First, the file extension is extracted out of the filename, and then a different program is chosen depending on the
+First, the file extension is extracted from the filename, and then a different program is chosen depending on the
 extension. This works because entering a filename (without a command preceding it) doesn't normally do anything in fish,
 resulting in a "command not found" error. We catch this error and add behavior in case we find that we have passed a
 valid file.
@@ -154,16 +157,17 @@ command!
 ## Abbreviations (for Commands, Arguments, Paths)
 
 [Abbreviations](https://fishshell.com/docs/current/cmds/abbr.html) are one of the best features in `fish`. Unlike
-aliases, they expand to show their content, thus enabling customization of the command, adding parameters and so on.
+aliases, they expand to show their content, enabling customization of the command, adding parameters and so on.
 
-Aliases can be forced to only resolve when they are in command position (first word) or anywhere in the line.
+Aliases can be forced to resolve only when they are in command position (first word, which is the default) or anywhere
+in the line as we'll see below.
 
-This enables some cool features, inspired by the aforementioned video.
+This enables some cool features inspired by the aforementioned video.
 
 ### Pipe Suffixes
 
-Since abbreviations can be globally usable anywhere in a command, they can be used to add suffixes to command to pipe
-their standard output or errors to `/dev/null`.
+Since abbreviations can be usable anywhere in a command with `--position anywhere`, they can be used to add suffixes to
+commands to pipe their standard output or errors to `/dev/null`.
 
 ```fish
 abbr -a NE --position anywhere -- "2>/dev/null"
@@ -194,34 +198,34 @@ directories, so much so that I have it aliased to `cd`.
 
 ### Setting the Cursor Position
 
-Even more powerful, it's possible to indicate where the cursor should be position after expansion:
+Even more powerful, it's possible to indicate where the cursor should be positioned after expansion:
 
 ```fish
 abbr -a gcam --set-cursor -- 'git add --all && git commit -am "%"'
 ```
 
-The `%` symbols is the default marker for the cursor position (which is used if we don't specify another marker with
+The `%` symbol is the default marker for the cursor position (which is used if we don't specify another marker with
 `--set-cursor=MARKER`).
 
 <Asciinema url={abbr} fallback="https://asciinema.org/a/Z3KMXVNhcfh3nNgYztnMlpshs" cols={110} rows={11} loop={3} />
 
 ## Clearing the Screen (Keeping the Buffer)
 
-Sometimes, it's useful to clear the screen while keeping whatever was already written in the command prompt. The default
+Sometimes it's useful to clear the screen while keeping whatever was already written in the command prompt. The default
 binding for this is <kbd class="kbd">ctrl-l</kbd>. In `zsh`, it seems this requires some widget scripting.
 
 ## Copy and Paste
 
-There are many options to copy and paste parts of the command buffer to the system clipboard or `fish`'s pasteboard
+There are many options to copy and paste parts of the command buffer to the system clipboard or `fish`'s pasteboard,
 which is ominously called [the Kill Ring](https://fishshell.com/docs/current/interactive.html#killring).
 
-The one I use the most is to copy the whole content of the buffer into the system clipboard, which is easy enough with
+The one I use the most is copying the whole content of the buffer into the system clipboard, which is easy enough with
 the <kbd class="kbd">ctrl-x</kbd> shortcut. To paste, a simple <kbd class="kbd">ctrl-v</kbd> does the trick.
 
 <kbd class="kbd">ctrl-k</kbd> puts everything from the cursor position until the end of the line into the Kill Ring,
 which can then be pasted with <kbd class="kbd">ctrl-y</kbd> (the key stands for "yank", apparently a heritage of the
-Emacs edition mode). Since the pasteboard is a ring, we can put multiple things in there, and then rotate between them
-in reverse order, <strong>after pasting</strong>, with <kbd class="kbd">alt-y</kbd> (yank-pop).
+Emacs edition mode). Since the pasteboard is a ring, we can put multiple things in there and then rotate between them in
+reverse order, <strong>after pasting</strong>, with <kbd class="kbd">alt-y</kbd> (yank-pop).
 
 ## Bonus: Directory History
 
