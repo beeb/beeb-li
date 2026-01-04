@@ -14,6 +14,11 @@
       wrapper.className = 'relative'
       node.parentNode?.insertBefore(wrapper, node)
       wrapper.appendChild(node)
+
+      if (node.offsetHeight >= 70) {
+        node.classList.add('tall')
+      }
+
       mount(CopyButton, {
         target: wrapper,
         props: {
