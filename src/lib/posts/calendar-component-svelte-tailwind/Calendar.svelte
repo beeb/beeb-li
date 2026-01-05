@@ -2,7 +2,7 @@
   // A simple calendar component that displays the days of the month in a grid, with previous and next month buttons
 
   // polyfill for the `Intl.Locale` object, which does not provide `getWeekInfo` in some browsers
-  import '@formatjs/intl-locale/polyfill-force'
+  import '@formatjs/intl-locale/polyfill-force.js'
 
   interface Props {
     locale?: string

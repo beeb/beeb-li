@@ -16,7 +16,6 @@ excerpt: >
 
 <script lang="ts">
   import Asciinema from "$lib/components/Asciinema.svelte"
-  import Image from '$lib/components/Image.svelte'
   import ChatNote from '$lib/components/ChatNote.svelte'
   import editBuffer from './fish-shell-tips-and-tricks/edit-buffer.cast?url'
   import lastCommand from './fish-shell-tips-and-tricks/last-command.cast?url'
