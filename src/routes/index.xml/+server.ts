@@ -1,5 +1,6 @@
 import { fetchPosts } from '$lib/posts'
 import { siteDescription, siteTitle } from '$lib/config'
+import { escapeXml } from '$lib/utils'
 import type { RequestHandler } from '@sveltejs/kit'
 
 export const prerender = true
@@ -35,16 +36,16 @@ ${posts
 	.map(
 		(post) => `<entry>
 <id>${baseUrl}/blog/${post.slug}</id>
-<title>${post.title}</title>
+<title>${escapeXml(post.title)}</title>
 <link rel="alternate" type="text/html" href="${baseUrl}/blog/${post.slug}" />
-<summary>${post.excerpt}</summary>
+<summary>${escapeXml(post.excerpt)}</summary>
 <published>${new Date(post.date).toISOString()}</published>
 ${
 	post.updated
 		? `<updated>${new Date(post.updated).toISOString()}</updated>`
 		: `<updated>${new Date(post.date).toISOString()}</updated>`
 }
-${post.categories.map((category) => `<category term="${category}" />`).join('')}
+${post.categories.map((category) => `<category term="${escapeXml(category)}" />`).join('')}
 </entry>`,
 	)
 	.join('')}
