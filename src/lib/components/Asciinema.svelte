@@ -29,7 +29,7 @@
 {#if fallback}
   <noscript>
     <a href={fallback} target="_blank" title="Watch cast on asciinema.org">
-      <img src={`${fallback}.svg`} alt="Placeholder" />
+      <img src={`${fallback}.svg`} alt="A still image from an Asciinema terminal screencast" />
     </a>
   </noscript>
 {/if}
