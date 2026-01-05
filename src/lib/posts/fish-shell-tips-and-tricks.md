@@ -232,8 +232,10 @@ Since the pasteboard is a ring, we can put multiple things in there and then rot
 ## Bonus: Directory History
 
 As a bonus, I just found out about the directory history, which enables navigation to previously visited folders with
-the <Kbd seq="alt-←" /> shortcut (when the command line is empty). Similarly, one can go forward in the history with
-<Kbd seq="alt-→" />. A game-changer when switching between two projects frequently!
+the <Kbd seq="alt-←" /> shortcut (when the command line is empty).
+
+Similarly, one can go forward in the history with <Kbd seq="alt-→" />. A game-changer when switching between two
+projects frequently!
 
 ## Conclusion
 
