@@ -17,6 +17,7 @@ excerpt: >
 <script lang="ts">
   import Asciinema from "$lib/components/Asciinema.svelte"
   import ChatNote from '$lib/components/ChatNote.svelte'
+  import Kbd from "$lib/components/Kbd.svelte"
   import editBuffer from './fish-shell-tips-and-tricks/edit-buffer.cast?url'
   import lastCommand from './fish-shell-tips-and-tricks/last-command.cast?url'
   import sudo from './fish-shell-tips-and-tricks/sudo.cast?url'
@@ -39,7 +40,7 @@ They have all been transposed to `fish` in the sections below (and some more).
 ## Editing the Command Buffer
 
 Similar to `zsh`'s `edit-command-buffer` widget (which must be bound manually), `fish` allows one to edit the command
-buffer in your configured `$VISUAL` or `$EDITOR` tool with the default keybinding <kbd class="kbd">alt-e</kbd>.
+buffer in your configured `$VISUAL` or `$EDITOR` tool with the default keybinding <Kbd seq="alt-e" />.
 
 In the cast below, the buffer opens in [helix](https://helix-editor.com/), my modal editor of choice!
 
@@ -47,12 +48,12 @@ In the cast below, the buffer opens in [helix](https://helix-editor.com/), my mo
 
 ## Undo and Redo Command Edits
 
-When modifying the command buffer inline with shortcuts such as <kbd class="kbd">alt-backspace</kbd> (deleting a whole
-argument), it's sometimes convenient to be able to undo the last modification.
+When modifying the command buffer inline with shortcuts such as <Kbd seq="alt-backspace" /> (deleting a whole argument),
+it's sometimes convenient to be able to undo the last modification.
 
-`fish` has a default key assignment for this: <kbd class="kbd">ctrl-z</kbd>. You could have guessed that, right?
+`fish` has a default key assignment for this: <Kbd seq="ctrl-z" />. You could have guessed that, right?
 
-The `redo` command is bound to <kbd class="kbd">ctrl-r</kbd> by default, but since I use that to open
+The `redo` command is bound to <Kbd seq="ctrl-r" /> by default, but since I use that to open
 [`atuin`](https://atuin.sh/) (a really awesome tool, if you don't know!), I changed the binding:
 
 ```fish
@@ -73,6 +74,8 @@ abbr -a !! --position anywhere --function last_history_item
 ```
 
 <Asciinema url={lastCommand} fallback="https://asciinema.org/a/j124k6CJMKcUp5unlIkx2g5cc" cols={110} rows={11} loop={3} />
+&nbsp;
+
 <ChatNote>
 The huge advantage of abbreviations is that they automatically expand when you hit the "space" or "enter" key, so they
 are not "blind" and allow you to inspect the command before committing.
@@ -84,10 +87,10 @@ We'll go into more details about the <code>abbr</code> command in a later sectio
 In the video by Dreams of Code, an annoyance mentioned is having to retype a command that was run without `sudo` but
 required it. The proposed solution is to type `sudo !!` to invoke the last command with `sudo`.
 
-In `fish`, however, there's a better way! The built-in shortcut <kbd class="kbd">alt-s</kbd> prepends the current
-command with `sudo`, `doas`, `please`, or `run0`, as available. This can even be combined with the previous tip by
-typing `!!` followed by <kbd class="kbd">alt-s</kbd> to re-run the last command. Alternatively, bringing up the last
-history item with the up arrow before hitting the shortcut also works.
+In `fish`, however, there's a better way! The built-in shortcut <Kbd seq="alt-s" /> prepends the current command with
+`sudo`, `doas`, `please`, or `run0`, as available. This can even be combined with the previous tip by typing `!!`
+followed by <Kbd seq="alt-s" /> to re-run the last command. Alternatively, bringing up the last history item with the up
+arrow before hitting the shortcut also works.
 
 <Asciinema url={sudo} fallback="https://asciinema.org/a/m7REJTArn2v2DHIFGZrUerLzq" cols={110} rows={11} loop={3} />
 
@@ -211,7 +214,7 @@ The `%` symbol is the default marker for the cursor position (which is used if w
 ## Clearing the Screen (Keeping the Buffer)
 
 Sometimes it's useful to clear the screen while keeping whatever was already written in the command prompt. The default
-binding for this is <kbd class="kbd">ctrl-l</kbd>. In `zsh`, it seems this requires some widget scripting.
+binding for this is <Kbd seq="ctrl-l" />. In `zsh`, it seems this requires some widget scripting.
 
 ## Copy and Paste
 
@@ -219,18 +222,20 @@ There are many options to copy and paste parts of the command buffer to the syst
 which is ominously called [the Kill Ring](https://fishshell.com/docs/current/interactive.html#killring).
 
 The one I use the most is copying the whole content of the buffer into the system clipboard, which is easy enough with
-the <kbd class="kbd">ctrl-x</kbd> shortcut. To paste, a simple <kbd class="kbd">ctrl-v</kbd> does the trick.
+the <Kbd seq="ctrl-x" /> shortcut. To paste, a simple <Kbd seq="ctrl-v" /> does the trick.
 
-<kbd class="kbd">ctrl-k</kbd> puts everything from the cursor position until the end of the line into the Kill Ring,
-which can then be pasted with <kbd class="kbd">ctrl-y</kbd> (the key stands for "yank", apparently a heritage of the
-Emacs edition mode). Since the pasteboard is a ring, we can put multiple things in there and then rotate between them in
-reverse order, <strong>after pasting</strong>, with <kbd class="kbd">alt-y</kbd> (yank-pop).
+<Kbd seq="ctrl-k" /> puts everything from the cursor position until the end of the line into the Kill Ring, which can
+then be pasted with <Kbd seq="ctrl-y" /> (the key stands for "yank", apparently a heritage of the Emacs edition mode).
+Since the pasteboard is a ring, we can put multiple things in there and then rotate between them in reverse order,
+<strong>after pasting</strong>, with <Kbd seq="alt-y" /> (yank-pop).
 
 ## Bonus: Directory History
 
 As a bonus, I just found out about the directory history, which enables navigation to previously visited folders with
-the <kbd class="kbd">alt-left</kbd> shortcut (when the command line is empty). Similarly, one can go forward in the
-history with <kbd class="kbd">alt-right</kbd>. A game-changer when switching between two projects frequently!
+the <Kbd seq="alt-←" /> shortcut (when the command line is empty).
+
+Similarly, one can go forward in the history with <Kbd seq="alt-→" />. A game-changer when switching between two
+projects frequently!
 
 ## Conclusion
 
