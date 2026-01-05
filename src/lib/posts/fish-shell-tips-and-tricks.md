@@ -73,6 +73,8 @@ abbr -a !! --position anywhere --function last_history_item
 ```
 
 <Asciinema url={lastCommand} fallback="https://asciinema.org/a/j124k6CJMKcUp5unlIkx2g5cc" cols={110} rows={11} loop={3} />
+&nbsp;
+
 <ChatNote>
 The huge advantage of abbreviations is that they automatically expand when you hit the "space" or "enter" key, so they
 are not "blind" and allow you to inspect the command before committing.
