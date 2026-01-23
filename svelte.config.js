@@ -106,7 +106,7 @@ const config = {
 	],
 
 	kit: {
-		adapter: adapter({ pages: 'build' }),
+		adapter: adapter({ pages: 'public' }),
 		prerender: {
 			entries: ['*'],
 			handleHttpError: 'warn',
