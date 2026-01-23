@@ -19,6 +19,7 @@
             packages = with pkgs; [
               biome
               nodejs-slim
+              pagefind
               pnpm
               prettier
               typescript
