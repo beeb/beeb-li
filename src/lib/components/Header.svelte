@@ -21,20 +21,20 @@
 </div>
 <header class="navbar mb-8 px-0 min-h-20">
   <div class="navbar-start grow w-auto">
-    <div class="dropdown sm:hidden relative -left-4">
+    <div class="dropdown md:hidden relative -left-4">
       <div tabindex="0" role="button" class="btn btn-ghost text-lg" aria-label="Open dropdown menu">
         <Hamburger />
       </div>
       <Nav tabindex="0" class="menu menu-lg dropdown-content mt-3 z-1 p-2 shadow-sm bg-base-200 rounded-box w-52" />
     </div>
-    <a href="/" class="text-2xl sm:text-3xl text-primary font-extrabold inline-flex gap-2 items-center">
-      <Logo class="w-8 sm:w-10 shrink-0" />
+    <a href="/" class="text-2xl md:text-3xl text-primary font-extrabold inline-flex gap-2 items-center">
+      <Logo class="w-8 md:w-10 shrink-0" />
       {siteTitle}
     </a>
   </div>
-  <div class="navbar-end gap-4 w-auto">
+  <div class="navbar-end gap-2 w-auto">
     <ThemeSwitcher />
     <Search />
-    <Nav class="hidden sm:flex menu text-lg menu-horizontal p-0" />
+    <Nav class="hidden md:flex menu text-lg menu-horizontal p-0" />
   </div>
 </header>

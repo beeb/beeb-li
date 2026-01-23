@@ -28,7 +28,7 @@
 </script>
 
 <div class="dropdown dropdown-open dropdown-end">
-  <input type="text" placeholder="Search" bind:value={searchValue} class="input input-bordered" />
+  <input type="text" placeholder="Search" bind:value={searchValue} class="input input-bordered w-24 lg:w-40" />
   {#if searchValue}
     <div class="dropdown-content bg-base-100 rounded-box p-4 mt-2 z-1 w-100 m-w-full shadow-md">
       {#await searchResults}
