@@ -24,6 +24,7 @@
   $effect(() => {
     onNavigate(() => {
       searchValue = ''
+      showField = false
     })
     ;(async () => {
       pagefind = (await import(/* @vite-ignore */ `${origin}/pagefind/pagefind.js`)) as PagefindWrapper
