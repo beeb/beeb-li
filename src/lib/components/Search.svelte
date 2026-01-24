@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { Attachment } from 'svelte/attachments'
   import { onNavigate } from '$app/navigation'
   import SearchIcon from 'virtual:icons/mingcute/search-3-fill'
 
@@ -31,14 +30,9 @@
       pagefind.init()
     })()
   })
-
-  // unhide if JS is enabled
-  const unhideAttachment: Attachment = (element) => {
-    ;(element as HTMLElement).classList.remove('hidden')
-  }
 </script>
 
-<div class="hidden" {@attach unhideAttachment}>
+<div class="search-wrapper">
   <div class="md:hidden">
     <button
       type="button"
@@ -83,3 +77,12 @@
     </div>
   </div>
 </div>
+
+<noscript>
+  <!-- hide search component if JS is not enabled -->
+  <style>
+    .search-wrapper {
+      display: none;
+    }
+  </style>
+</noscript>
