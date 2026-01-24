@@ -47,7 +47,7 @@
   <meta property="article:published_time" content={data.meta.date} />
 </svelte:head>
 
-<article {@attach copyButtonAttachment}>
+<article {@attach copyButtonAttachment} data-pagefind-body>
   {#if data.meta.enhancedImage}
     <div class="mb-8 flex flex-col items-end gap-1">
       <figure
