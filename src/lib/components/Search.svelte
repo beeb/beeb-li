@@ -40,6 +40,9 @@
     <button
       type="button"
       class="btn btn-ghost"
+      aria-label="Toggle search"
+      aria-expanded={showField}
+      aria-controls="search-field"
       onclick={async () => {
         if (showField) {
           searchValue = ''
@@ -51,33 +54,56 @@
         }
       }}
     >
-      <SearchIcon />
+      <SearchIcon aria-hidden="true" />
     </button>
   </div>
   <div class="absolute top-12 right-0 md:static md:top-0">
-    <div class="dropdown dropdown-open dropdown-end md:block" class:hidden={!showField && searchValue === ''}>
+    <div
+      id="search-field"
+      class="dropdown dropdown-open dropdown-end md:block"
+      class:hidden={!showField && searchValue === ''}
+    >
       <label class="input input-bordered w-40 md:w-36 lg:w-40">
-        <SearchIcon />
-        <input type="search" placeholder="Search" bind:value={searchValue} bind:this={searchInput} />
+        <SearchIcon aria-hidden="true" />
+        <input
+          type="search"
+          placeholder="Search"
+          bind:value={searchValue}
+          bind:this={searchInput}
+          aria-label="Search"
+          aria-controls="search-results"
+          aria-autocomplete="list"
+        />
       </label>
       {#if searchValue}
         <div
+          id="search-results"
           class="dropdown-content bg-base-100 rounded-box p-4 mt-2 z-1 w-100 md:w-120 lg:w-160 max-w-[90vw] shadow-md"
+          role="region"
+          aria-live="polite"
+          aria-atomic="true"
         >
           {#await searchResults}
-            <div>loading...</div>
+            <div aria-label="Loading search results">Loading...</div>
           {:then results}
-            {#each results as result, i (result.url)}
-              <a href={result.url.replace('.html', '')} class="block">
-                <div class="flex flex-col gap-1">
-                  <h3>{result.meta.title}</h3>
-                  <div class="text-xs wrap-break-word">{@html result.excerpt}</div>
-                </div>
-              </a>
-              {#if i < results.length - 1}
-                <div class="divider"></div>
-              {/if}
-            {/each}
+            {#if results.length === 0}
+              <div>No results</div>
+            {:else}
+              <div class="sr-only" aria-live="polite">
+                {results.length} results found
+              </div>
+              {#each results as result, i (result.url)}
+                <a href={result.url.replace('.html', '')} class="block">
+                  <div class="flex flex-col gap-1">
+                    <h3>{result.meta.title}</h3>
+                    <div class="text-xs wrap-break-word">{@html result.excerpt}</div>
+                  </div>
+                </a>
+                {#if i < results.length - 1}
+                  <div class="divider my-2" aria-hidden="true"></div>
+                {/if}
+              {/each}
+            {/if}
           {/await}
         </div>
       {/if}
