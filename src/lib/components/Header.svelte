@@ -21,7 +21,7 @@
 </div>
 <header class="navbar mb-8 px-0 min-h-20">
   <div class="navbar-start grow w-auto">
-    <div class="dropdown md:hidden relative -left-4">
+    <div class="dropdown sm:hidden relative -left-4">
       <div tabindex="0" role="button" class="btn btn-ghost text-lg" aria-label="Open dropdown menu">
         <Hamburger />
       </div>
@@ -32,9 +32,9 @@
       {siteTitle}
     </a>
   </div>
-  <div class="navbar-end gap-2 w-auto">
+  <div class="navbar-end md:gap-2 w-auto relative left-4 sm:left-0">
     <ThemeSwitcher />
     <Search />
-    <Nav class="hidden md:flex menu text-lg menu-horizontal p-0" />
+    <Nav class="hidden sm:flex menu text-lg menu-horizontal p-0" />
   </div>
 </header>

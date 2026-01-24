@@ -34,7 +34,7 @@
   }
 </script>
 
-<label class="flex items-center cursor-pointer gap-2" aria-label="Switch Between Light and Dark Themes">
+<label class="flex items-center cursor-pointer gap-2 mr-2" aria-label="Switch Between Light and Dark Themes">
   <Moon />
   <input
     type="checkbox"
