@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { tick } from 'svelte'
   import { onNavigate } from '$app/navigation'
   import SearchIcon from 'virtual:icons/mingcute/search-3-fill'
 
@@ -20,6 +21,7 @@
   let showField = $state(false)
   let searchValue = $state('')
   let searchResults = $derived(fetchSearchResults(searchValue))
+  let searchInput: HTMLInputElement
 
   $effect(() => {
     onNavigate(() => {
@@ -38,11 +40,15 @@
     <button
       type="button"
       class="btn btn-ghost"
-      onclick={() => {
+      onclick={async () => {
         if (showField) {
           searchValue = ''
+          showField = false
+        } else {
+          showField = true
+          await tick()
+          searchInput?.focus()
         }
-        showField = !showField
       }}
     >
       <SearchIcon />
@@ -52,7 +58,7 @@
     <div class="dropdown dropdown-open dropdown-end md:block" class:hidden={!showField && searchValue === ''}>
       <label class="input input-bordered w-40 md:w-36 lg:w-40">
         <SearchIcon />
-        <input type="search" placeholder="Search" bind:value={searchValue} />
+        <input type="search" placeholder="Search" bind:value={searchValue} bind:this={searchInput} />
       </label>
       {#if searchValue}
         <div
