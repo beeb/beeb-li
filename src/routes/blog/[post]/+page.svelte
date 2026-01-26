@@ -14,7 +14,7 @@
       wrapper.className = 'relative'
       node.parentNode?.insertBefore(wrapper, node)
       wrapper.appendChild(node)
-      const smallPre = (node as HTMLPreElement).offsetHeight < 70
+      const smallPre = (node as HTMLPreElement).offsetHeight < 90
 
       mount(CopyButton, {
         target: wrapper,
