@@ -39,6 +39,11 @@
   background-color: var(--color-base-300);
 }
 
+::selection {
+  background: var(--color-accent);
+  color: white;
+}
+
 /* links in text */
 
 .prose :not(h1, h2, h3, h4, h5, h6) a,
@@ -148,11 +153,9 @@ abbr[title]:focus::after {
 }
 
 @theme {
-  --font-sans:
-    'TASA Orbiter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+  --font-sans: 'TASA Orbiter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     'Noto Color Emoji';
-  --font-mono:
-    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
 /* code highlighting */
