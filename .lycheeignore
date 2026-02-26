@@ -1,3 +1,4 @@
 http://localhost:8080/2015-03-31/functions/function/invocations
 .*sveltekit\.assets.*
 ^file://.*
+%7B
