@@ -1,8 +1,8 @@
 @import 'tailwindcss';
-@plugin '@tailwindcss/typography';
-@plugin 'daisyui';
+@plugin "@tailwindcss/typography";
+@plugin "daisyui";
 
-@plugin 'daisyui/theme' {
+@plugin "daisyui/theme" {
   name: 'light';
   --color-base-100: oklch(0.906 0.0117 264.51);
   --color-base-200: oklch(0.95 0.0087 264.52);
@@ -17,7 +17,7 @@
   --color-error: oklch(0.5505 0.2155 19.81);
 }
 
-@plugin 'daisyui/theme' {
+@plugin "daisyui/theme" {
   name: 'dark';
   default: true;
   --color-base-100: oklch(0.24 0.012 283.91);
@@ -67,23 +67,23 @@
 
 /* table of contents */
 
-h2#contents+ul {
+h2#contents + ul {
   @apply list-decimal;
 }
 
-h2#contents+ul a {
+h2#contents + ul a {
   @apply text-base-content font-normal;
 }
 
-h2#contents+ul ul {
+h2#contents + ul ul {
   @apply list-none my-0;
 }
 
-h2#contents+ul li {
+h2#contents + ul li {
   @apply my-1;
 }
 
-h2#contents+ul ul>li:last-child {
+h2#contents + ul ul > li:last-child {
   @apply mb-0;
 }
 
@@ -153,9 +153,11 @@ abbr[title]:focus::after {
 }
 
 @theme {
-  --font-sans: 'TASA Orbiter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+  --font-sans:
+    'TASA Orbiter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     'Noto Color Emoji';
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --font-mono:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
 /* code highlighting */
