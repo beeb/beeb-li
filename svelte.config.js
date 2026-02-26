@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-static'
+import adapter from '@sveltejs/adapter-vercel'
 import { h } from 'hastscript'
 import { escapeSvelte, mdsvex } from 'mdsvex'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
@@ -106,7 +106,7 @@ const config = {
 	],
 
 	kit: {
-		adapter: adapter({ pages: 'public' }),
+		adapter: adapter(),
 		prerender: {
 			entries: ['*'],
 			handleHttpError: 'warn',
