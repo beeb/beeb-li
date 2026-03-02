@@ -2,5 +2,16 @@
 	"trailingSlash": false,
 	"github": {
 		"silent": true
-	}
+	},
+	"headers": [
+		{
+			"source": "/(index|rss).xml",
+			"headers": [
+				{
+					"key": "Access-Control-Allow-Origin",
+					"value": "*"
+				}
+			]
+		}
+	]
 }
