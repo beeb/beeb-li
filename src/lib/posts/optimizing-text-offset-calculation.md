@@ -1,6 +1,7 @@
 ---
 title: Optimizing Text Offset Calculations
 date: 2025-10-18T19:46:00Z
+updated: 2026-03-14T13:25:00Z
 categories:
   - rust
   - simd
@@ -56,9 +57,17 @@ contract, function, or struct definition). Contained inside this type is a sourc
 overall item, as well as the span for each parameter, member, or return value for this item.
 
 The goal is to augment these byte offsets with the other fields in `TextIndex`, that is the **line**, **column** and
-**UTF-16 offset** (number of Unicode code units before that position in the text when the text is encoded as UTF-16).
-The UTF-8 offset is simply the number of bytes since the start of the text (which is guaranteed to be valid UTF-8 in
-Rust), so we have that already from the parser's output.
+**UTF-16 offset** (number of Unicode code units before that position in the text when the text is encoded as
+UTF-16[^1]). The UTF-8 offset is simply the number of bytes since the start of the text (which is guaranteed to be valid
+UTF-8 in Rust), so we have that already from the parser's output.
+
+<ChatNote>
+<h5 class="font-bold">Updated 2026-03-14</h5>
+Because the LSP spec actually expects text positions as the line number and column offset, we need the UTF-16 offset
+from the start of the line. To make language server integrations easier, this is what
+<a href="https://github.com/beeb/lintspec/blob/643b8d59fb9bb15fe2aaa6ccb4a2702152d97f08/crates/lintspec-core/src/textindex.rs#L17-L34">lintspec now provides</a>. The rest of this article has not been updated to reflect this,
+but the working principle remains the same.
+</ChatNote>
 
 Here are the steps:
 
@@ -646,3 +655,7 @@ Until next time!
 *[ASCII]: American Standard Code for Information Interchange
 
 *[SIMD]: Single Instruction, Multiple Data
+
+[^1]: Because the LSP spec actually expects text positions as the line number and column offset, we actually need the
+    UTF-16 offset from the start of the line. This is what
+    [lintspec now provides](https://github.com/beeb/lintspec/blob/643b8d59fb9bb15fe2aaa6ccb4a2702152d97f08/crates/lintspec-core/src/textindex.rs#L17-L34).
