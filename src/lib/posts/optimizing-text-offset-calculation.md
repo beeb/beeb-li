@@ -655,7 +655,3 @@ Until next time!
 *[ASCII]: American Standard Code for Information Interchange
 
 *[SIMD]: Single Instruction, Multiple Data
-
-[^1]: Because the LSP spec actually expects text positions as the line number and column offset, we actually need the
-    UTF-16 offset from the start of the line. This is what
-    [lintspec now provides](https://github.com/beeb/lintspec/blob/643b8d59fb9bb15fe2aaa6ccb4a2702152d97f08/crates/lintspec-core/src/textindex.rs#L17-L34).
