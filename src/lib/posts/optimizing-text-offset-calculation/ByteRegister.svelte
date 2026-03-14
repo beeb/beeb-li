@@ -14,13 +14,13 @@
   const { cells, label }: Props = $props()
 </script>
 
-<div class="flex items-center justify-center gap-3 overflow-x-auto py-1.5 font-mono text-xs not-prose">
+<div class="flex items-center justify-center gap-3 py-1.5 font-mono text-xs not-prose">
   <span class="w-24 shrink-0 text-right">{label}</span>
-  <div class="flex gap-1 flex-nowrap">
+  <div class="flex gap-1 flex-nowrap overflow-x-auto">
     {#each cells as cell}
       <div
         class={[
-          'flex items-center justify-center w-10 h-9 rounded-sm border border-base-content/15 bg-base-200 text-base-content',
+          'flex items-center justify-center w-10 h-9 shrink-0 rounded-sm border border-base-content/15 bg-base-200 text-base-content',
           cell.variant,
         ]}
       >
