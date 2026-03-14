@@ -1,7 +1,7 @@
 ---
 title: Optimizing Text Offset Calculations
 date: 2025-10-18T19:46:00Z
-updated: 2026-03-14T13:25:00Z
+updated: 2026-03-14T14:40:00Z
 categories:
   - rust
   - simd
@@ -18,6 +18,7 @@ excerpt: >
   import shadow from './optimizing-text-offset-calculation/shadow.jpg?enhanced&imgSizes=true'
   import Image from '$lib/components/Image.svelte'
   import ChatNote from '$lib/components/ChatNote.svelte'
+  import ByteRegister from './optimizing-text-offset-calculation/ByteRegister.svelte'
 </script>
 
 ## Contents
@@ -449,18 +450,86 @@ expects `i8`, we had to cast those into signed integers, which maps values great
 negative range. How convenient, to check if the bytes are non-ASCII, we simply need to check if the corresponding `i8`
 value is negative!
 
+Take the string `hello\r\ncafé` as an example. In UTF-8, the `é` character encodes as two bytes (`0xC3` and `0xA9`),
+both of which are greater than 127. When reinterpreted as `i8`, they become negative (we only show 12 bytes here for
+compactness, but the actual registers contain 32):
+
+<ByteRegister label="as u8" cells={[ { label: 'h' }, { label: 'e' }, { label: 'l' }, { label: 'l' }, { label: 'o' }, {
+label: '\\r', variant: 'newline' }, { label: '\\n', variant: 'newline' }, { label: 'c' }, { label: 'a' }, { label: 'f'
+}, { label: '0xC3', variant: 'nonascii' }, { label: '0xA9', variant: 'nonascii' }, ]} />
+
+<ByteRegister label="as i8" cells={[ { label: '104' }, { label: '101' }, { label: '108' }, { label: '108' }, { label:
+'111' }, { label: '13' }, { label: '10' }, { label: '99' }, { label: '97' }, { label: '102' }, { label: '−61', variant:
+'negative' }, { label: '−87', variant: 'negative' }, ]} />
+
 We thus put all zeroes into another one of those registers and perform a `simd_lt` operation, which will compare each
 byte of the first operand with the bytes in the second, and set the corresponding byte in the result to `0xFF` if lower,
 or `0x00` if equal or higher. At this point, our result is still a `i8x32`, but we can convert that to a bit mask with
 yet another special SIMD instruction. In `wide`, it's as easy as invoking `to_bitmask`. This will map each of the bytes
 in the result to a _bit_ in a regular 32-bit integer.
 
-We then do the same to check if some of the input bytes are equal to `\n` or `\r`, and merge all 3 masks with a simple
-bit-wise `OR`. The `splat` operation fills a wide register with multiple copies of the same byte, and `simd_eq` puts
-`0xFF` in the result if the bytes match.
+<ByteRegister label="splat(0x00)" cells={[ { label: '0x00' }, { label: '0x00' }, { label: '0x00' }, { label: '0x00' }, {
+label: '0x00' }, { label: '0x00' }, { label: '0x00' }, { label: '0x00' }, { label: '0x00' }, { label: '0x00' }, { label:
+'0x00' }, { label: '0x00' }, ]} />
+
+<ByteRegister label="< 0 i8x32" cells={[ { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, {
+label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label:
+'0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00',
+variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0xFF', variant: 'nonascii' }, { label: '0xFF',
+variant: 'nonascii' }, ]} />
+
+<ByteRegister label="u32 bits (lo to hi)" cells={[ { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, {
+label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0',
+variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset'
+}, { label: '0', variant: 'unset' }, { label: '1', variant: 'set' }, { label: '1', variant: 'set' }, ]} />
+
+We then do the same to check if some of the input bytes are equal to `\n` or `\r`. The `splat` operation fills a wide
+register with multiple copies of the same byte, and `simd_eq` puts `0xFF` in the result if the bytes match:
+
+<ByteRegister label="splat(\n)" cells={[ { label: '\\n', variant: 'newline' }, { label: '\\n', variant: 'newline' }, {
+label: '\\n', variant: 'newline' }, { label: '\\n', variant: 'newline' }, { label: '\\n', variant: 'newline' }, { label:
+'\\n', variant: 'newline' }, { label: '\\n', variant: 'newline' }, { label: '\\n', variant: 'newline' }, { label: '\\n',
+variant: 'newline' }, { label: '\\n', variant: 'newline' }, { label: '\\n', variant: 'newline' }, { label: '\\n',
+variant: 'newline' }, ]} />
+
+<ByteRegister label="== LF i8x32" cells={[ { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, {
+label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label:
+'0x00', variant: 'unset' }, { label: '0xFF', variant: 'newline' }, { label: '0x00', variant: 'unset' }, { label: '0x00',
+variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant:
+'unset' }, ]} />
+
+<ByteRegister label="LF u32 bits (lo to hi)" cells={[ { label: '0', variant: 'unset' }, { label: '0', variant: 'unset'
+}, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0',
+variant: 'unset' }, { label: '1', variant: 'set' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' },
+{ label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, ]} />
+
+<ByteRegister label="splat(\r)" cells={[ { label: '\\r', variant: 'newline' }, { label: '\\r', variant: 'newline' }, {
+label: '\\r', variant: 'newline' }, { label: '\\r', variant: 'newline' }, { label: '\\r', variant: 'newline' }, { label:
+'\\r', variant: 'newline' }, { label: '\\r', variant: 'newline' }, { label: '\\r', variant: 'newline' }, { label: '\\r',
+variant: 'newline' }, { label: '\\r', variant: 'newline' }, { label: '\\r', variant: 'newline' }, { label: '\\r',
+variant: 'newline' }, ]} />
+
+<ByteRegister label="== CR i8x32" cells={[ { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, {
+label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label:
+'0xFF', variant: 'newline' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00',
+variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant:
+'unset' }, ]} />
+
+<ByteRegister label="CR u32 bits (lo to hi)" cells={[ { label: '0', variant: 'unset' }, { label: '0', variant: 'unset'
+}, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '1',
+variant: 'set' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' },
+{ label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, ]} />
+
+We then merge all 3 masks with a simple bit-wise `OR`:
+
+<ByteRegister label="combined u32 (lo to hi)" cells={[ { label: '0', variant: 'final' }, { label: '0', variant: 'final'
+}, { label: '0', variant: 'final' }, { label: '0', variant: 'final' }, { label: '0', variant: 'final' }, { label: '1',
+variant: 'set' }, { label: '1', variant: 'set' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, {
+label: '0', variant: 'unset' }, { label: '1', variant: 'set' }, { label: '1', variant: 'set' }, ]} />
 
 With this function, it's now trivial to know how many bytes at the start of the slice are contiguous ASCII characters,
-we simply call `mask.trailing_zeros()` (the lowest bit in the mask corresponds to the first byte in the slice).
+we simply call `mask.trailing_zeros()` (the lowest bit in the mask corresponds to the first byte in the slice). In the
+example above, the result is 5.
 
 ```rust
 const SIMD_LANES: usize = i8x32::LANES as usize;
@@ -645,6 +714,11 @@ I hope you found this article interesting, it was certainly fun to write. Having
 demystified the topic for me and I'm looking forward to putting this new skill to good use in the near future.
 
 Until next time!
+
+## Updated 2026-03-04
+
+A note has been added regarding the fields now present in the `TextIndex` type, featuring column offsets rather than
+offsets starting at the beginning of the file. Some visualizations have been added for the SIMD helper function.
 
 *[LSP]: Language Server Protocol
 
