@@ -58,9 +58,9 @@ contract, function, or struct definition). Contained inside this type is a sourc
 overall item, as well as the span for each parameter, member, or return value for this item.
 
 The goal is to augment these byte offsets with the other fields in `TextIndex`, that is the **line**, **column** and
-**UTF-16 offset** (number of Unicode code units before that position in the text when the text is encoded as
-UTF-16[^1]). The UTF-8 offset is simply the number of bytes since the start of the text (which is guaranteed to be valid
-UTF-8 in Rust), so we have that already from the parser's output.
+**UTF-16 offset** (number of Unicode code units before that position in the text when the text is encoded as UTF-16).
+The UTF-8 offset is simply the number of bytes since the start of the text (which is guaranteed to be valid UTF-8 in
+Rust), so we have that already from the parser's output.
 
 <ChatNote>
 <h5 class="font-bold">Updated 2026-03-14</h5>
