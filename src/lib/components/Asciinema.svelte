@@ -18,6 +18,7 @@
       AsciinemaPlayer.create(url, element as HTMLElement, {
         theme: 'catppuccin',
         idleTimeLimit: 0.5,
+        terminalLineHeight: 1.1,
         loop,
         cols,
         rows,
