@@ -22,6 +22,7 @@ excerpt: >
   import overview from './introducing-swpui/overview.cast?url'
   import start from './introducing-swpui/start.png?enhanced&imgSizes=true'
   import capture from './introducing-swpui/capture.png?enhanced&imgSizes=true'
+  import files from './introducing-swpui/files.png?enhanced&imgSizes=true'
 </script>
 
 ## Contents
@@ -161,6 +162,25 @@ special group that represents the full matched text.
 />
 
 ### The File List
+
+A list of all files under the working directory which contain a match for the search pattern is listed in the third
+pane. The directory is scanned on launch and whenever the options are changed, and the resulting list of files is cached
+to be re-used for each search. The pane title shows the total number of files with one or more matches.
+
+The list is scrollable, when focused, with the mouse as well as the up-down arrows and <Kbd seq="j" />/<Kbd seq="k" />.
+Next to each path is the number of active matches (_i.e._ those that were not toggled to be skipped) and total matches.
+
+<Image
+  src={files}
+  alt="A list of file paths is shown with abbreviated path segments such that the file's base name is still visible. On the right, a scrollbar shows that the list was scrolled towards the bottom. One of the file entries is highlighted and bold."
+  caption="Paths are abbreviated to retain as much useful information about the file's location as possible within the column's width."
+/>
+
+As you can see from the screenshot above, I implement a small path abbreviation algorithm to retain information about
+the path depth while also keeping the filename as intact as possible. If the full relative path does not fit, each
+directory segment is first abbreviated to 3 letters, then 2 letters, and finally 1 letter. If that still does not fit,
+an ellipsis is added inside of the basename of the file, keeping the extension intact. Finally, if that can't be shown
+completely, the start of the path is elided on the left, but you'd have to go pretty small for that to kick in.
 
 ### The Preview Pane
 
