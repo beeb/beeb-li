@@ -24,6 +24,7 @@ excerpt: >
   import capture from './introducing-swpui/capture.png?enhanced&imgSizes=true'
   import files from './introducing-swpui/files.png?enhanced&imgSizes=true'
   import preview from './introducing-swpui/preview.png?enhanced&imgSizes=true'
+  import options from './introducing-swpui/options.png?enhanced&imgSizes=true'
 </script>
 
 ## Contents
@@ -215,6 +216,26 @@ might see ellipsis characters at the start and/or end of the line and the indent
 relative to the context. Multiline matches which are taller than the pane are scrolled line-by-line while selected.
 
 ### The Options Menu
+
+Hitting the <Kbd seq="Ctrl-o" /> or <Kbd seq="Alt-o" /> shortcut from anywhere brings up the options pop-up menu. At the
+moment, there are only 3 options:
+
+- The search mode (case-aware, literal, regex or regex multiline)
+- Whether to include hidden files in the search (enabled by default)
+- Whether to include files normally ignored via `.gitignore` or `.ignore` config (disabled by default)
+
+Those are cycled/toggled via the letter shown on the left. I wanted to avoid polluting the modifier key shortcut space
+with too many shortcuts so having this menu was a good way to keep things simple to remember and avoid conflicts with
+terminal multiplexers.
+
+<Image
+  src={options}
+  alt="The options pane showing 3 options: the search mode (toggled with `r`), hidden files included or excluded (toggled with `h`) and `.gitignore` included or excluded (toggled with `g`)."
+  caption="The options menu uses single-key shortcuts to avoid polluting the global modifier key shortcuts."
+/>
+
+At the moment, these options don't persist, but I will probably end up adding some sort of config file support to set
+the defaults permanently in the future.
 
 ## The Technical Stuff
 
