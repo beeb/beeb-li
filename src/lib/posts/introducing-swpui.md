@@ -239,9 +239,153 @@ the defaults permanently in the future.
 
 ## The Technical Stuff
 
+Since this project was my first proper TUI, it provided a couple of nice challenges to solve when it comes to the
+architecture and keeping the UI reactive. Making the search fast enough while keeping the memory footprint relatively
+small was also a great exercise.
+
 ### Worker Architecture
 
+One of the goals for this application was to not use async Rust. There is very little reason to do async for the type of
+work done here, since there aren't many concurrent tasks that can't be handled much more simply with a few threads and
+channels. As such, the app is split into 3 main parts:
+
+- The main UI thread: handles all the layout and navigation logic, rendering, keyboard/mouse events etc.
+- The search worker: handles directory scanning (file discovery) and searching in the files.
+- The preview worker: fetches the preview context for a file on-demand and maintains an internal LRU cache.
+
+These communicate via a few channels, passing messages to trigger work or send back results.
+
+#### Search Worker
+
+This worker scans the current directory to find all files and stores the resulting paths in its state. This is done with
+the amazing [`ignore`](https://docs.rs/ignore/latest/ignore/) crate which I've used many times in the past. It provides
+a parallel walker which makes this operation very, very fast.
+
+Whenever one of the options related to file filtering is changed, a new scan is triggered.
+
+As the name implies, this worker is also responsible for searching in the files it knows about. To this effect, the
+infamous [`memchr`](https://docs.rs/memchr/latest/memchr/) and [`regex`](https://docs.rs/regex/latest/regex/) crates are
+used. These are so good that I didn't have much work to do to implement the core of this logic. The work is trivially
+parallelized using the very popular [`rayon`](https://docs.rs/rayon/latest/rayon/) crate. Of course, we only compile the
+regex once at the beginning.
+
+For each file that has at least a match, we return a `FileMatches` struct:
+
+```rust
+pub struct FileMatches {
+    pub path: PathBuf,
+    pub responsive_path: Option<ResponsivePath>,
+    pub matches: Vec<MatchInfo>,
+    pub hash: FileHash,
+}
+
+pub struct MatchInfo {
+    pub byte_offset_start: usize,
+    pub byte_offset_end: usize,
+    pub skip: bool,
+    pub captures: Box<[Box<str>]>,
+}
+```
+
+The `ResponsivePath` is a pre-sliced and canonicalized version of the path which will be used during render to show the
+abbreviated path I described earlier. It has an internal cache to avoid doing the work during each render (in an
+immediate mode UI like `ratatui`, this happens many times per second), such that up to 4 different widths can be stored
+in memory before needing computing again.
+
+The `MatchInfo` struct holds the matches' byte offsets in the file as well as any capture group content we might have.
+
+Finally, a `FileHash` is computed (a simple `sha256` hash) which will be used during preview generation to check whether
+the contents changed and we need to search that file again, or just before doing the actual replacement, to avoid
+messing things up in case it was modified.
+
+It's worth noting that an atomic boolean can be used by the UI to signal the worker to cancel any ongoing search and
+move to the next one immediately.
+
+#### Preview Worker
+
+Each time the user scrolls the file list to select a different file, a request is made to the preview worker to fetch
+the contents that will be shown in the preview pane. The UI makes a request via the `PreviewRequest` message:
+
+```rust
+pub struct PreviewRequest {
+    pub path: PathBuf,
+    pub byte_ranges: Box<[(usize, usize)]>,
+    pub hash: FileHash,
+    pub pattern: String,
+    pub mode: MatchMode,
+    pub generation: u64,
+}
+```
+
+Notably, it passes the byte ranges of interest, the hash of the file calculated during the search, the search pattern
+itself, with its match mode, and an incremental generation number. This generation number (a similar one is used in the
+search worker) is used to invalidate outdated in-flight responses sent to the UI.
+
+The search pattern and match mode is sent again in this message because, in case the file was modified between when it
+was searched and when the preview is requested, we will trigger a new search just before processing it. This ensures
+that each time we request a preview, the result matches the actual file contents.
+
+The response from the worker is as follows:
+
+```rust
+pub enum PreviewResult {
+    Ready {
+        path: PathBuf,
+        generation: u64,
+        data: Arc<PreviewData>,
+    }
+    // other variants to handle re-search, errors, etc.
+}
+
+pub struct PreviewData {
+    /// The preview information for matches in a file.
+    pub matches: Box<[PreviewMatch]>,
+
+    /// Object size in bytes, used to limit the quantity of data in the LRU cache.
+    pub size: usize,
+}
+
+pub struct PreviewMatch {
+    pub match_col_start: usize,
+    pub match_col_end: usize,
+    pub context_before: Box<[ContextLine]>,
+    pub context_after: Box<[ContextLine]>,
+    pub kind: PreviewMatchKind,
+}
+
+pub struct ContextLine {
+    pub line_number: usize,
+    pub content: Box<str>,
+}
+
+pub enum PreviewMatchKind {
+    SingleLine {
+        line_number: usize,
+        line_content: Box<str>,
+    },
+    MultiLine {
+        line_number_start: usize,
+        matched_lines: Box<[Box<str>]>,
+    },
+}
+```
+
+A few things to note: since the data is immutable here, we can spare a few bytes of memory per match by using `Box<str>`
+and `Box<[T]>` instead of `String` and `Vec`. We also compute an object size for the preview data so that we can limit
+the LRU cache by size as well as number of elements. This avoids that we get a huge memory usage suddenly because of a
+few files with many results with long lines. We also truncate the line contents because we anyway can't show all of it
+in the preview pane.
+
+Just like for search, the work can be interrupted if the user moves to another file in the list and we don't need the
+preview anymore. We read files in chunks to be able to stop mid-read as well (could be meaningful for very large files).
+
+To make the navigation a bit snappier, the worker pre-fetches preview data for the file before and after the currently
+selected file in the list. Although in practice on an SSD this does not make a perceptible difference for most files.
+This means that we also spawn 3 threads internally to handle these 3 operations in parallel if needed.
+
 ### Case Detection
+
+## Future Work
 
 *[TUI]: Terminal User Interface
 
@@ -252,3 +396,5 @@ the defaults permanently in the future.
 *[UI]: User Interface
 
 *[UX]: User Experience
+
+*[LRU]: Least Recently Used
