@@ -23,6 +23,7 @@ excerpt: >
   import start from './introducing-swpui/start.png?enhanced&imgSizes=true'
   import capture from './introducing-swpui/capture.png?enhanced&imgSizes=true'
   import files from './introducing-swpui/files.png?enhanced&imgSizes=true'
+  import preview from './introducing-swpui/preview.png?enhanced&imgSizes=true'
 </script>
 
 ## Contents
@@ -182,7 +183,38 @@ directory segment is first abbreviated to 3 letters, then 2 letters, and finally
 an ellipsis is added inside of the basename of the file, keeping the extension intact. Finally, if that can't be shown
 completely, the start of the path is elided on the left, but you'd have to go pretty small for that to kick in.
 
+To move from the file list to the preview pane, the <Kbd seq="Enter" /> or <Kbd seq="l" /> key can be used. Number 4 and
+the right arrow key also work, the goal is for you to not have to think about shortcuts too much.
+
 ### The Preview Pane
+
+Once a file is selected in the list, a preview of the matches is shown in the larger pane on the right. While the path
+was maybe abbreviated in the file list, it's not in preview pane title (unless the pane is too narrow of course, but in
+that case we just add an ellipsis at the start and keep the path segments intact).
+
+The matches can be navigated with the up and down arrows as well as <Kbd seq="j" />/<Kbd seq="k" /> when the pane is
+focused.
+
+For each match, we see a couple of lines of context with line numbers above and below. The selected match is indicated
+by a yellow chevron in the gutter. Each individual match can be toggled to be skipped during replacement
+with&nbsp;<Kbd seq="s" />. The match appears in dimmed text if skipped.
+
+A preview of the replacement is shown in a sort of `diff` style, with the matched text struck through and red while the
+replacement is green and bold. For multiline matches, you'll even get the familiar `+` and `-` symbols at the start of
+the lines.
+
+<Image
+  src={preview}
+  alt="A screenshot of the preview pane showing the word `worker` being replaced with `executor` for various matches in a file. Each match has a different case (pascal case, uppercase, and snake_case) and the replacement text adapts to each. A couple of lines of code of context is shown before and after each match."
+  caption="Here we can see the case-awareness at work, the replacement text is modified to match the original text case."
+  maxWidth={700}
+/>
+
+The matched line is abbreviated in a way that retains the matched text and replacement text as much as possible. So you
+might see ellipsis characters at the start and/or end of the line and the indentation is not guaranteed to be respected
+relative to the context. Multiline matches which are taller than the pane are scrolled line-by-line while selected.
+
+### The Options Menu
 
 ## The Technical Stuff
 
