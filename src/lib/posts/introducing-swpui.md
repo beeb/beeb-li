@@ -18,8 +18,10 @@ excerpt: >
   import Console from '$lib/components/Console.svelte'
   import Kbd from "$lib/components/Kbd.svelte"
   import Image from '$lib/components/Image.svelte'
+  import ChatNote from '$lib/components/ChatNote.svelte'
   import overview from './introducing-swpui/overview.cast?url'
   import start from './introducing-swpui/start.png?enhanced&imgSizes=true'
+  import capture from './introducing-swpui/capture.png?enhanced&imgSizes=true'
 </script>
 
 ## Contents
@@ -135,6 +137,28 @@ modifier. Since I know the pain of conflicting shortcuts, especially when using 
 with either the <Kbd seq="Ctrl" /> or <Kbd seq="Alt" /> modifier.
 
 ### The Inputs
+
+The input is for the search pattern, which is either a regular expression (in one of the two regex modes) or a literal
+expression. To cycle between the search modes, the <Kbd seq="Ctrl-r" /> or <Kbd seq="Alt-r" /> keybind is always
+available. In `case-aware` mode, the search in case insensitive, while in all other modes it's case sensitive.
+
+<ChatNote>
+While no case-insensitive regex mode exists, that can be toggled directly inline in the regex expression.
+<code>(?i:foo)</code> matches <code>foo</code> insensitively while <code>(?-i:foo)</code> is case sensitive.
+</ChatNote>
+
+Thanks to the amazing [`rat-widget`](https://docs.rs/rat-widget/latest/rat_widget/index.html) crate, the inputs support
+all the bells and whistles you might expect: undo with <Kbd seq="Ctrl-z" />, clipboard support, select all
+with&nbsp;<Kbd seq="Ctrl-a" /> or <Kbd seq="Shift-arrow" />, move by word with&nbsp;<Kbd seq="Ctrl-arrow" />, and more.
+
+In regex mode, the replacement pattern supports capture groups interpolation with `$1` up to `$9`. The `$0` group is a
+special group that represents the full matched text.
+
+<Image
+  src={capture}
+  alt="The search input contains the regex `pub fn (.+)\(` and the replacement input contains `fn $1(`."
+  caption="Capture groups can be interpolated into the replacement text with a dollar-sign syntax."
+/>
 
 ### The File List
 
