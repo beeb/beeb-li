@@ -1,6 +1,6 @@
 ---
 title: Introducing swpui
-date: 2026-05-09T10:00:00Z
+date: 2026-05-15T22:19:00Z
 categories:
   - rust
   - search
@@ -45,7 +45,7 @@ remember command. It supports the following search modes:
 In regex mode, capture groups are supported and can be inserted into the replacement pattern with `$1` through `$9`.
 `$0` represents the full match.
 
-By default, hidden files are included, but files ignored by `.gitignore` are excluded. These preferences can be changed
+By default, hidden files are included, and files ignored by `.gitignore` are excluded. These preferences can be changed
 by opening the options menu (<Kbd seq="Ctrl-o" /> or <Kbd seq="Alt-o" />).
 
 ### Install
@@ -70,8 +70,8 @@ Head over to the [releases page](https://github.com/beeb/swpui/releases)!
 
 ## Introduction
 
-Ever since I switched to a full terminal IDE setup using [`zellij`](https://zellij.dev/),
-[`helix`](https://helix-editor.com/), [`yazi`](https://yazi-rs.github.io/) and
+Ever since I switched to a full terminal IDE setup using [`helix`](https://helix-editor.com/),
+[`zellij`](https://zellij.dev/), [`yazi`](https://yazi-rs.github.io/) and
 [`lazygit`](https://github.com/jesseduffield/lazygit) a year or two ago (there's been a transition period), I've been on
 the lookout for a good search and replace tool I could use for cases where the language server doesn't help or is
 insufficient. One thing I enjoyed about Visual Studio Code (there were very few things) was the search and replace
@@ -89,14 +89,14 @@ particular order:
 
 Unfortunately, these did not check all the boxes I had in my wish list:
 
-- immediate feedback: I want my search query to give me matches immediately, so I can adjust it if the matches are poor.
-  This is one of the reasons I really like `helix` and `nvim` never clicked. `helix` works on a select-then-act model,
+- immediate feedback: I want my search query to give me matches immediately, so I can adjust it if the results are poor.
+  This is one of the reasons I really like `helix` while `nvim` never clicked. `helix` works on a select-then-act model,
   where you first create a selection with a key or regex search, then operate on that selection (delete, change, copy,
   etc.). This is very intuitive because you have immediate feedback for your selection and can correct if you messed up.
 - support for case-aware replacement: sometimes, the "rename" function of your best LSP is not enough to cover a large
   codebase refactor that requires much renaming. That's if your LSP even supports that feature and implements it
   correctly, which is not a given. Having a way to adapt the replacement text's case based on the match's case is
-  something that I've rarely seen and makes renaming things easier.
+  something that I've rarely seen done and makes larger renaming refactors easier.
 - support for capture groups: I want to be able to refer to some part of the matched term into the replacement.
 - a familiar UI with a search field, a replacement text box, a list of files, and preview.
 - easy-to-learn key bindings with an always-shown cheat sheet.
@@ -119,7 +119,7 @@ lot of inspiration from `lazygit` for the user interface (fantastic UX!). I want
 use, fast, and support the features I mentioned above: case awareness, instant feedback, great regex support.
 
 This served as very good excuse to get into [`ratatui`](https://ratatui.rs/), a library and framework to create terminal
-interfaces, which I had been eying for the better part of a year without really finding a use for it. Until now.
+interfaces, which I had been eyeing for the better part of a year without really finding a use for it. Until now.
 
 ## The Tour
 
@@ -143,7 +143,7 @@ with either the <Kbd seq="Ctrl" /> or <Kbd seq="Alt" /> modifier.
 
 The input is for the search pattern, which is either a regular expression (in one of the two regex modes) or a literal
 expression. To cycle between the search modes, the <Kbd seq="Ctrl-r" /> or <Kbd seq="Alt-r" /> keybind is always
-available. In `case-aware` mode, the search in case insensitive, while in all other modes it's case sensitive.
+available. In `case-aware` mode, the search is case insensitive, while in all other modes it's case sensitive.
 
 <ChatNote>
 While no case-insensitive regex mode exists, that can be toggled directly inline in the regex expression.
@@ -151,7 +151,7 @@ While no case-insensitive regex mode exists, that can be toggled directly inline
 </ChatNote>
 
 Thanks to the amazing [`rat-widget`](https://docs.rs/rat-widget/latest/rat_widget/index.html) crate, the inputs support
-all the bells and whistles you might expect: undo with <Kbd seq="Ctrl-z" />, clipboard support, select all
+all the bells and whistles you might expect: undo with <Kbd seq="Ctrl-z" />, clipboard support, select
 with&nbsp;<Kbd seq="Ctrl-a" /> or <Kbd seq="Shift-arrow" />, move by word with&nbsp;<Kbd seq="Ctrl-arrow" />, and more.
 
 In regex mode, the replacement pattern supports capture groups interpolation with `$1` up to `$9`. The `$0` group is a
@@ -190,8 +190,8 @@ the right arrow key also work, the goal is for you to not have to think about sh
 ### The Preview Pane
 
 Once a file is selected in the list, a preview of the matches is shown in the larger pane on the right. While the path
-was maybe abbreviated in the file list, it's not in preview pane title (unless the pane is too narrow of course, but in
-that case we just add an ellipsis at the start and keep the path segments intact).
+was maybe abbreviated in the file list, it's shown in full in preview pane title (unless the pane is too narrow of
+course, but in that case we just add an ellipsis at the start and keep the path segments intact).
 
 The matches can be navigated with the up and down arrows as well as <Kbd seq="j" />/<Kbd seq="k" /> when the pane is
 focused.
@@ -211,9 +211,9 @@ the lines.
   maxWidth={700}
 />
 
-The matched line is abbreviated in a way that retains the matched text and replacement text as much as possible. So you
-might see ellipsis characters at the start and/or end of the line and the indentation is not guaranteed to be respected
-relative to the context. Multiline matches which are taller than the pane are scrolled line-by-line while selected.
+The matched line is truncated in a way that retains the matched text and replacement text as much as possible. So you
+might see ellipsis characters at the start and/or end of the line and the indentation relative to the context is not
+guaranteed to be respected.
 
 ### The Options Menu
 
@@ -280,8 +280,7 @@ pub struct FileMatches {
 }
 
 pub struct MatchInfo {
-    pub byte_offset_start: usize,
-    pub byte_offset_end: usize,
+    pub byte_range: ByteRange,
     pub skip: bool,
     pub captures: Box<[Box<str>]>,
 }
@@ -309,7 +308,7 @@ the contents that will be shown in the preview pane. The UI makes a request via 
 ```rust
 pub struct PreviewRequest {
     pub path: PathBuf,
-    pub byte_ranges: Box<[(usize, usize)]>,
+    pub byte_ranges: Box<[ByteRange]>,
     pub hash: FileHash,
     pub pattern: String,
     pub mode: MatchMode,
@@ -417,26 +416,27 @@ Once we know the case of the match, we detect the replacement case and convert i
 [`.to_case(case)`](https://docs.rs/convert_case/0.11.0/convert_case/trait.Casing.html#tymethod.to_case) function
 provided by the library.
 
-Finally, the last thing we need to take care of can be see in the example above. If we need to replace `Simple` in
+Finally, the last thing we need to take care of can be seen in the example above. If we need to replace `Simple` in
 `mySimpleThing` with `very complex`, and we are in the middle of an identifier (the match was extended to the left),
-then that means we must not convert that to camel case (`veryComplex`), but to Pascal case (`VeryComplex`).
+then that means we must not convert that to camel case (`veryComplex`), but to Pascal case (`VeryComplex`) to give
+`myVeryComplexThing`.
 
 While this approach is certainly not flawless and there will certainly be false positives, it covers most cases I came
 across. I'm sure we can improve the heuristics once I can gather some feedback from users.
 
 ## Future Work
 
-The application is certainly very usable at the moment in my opinion (and I hope you'll find that too!). However I still
-have some features I want to add. As hinted at before, I will probably add support for configuration via a TOML file one
-can put in their home folder or workspace directory. This would allow to change the default value for the few options.
-One thing that will for sure be added is the ability to exclude or include paths based on a glob pattern. I would also
-like to improve mouse support in general (like for focusing a pane) or interacting with the input fields.
+The application is certainly very usable at the moment (I hope you'll find that too!). However I still have some
+features I want to add. As hinted at before, I will probably add support for configuration via a TOML file one can put
+in their home folder or workspace directory. This would allow to change the default value for the options. One thing
+that will for sure be added is the ability to exclude or include paths based on a glob pattern. I would also like to
+improve mouse support in general (like for focusing a pane) or interacting with the input fields.
 
 I hope you'll try out [`swpui`](https://github.com/beeb/swpui) and that you'll find it useful. I would love to hear your
 feedback via the repo's issues (a [Codeberg mirror](https://codeberg.org/beeb/swpui) is available) or
 [my listed contact info](/contact)!
 
-'Til next time.
+Until next time and thanks for reading.
 
 *[TUI]: Terminal User Interface
 
