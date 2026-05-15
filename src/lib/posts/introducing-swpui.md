@@ -385,6 +385,45 @@ This means that we also spawn 3 threads internally to handle these 3 operations 
 
 ### Case Detection
 
+At the heart of case-aware search and replace is a very good case conversion library called
+[`convert_case`](https://docs.rs/convert_case/0.11.0/convert_case/). The process is quite simple: detect the case of the
+search result, adjust the case of the replacement text to match.
+
+There are a couple of subtleties however, and the first one is that there is no "detect case" function in that library.
+So to detect the case, we have to iterate through all the supported cases (we don't support exotic ones like
+[Cobol case](https://docs.rs/convert_case/0.11.0/convert_case/enum.Case.html#variant.Cobol) at the moment), convert the
+search result to that case, and check whether the result is identical to the original text. This means that we have to
+check the variants in the order from least specific to most specific (at least for the lowercase ones), lest we might
+end up detecting `foo` as being `snake_case` or `kebab-case` instead of simply lowercase (`Cast::Flat` below).
+
+```rust
+/// Cases to detect, ordered from least specific to most specific.
+const CASES: [Case<'static>; 6] = [
+    Case::Flat,
+    Case::Snake,
+    Case::Camel,
+    Case::Kebab,
+    Case::Pascal,
+    Case::UpperSnake,
+];
+```
+
+Another detail that needs attention is that we ideally want to grow the match (search result) to the identifier's
+boundaries, such that we maximize the context for case detection. As such, if we match `Simple` in `mySimpleThing`, by
+expanding the match to the full identifier before detection, we can correctly infer it as being `Case::Camel` instead of
+`Case::Pascal`.
+
+Once we know the case of the match, we detect the replacement case and convert it to the target case via
+[`.to_case(case)`](https://docs.rs/convert_case/0.11.0/convert_case/trait.Casing.html#tymethod.to_case) function
+provided by the library.
+
+Finally, the last thing we need to take care of can be see in the example above. If we need to replace `Simple` in
+`mySimpleThing` with `very complex`, and we are in the middle of an identifier (the match was extended to the left),
+then that means we must not convert that to camel case (`veryComplex`), but to Pascal case (`VeryComplex`).
+
+While this approach is certainly not flawless and there will certainly be false positives, it covers most cases I came
+across. I'm sure we can improve the heuristics once I can gather some feedback from users.
+
 ## Future Work
 
 *[TUI]: Terminal User Interface
