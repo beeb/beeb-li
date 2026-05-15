@@ -426,6 +426,18 @@ across. I'm sure we can improve the heuristics once I can gather some feedback f
 
 ## Future Work
 
+The application is certainly very usable at the moment in my opinion (and I hope you'll find that too!). However I still
+have some features I want to add. As hinted at before, I will probably add support for configuration via a TOML file one
+can put in their home folder or workspace directory. This would allow to change the default value for the few options.
+One thing that will for sure be added is the ability to exclude or include paths based on a glob pattern. I would also
+like to improve mouse support in general (like for focusing a pane) or interacting with the input fields.
+
+I hope you'll try out [`swpui`](https://github.com/beeb/swpui) and that you'll find it useful. I would love to hear your
+feedback via the repo's issues (a [Codeberg mirror](https://codeberg.org/beeb/swpui) is available) or
+[my listed contact info](/contact)!
+
+'Til next time.
+
 *[TUI]: Terminal User Interface
 
 *[IDE]: Integrated Development Environment
