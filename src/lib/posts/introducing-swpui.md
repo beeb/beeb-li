@@ -1,6 +1,7 @@
 ---
 title: Introducing swpui
 date: 2026-05-15T22:19:00Z
+updated: 2026-05-31T15:14:07.397Z
 categories:
   - rust
   - search
@@ -58,11 +59,11 @@ by opening the options menu (<Kbd seq="Ctrl-o" /> or <Kbd seq="Alt-o" />).
 
 <Console entries={["cargo binstall swpui"]} />
 
-#### Via `nix` flake
+#### Via `nix` (`nixpkgs-unstable`)
 
 Depending on your use case, use one of the commands below:
 
-<Console entries={["nix profile install github:beeb/swpui", "nix run github:beeb/swpui"]} />
+<Console entries={["nix profile install nixpkgs#swpui", "nix run nixpkgs#swpui"]} />
 
 #### Pre-built binaries and install script
 
@@ -234,8 +235,20 @@ terminal multiplexers.
   caption="The options menu uses single-key shortcuts to avoid polluting the global modifier key shortcuts."
 />
 
-At the moment, these options don't persist, but I will probably end up adding some sort of config file support to set
-the defaults permanently in the future.
+The default value for these options can be customized via a `swpui.toml` or `.swpui.toml` in the `~/.config/swpui` or
+workspace folder.
+
+```toml
+[options]
+match-mode = "case-aware" # case-aware | literal | regex | regex-multiline
+include-hidden = true
+include-gitignored = false
+```
+
+<ChatNote>
+<code>swpui</code> has its own ignore file named <code>.swpignore</code> which uses the same format as
+<code>.gitignore</code> and can be used to specifically filter out files from the search results.
+</ChatNote>
 
 ## The Technical Stuff
 
@@ -427,9 +440,7 @@ across. I'm sure we can improve the heuristics once I can gather some feedback f
 ## Future Work
 
 The application is certainly very usable at the moment (I hope you'll find that too!). However I still have some
-features I want to add. As hinted at before, I will probably add support for configuration via a TOML file one can put
-in their home folder or workspace directory. This would allow to change the default value for the options. One thing
-that will for sure be added is the ability to exclude or include paths based on a glob pattern. I would also like to
+features I want to add. Notably is the ability to exclude or include paths based on a glob pattern. I would also like to
 improve mouse support in general (like for focusing a pane) or interacting with the input fields.
 
 I hope you'll try out [`swpui`](https://github.com/beeb/swpui) and that you'll find it useful. I would love to hear your
@@ -437,6 +448,9 @@ feedback via the repo's issues (a [Codeberg mirror](https://codeberg.org/beeb/sw
 [my listed contact info](/contact)!
 
 Until next time and thanks for reading.
+
+**EDIT 2026-05-31:** Adjusted `nix` install commands to use `nixpkgs-unstable`. `swpui` now has config file support and
+reads `.swpignore` files.
 
 *[TUI]: Terminal User Interface
 
