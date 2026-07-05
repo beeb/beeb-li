@@ -1,7 +1,7 @@
 ---
 title: Introducing swpui
 date: 2026-05-15T22:19:00Z
-updated: 2026-05-31T15:14:07.397Z
+updated: 2026-07-05T19:28:46.596Z
 categories:
   - rust
   - search
@@ -437,20 +437,19 @@ then that means we must not convert that to camel case (`veryComplex`), but to P
 While this approach is certainly not flawless and there will certainly be false positives, it covers most cases I came
 across. I'm sure we can improve the heuristics once I can gather some feedback from users.
 
-## Future Work
+## Conclusion
 
-The application is certainly very usable at the moment (I hope you'll find that too!). However I still have some
-features I want to add. Notably is the ability to exclude or include paths based on a glob pattern. I would also like to
-improve mouse support in general (like for focusing a pane) or interacting with the input fields.
-
-I hope you'll try out [`swpui`](https://github.com/beeb/swpui) and that you'll find it useful. I would love to hear your
-feedback via the repo's issues (a [Codeberg mirror](https://codeberg.org/beeb/swpui) is available) or
-[my listed contact info](/contact)!
+I hope you'll try out [`swpui`](https://github.com/beeb/swpui) and that you'll find it useful. After a few release (see
+"EDIT" comments below), I consider the app now feature complete. I would love to hear your feedback via the repo's
+issues (a [Codeberg mirror](https://codeberg.org/beeb/swpui) is available) or [my listed contact info](/contact)!
 
 Until next time and thanks for reading.
 
 **EDIT 2026-05-31:** Adjusted `nix` install commands to use `nixpkgs-unstable`. `swpui` now has config file support and
 reads `.swpignore` files.
+
+**EDIT 2026-07-05:** `swpui` v0.9.0 adds mouse support, and starting with v0.10.0, it has support for glob filters
+(include and exclude).
 
 *[TUI]: Terminal User Interface
 
