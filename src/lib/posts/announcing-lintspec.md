@@ -122,8 +122,8 @@ contract Tree {
 ```
 
 Toolchains like [Foundry](https://github.com/foundry-rs/foundry/) (which, by the way, reached
-[`v1.0` recently](https://getfoundry.sh/misc/v1.0-migration/) 🎉) can use those comments to automatically generate
-Markdown and HTML files for documentating a project's API.
+[`v1.0` recently](https://www.getfoundry.sh/guides/migrations/foundry-v1) 🎉) can use those comments to automatically
+generate Markdown and HTML files for documentating a project's API.
 
 **As such, it's pretty important to make sure that these comments stay in sync with the actual code, and even more
 important to ensure that they are present altogether!**
@@ -314,7 +314,7 @@ problems are found. Note that diagnostics are by default emitted in `stderr` and
 
 Although the test suite is now pretty extensive, I'm sure there are some bugs I didn't find yet. I would be extremely
 greateful if you could consider using the tool and letting me know how it goes! Please do
-[open an issue on GitHub](https://github.com/beeb/lintspec/issues/new) if you have suggestions or experience problems.
+[open an issue on GitHub](https://github.com/beeb/lintspec) if you have suggestions or experience problems.
 
 Thanks for reading all the way to the end, and talk soon!
 

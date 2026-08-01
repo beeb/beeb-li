@@ -105,8 +105,8 @@ Unfortunately, these did not check all the boxes I had in my wish list:
 - easy to install (single binary), with no runtime dependency.
 
 Then I came across [`serpl`](https://github.com/yassinebridi/serpl). On paper, it was almost exactly what I was looking
-for! It even supported the [`ast-grep`](https://ast-grep.github.io/) search syntax which uses tree-sitter to match
-certain types of code elements. Unfortunately, I quickly noticed a few
+for! It even supported the [`ast-grep`](https://astgrep.com/) search syntax which uses tree-sitter to match certain
+types of code elements. Unfortunately, I quickly noticed a few
 [annoying a very obvious bugs](https://github.com/yassinebridi/serpl/issues) which made the experience less than ideal,
 and it required [`ripgrep`](https://github.com/burntsushi/ripgrep) and `ast-grep` to be available as separate binaries
 at runtime. That is, as far as I understand, the tool shelled out to the command, parsed its output, and generated a
