@@ -69,7 +69,7 @@ surely to thank for that.
 />
 
 One extremely powerful feature of the Foundry test utilities is its ability to call external binaries through a Foreign
-Function Interface with the `vm.ffi` [cheatcode](https://getfoundry.sh/reference/cheatcodes/ffi/).
+Function Interface with the `vm.ffi` [cheatcode](https://www.getfoundry.sh/reference/cheatcodes/ffi).
 
 ```solidity
 function testFuzz_echo(uint256 rand) public {
