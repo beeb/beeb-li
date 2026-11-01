@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte'
-  import cartoon from '$lib/assets/beeb_cartoon.png?enhanced'
+  import cartoon from '#lib/assets/beeb_cartoon.png?enhanced'
 
   interface Props {
     children: Snippet

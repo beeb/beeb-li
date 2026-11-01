@@ -163,6 +163,7 @@ abbr[title]:focus::after {
 }
 
 /* code highlighting */
+/* biome-ignore-start lint/complexity/noImportantStyles: must override the inline styles from shiki */
 html:has(input.theme-controller[value='light']:not(:checked)) .shiki,
 html:has(input.theme-controller[value='light']:not(:checked)) .shiki span {
   color: var(--shiki-dark) !important;
@@ -172,6 +173,7 @@ html:has(input.theme-controller[value='light']:not(:checked)) .shiki span {
   font-weight: var(--shiki-dark-font-weight) !important;
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
+/* biome-ignore-end lint/complexity/noImportantStyles: must override the inline styles from shiki */
 
 .prose pre[data-language]::before {
   content: attr(data-language);

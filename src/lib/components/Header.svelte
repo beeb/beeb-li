@@ -1,10 +1,10 @@
 <script lang="ts">
   import type { MouseEventHandler } from 'svelte/elements'
-  import Nav from '$lib/components/Nav.svelte'
-  import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte'
-  import Logo from '$lib/components/Logo.svelte'
-  import Search from '$lib/components/Search.svelte'
-  import { siteTitle } from '$lib/config'
+  import Nav from '#lib/components/Nav.svelte'
+  import ThemeSwitcher from '#lib/components/ThemeSwitcher.svelte'
+  import Logo from '#lib/components/Logo.svelte'
+  import Search from '#lib/components/Search.svelte'
+  import { siteTitle } from '#lib/config.js'
   import Hamburger from 'virtual:icons/mingcute/menu-fill'
 
   const focusMain: MouseEventHandler<HTMLAnchorElement> = (e) => {

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { siteAuthor } from '$lib/config'
+  import { siteAuthor } from '#lib/config.js'
   import Mastodon from 'virtual:icons/mingcute/mastodon-fill'
   import Github from 'virtual:icons/mingcute/github-fill'
   import Rss from 'virtual:icons/mingcute/rss-fill'

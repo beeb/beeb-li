@@ -17,9 +17,9 @@ excerpt: >
 <script lang="ts">
   import annotations from './announcing-lintspec/github-annotation.png?enhanced&imgSizes=true'
   import screenshot from './announcing-lintspec/title.png?enhanced&imgSizes=true'
-  import ChatNote from '$lib/components/ChatNote.svelte'
-  import Console from '$lib/components/Console.svelte'
-  import Image from '$lib/components/Image.svelte'
+  import ChatNote from '#lib/components/ChatNote.svelte'
+  import Console from '#lib/components/Console.svelte'
+  import Image from '#lib/components/Image.svelte'
 </script>
 
 ## Contents

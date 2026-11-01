@@ -1,6 +1,6 @@
-import { fetchPosts } from '$lib/posts'
-import { siteDescription, siteTitle } from '$lib/config'
-import { escapeXml } from '$lib/utils'
+import { fetchPosts } from '#lib/posts.js'
+import { siteDescription, siteTitle } from '#lib/config.js'
+import { escapeXml } from '#lib/utils.js'
 import type { RequestHandler } from '@sveltejs/kit'
 
 export const prerender = true

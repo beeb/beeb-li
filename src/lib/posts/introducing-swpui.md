@@ -15,11 +15,11 @@ excerpt: >
 ---
 
 <script lang="ts">
-  import Asciinema from "$lib/components/Asciinema.svelte"
-  import Console from '$lib/components/Console.svelte'
-  import Kbd from "$lib/components/Kbd.svelte"
-  import Image from '$lib/components/Image.svelte'
-  import ChatNote from '$lib/components/ChatNote.svelte'
+  import Asciinema from "#lib/components/Asciinema.svelte"
+  import Console from '#lib/components/Console.svelte'
+  import Kbd from "#lib/components/Kbd.svelte"
+  import Image from '#lib/components/Image.svelte'
+  import ChatNote from '#lib/components/ChatNote.svelte'
   import overview from './introducing-swpui/overview.cast?url'
   import start from './introducing-swpui/start.png?enhanced&imgSizes=true'
   import capture from './introducing-swpui/capture.png?enhanced&imgSizes=true'

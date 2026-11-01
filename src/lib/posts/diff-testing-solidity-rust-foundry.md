@@ -19,9 +19,9 @@ excerpt: >
 
 <script lang="ts">
   import stars from './diff-testing-solidity-rust-foundry/star-history-2024614.png?enhanced&imgSizes=true'
-  import Image from '$lib/components/Image.svelte'
-  import Console from '$lib/components/Console.svelte'
-  import ChatNote from '$lib/components/ChatNote.svelte'
+  import Image from '#lib/components/Image.svelte'
+  import Console from '#lib/components/Console.svelte'
+  import ChatNote from '#lib/components/ChatNote.svelte'
 </script>
 
 ## Contents

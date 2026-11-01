@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit'
 import type { EntryGenerator, PageServerLoad } from './$types'
-import { fetchCategories } from '$lib/posts'
+import { fetchCategories } from '#lib/posts.js'
 
 // for page crawling
 export const entries: EntryGenerator = async () => {

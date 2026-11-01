@@ -3,7 +3,7 @@
   import { onNavigate } from '$app/navigation'
   import SearchIcon from 'virtual:icons/mingcute/search-3-fill'
 
-  let pagefind: PagefindWrapper | undefined = undefined
+  let pagefind: PagefindWrapper | undefined
 
   const fetchSearchResults = async (val: string) => {
     if (!pagefind) {

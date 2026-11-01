@@ -1,5 +1,5 @@
-import { fetchPosts } from '$lib/posts'
-import { postsPerPage } from '$lib/config'
+import { fetchPosts } from '#lib/posts.js'
+import { postsPerPage } from '#lib/config.js'
 import { error, redirect } from '@sveltejs/kit'
 import type { EntryGenerator, PageServerLoad } from './$types'
 
@@ -11,7 +11,7 @@ export const entries: EntryGenerator = async () => {
 }
 
 export const load: PageServerLoad = async ({ params }) => {
-	const page = Number.parseInt(params.page ?? '1')
+	const page = Number.parseInt(params.page ?? '1', 10)
 	if (page < 1) {
 		error(404, `Invalid page number: ${page}`)
 	}

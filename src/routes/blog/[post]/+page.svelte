@@ -1,7 +1,7 @@
 <script lang="ts">
   import { mount } from 'svelte'
-  import { siteTitle } from '$lib/config'
-  import CopyButton from '$lib/components/CopyButton.svelte'
+  import { siteTitle } from '#lib/config.js'
+  import CopyButton from '#lib/components/CopyButton.svelte'
   import type { Attachment } from 'svelte/attachments'
 
   const { data } = $props()

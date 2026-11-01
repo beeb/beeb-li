@@ -17,8 +17,8 @@ excerpt: >
 
 <script lang="ts">
   import map from './calendar-component-svelte-tailwind/first-day-of-week-map.png?enhanced&imgSizes=true'
-  import ChatNote from '$lib/components/ChatNote.svelte'
-  import Image from '$lib/components/Image.svelte'
+  import ChatNote from '#lib/components/ChatNote.svelte'
+  import Image from '#lib/components/Image.svelte'
   import LocalePicker from './calendar-component-svelte-tailwind/LocalePicker.svelte'
   import Calendar from './calendar-component-svelte-tailwind/Calendar.svelte'
 

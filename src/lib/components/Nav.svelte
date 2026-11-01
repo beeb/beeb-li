@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { navItems } from '$lib/config'
+  import { navItems } from '#lib/config.js'
   import { page } from '$app/state'
 
   const { ...allProps } = $props()
