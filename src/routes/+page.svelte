@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { siteTitle, siteDescription } from '$lib/config'
+  import { siteTitle, siteDescription } from '#lib/config.js'
 
   const { data } = $props()
   const ReadmeFile = await import('../../README.md')

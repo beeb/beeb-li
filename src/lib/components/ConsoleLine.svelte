@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { building } from '$app/environment'
-  import CopyButton from '$lib/components/CopyButton.svelte'
+  import { building } from '$app/env'
+  import CopyButton from '#lib/components/CopyButton.svelte'
 
   interface Props {
     entry: Entry | string

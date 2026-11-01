@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit'
 import type { EntryGenerator, PageLoad } from './$types'
-import { fetchCover, fetchPosts } from '$lib/posts'
+import { fetchCover, fetchPosts } from '#lib/posts.js'
 
 // for page crawling
 export const entries: EntryGenerator = async () => {

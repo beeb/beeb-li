@@ -1,5 +1,5 @@
-import { siteTitle } from '$lib/config'
-import { fetchPosts } from '$lib/posts'
+import { siteTitle } from '#lib/config.js'
+import { fetchPosts } from '#lib/posts.js'
 import { Resvg } from '@resvg/resvg-js'
 import satori from 'satori'
 import logo from '../../../../../static/favicon.svg?raw'

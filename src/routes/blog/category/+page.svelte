@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { fetchCategories } from '$lib/posts'
-  import { siteTitle, siteDescription } from '$lib/config.js'
+  import { fetchCategories } from '#lib/posts.js'
+  import { siteTitle, siteDescription } from '#lib/config.js'
 
   const { data } = $props()
   const categories = await fetchCategories({ sort: true })

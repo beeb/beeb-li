@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { fetchPosts } from '$lib/posts'
-  import PostsList from '$lib/components/PostsList.svelte'
-  import Pagination from '$lib/components/Pagination.svelte'
-  import { siteTitle, siteDescription, postsPerPage } from '$lib/config'
+  import { fetchPosts } from '#lib/posts.js'
+  import PostsList from '#lib/components/PostsList.svelte'
+  import Pagination from '#lib/components/Pagination.svelte'
+  import { siteTitle, siteDescription, postsPerPage } from '#lib/config.js'
 
   const { data } = $props()
   const { posts, total } = await fetchPosts()

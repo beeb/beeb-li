@@ -16,8 +16,8 @@ excerpt: >
 
 <script lang="ts">
   import shadow from './optimizing-text-offset-calculation/shadow.jpg?enhanced&imgSizes=true'
-  import Image from '$lib/components/Image.svelte'
-  import ChatNote from '$lib/components/ChatNote.svelte'
+  import Image from '#lib/components/Image.svelte'
+  import ChatNote from '#lib/components/ChatNote.svelte'
   import ByteRegister from './optimizing-text-offset-calculation/ByteRegister.svelte'
 </script>
 

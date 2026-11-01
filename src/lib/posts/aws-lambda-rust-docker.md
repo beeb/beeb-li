@@ -18,8 +18,8 @@ excerpt: >
 ---
 
 <script lang="ts">
-  import ChatNote from '$lib/components/ChatNote.svelte'
-  import Console from '$lib/components/Console.svelte'
+  import ChatNote from '#lib/components/ChatNote.svelte'
+  import Console from '#lib/components/Console.svelte'
 </script>
 
 ## Contents

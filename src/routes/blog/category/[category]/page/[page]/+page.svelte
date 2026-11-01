@@ -1,7 +1,7 @@
 <script lang="ts">
-  import PostsList from '$lib/components/PostsList.svelte'
-  import Pagination from '$lib/components/Pagination.svelte'
-  import { postsPerPage, siteTitle, siteDescription } from '$lib/config'
+  import PostsList from '#lib/components/PostsList.svelte'
+  import Pagination from '#lib/components/Pagination.svelte'
+  import { postsPerPage, siteTitle, siteDescription } from '#lib/config.js'
 
   const { data } = $props()
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ConsoleLine from '$lib/components/ConsoleLine.svelte'
+  import ConsoleLine from '#lib/components/ConsoleLine.svelte'
 
   interface Props {
     entries: Entry[]

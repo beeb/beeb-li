@@ -15,9 +15,9 @@ excerpt: >
 ---
 
 <script lang="ts">
-  import Asciinema from "$lib/components/Asciinema.svelte"
-  import ChatNote from '$lib/components/ChatNote.svelte'
-  import Kbd from "$lib/components/Kbd.svelte"
+  import Asciinema from "#lib/components/Asciinema.svelte"
+  import ChatNote from '#lib/components/ChatNote.svelte'
+  import Kbd from "#lib/components/Kbd.svelte"
   import editBuffer from './fish-shell-tips-and-tricks/edit-buffer.cast?url'
   import lastCommand from './fish-shell-tips-and-tricks/last-command.cast?url'
   import sudo from './fish-shell-tips-and-tricks/sudo.cast?url'
