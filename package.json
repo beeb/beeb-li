@@ -9,11 +9,11 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "biome lint src",
-		"format": "biome format . --write && prettier --write src",
+		"format": "biome format . --write",
 		"postbuild": "pagefind --site .vercel/output/static && rm -rf ./static/pagefind && cp -r ./.vercel/output/static/pagefind/ ./static/pagefind/"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.6.4",
+		"@biomejs/biome": "2.6.8",
 		"@formatjs/intl-locale": "^5.4.0",
 		"@iconify-json/lucide": "^1.2.149",
 		"@iconify-json/mingcute": "^1.2.8",
@@ -29,8 +29,6 @@
 		"hastscript": "^9.0.3",
 		"mdsvex": "^0.12.8",
 		"pagefind": "^1.5.2",
-		"prettier": "^3.9.10",
-		"prettier-plugin-svelte": "^4.1.1",
 		"rehype-autolink-headings": "^7.1.0",
 		"rehype-external-links": "^3.0.0",
 		"rehype-slug": "^6.0.0",
@@ -57,5 +55,5 @@
 	"engines": {
 		"node": "24.x"
 	},
-	"packageManager": "pnpm@10.34.5"
+	"packageManager": "pnpm@12.9.0"
 }

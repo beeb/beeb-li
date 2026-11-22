@@ -1,17 +1,18 @@
 <script lang="ts">
-  import { navItems } from '#lib/config.js'
-  import { page } from '$app/state'
+	import { navItems } from '#lib/config.js'
+	import { page } from '$app/state'
 
-  const { ...allProps } = $props()
+	const { ...allProps } = $props()
 </script>
 
+<!-- biome-ignore lint/a11y/useSemanticElements: daisyUI menu classes need the ul -->
 <ul {...allProps} role="navigation">
-  <li>
-    <a href="/" class:menu-active={(page.route.id ?? '') === '/'}> Home </a>
-  </li>
-  {#each navItems as p}
-    <li>
-      <a href={p.route} class:menu-active={(page.route.id ?? '').startsWith(p.route)}>{p.title}</a>
-    </li>
-  {/each}
+	<li>
+		<a href="/" class:menu-active={(page.route.id ?? '') === '/'}> Home </a>
+	</li>
+	{#each navItems as p}
+		<li>
+			<a href={p.route} class:menu-active={(page.route.id ?? '').startsWith(p.route)}>{p.title}</a>
+		</li>
+	{/each}
 </ul>
