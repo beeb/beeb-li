@@ -12,24 +12,27 @@ coverImage: true
 coverCredits: Photo by Renáta-Adrienn on Unsplash
 coverAlt: A paper calendar book with a pen and a delicate green plant laid on top of it
 excerpt: >
-  Let's create a localized monthly calendar component together, using Svelte and TailwindCSS with minimal dependencies. To achieve this result, we explore the internationalization APIs of JavaScript and use some clever maths to generate a simple markup. After detailing each piece of the puzzle, we put everything together into a simple but customizable demo which can serve as the basis for your calendar needs.
+  Let's create a localized monthly calendar component together, using Svelte and TailwindCSS with minimal dependencies.
+  To achieve this result, we explore the internationalization APIs of JavaScript and use some clever maths to generate a
+  simple markup. After detailing each piece of the puzzle, we put everything together into a simple but customizable
+  demo which can serve as the basis for your calendar needs.
 ---
 
 <script lang="ts">
-  import map from './calendar-component-svelte-tailwind/first-day-of-week-map.png?enhanced&imgSizes=true'
-  import ChatNote from '#lib/components/ChatNote.svelte'
-  import Image from '#lib/components/Image.svelte'
-  import LocalePicker from './calendar-component-svelte-tailwind/LocalePicker.svelte'
-  import Calendar from './calendar-component-svelte-tailwind/Calendar.svelte'
+	import map from './calendar-component-svelte-tailwind/first-day-of-week-map.png?enhanced&imgSizes=true'
+	import ChatNote from '#lib/components/ChatNote.svelte'
+	import Image from '#lib/components/Image.svelte'
+	import LocalePicker from './calendar-component-svelte-tailwind/LocalePicker.svelte'
+	import Calendar from './calendar-component-svelte-tailwind/Calendar.svelte'
 
-  let locale = $state<string | undefined>(undefined)
+	let locale = $state<string | undefined>(undefined)
 
-  const handler = (newValue: string) => {
-    locale = newValue
-  }
+	const handler = (newValue: string) => {
+		locale = newValue
+	}
 </script>
 
-## Contents
+::toc(aria-label=Contents)
 
 ## Introduction
 
@@ -50,21 +53,20 @@ first column will sometimes represent Monday, sometimes Sunday or Saturday, some
 [Friday](https://en.wikipedia.org/wiki/Week).
 
 <Image
-  src={map}
-  alt="A world map showing each country with a color representing which day of the week is considered the first in
+	src={map}
+	alt="A world map showing each country with a color representing which day of the week is considered the first in
   calendars"
-  caption="World map showing the first day of the week used in different countries."
-  source="https://en.m.wikipedia.org/wiki/File:First_Day_of_Week_World_Map.svg"
+	caption="World map showing the first day of the week used in different countries."
+	source="https://en.m.wikipedia.org/wiki/File:First_Day_of_Week_World_Map.svg"
 />
 
 Since html tables are painful to work with and stylize, I opted for a collection of `<div>` elements arranged with CSS
 into a grid thanks to the `display: grid` property.
 
 <ChatNote>
-<strong>Note</strong>: I'm using <a href="https://tailwindcss.com/" rel="nofollow">TailwindCSS</a> in the markup below,
-but the same result can be (painfully) achieved with regular CSS too! You can look up the relevant classes in their docs
-to find the corresponding CSS code. The button class comes from
-<a href="https://daisyui.com/" rel="nofollow">DaisyUI</a>.
+	<strong>Note</strong>: I'm using <a href="https://tailwindcss.com/" rel="nofollow">TailwindCSS</a> in the markup
+	below, but the same result can be (painfully) achieved with regular CSS too! You can look up the relevant classes in
+	their docs to find the corresponding CSS code. The button class comes from <a href="https://daisyui.com/" rel="nofollow">DaisyUI</a>.
 </ChatNote>
 
 The base of our layout will be the following:
@@ -161,10 +163,9 @@ const monthTitle = $derived(
 ```
 
 <ChatNote>
-In the code above, <code>locale</code>, <code>year</code> and <code>month</code> are reactive pieces of state in Svelte,
-so we derive a new reactive variable with the
-<a href="https://svelte-5-preview.vercel.app/docs/runes" rel="nofollow"><code>$derived</code> rune</a>. The derived
-value will reactively update any time any of its dependencies change.
+	In the code above, <code>locale</code>, <code>year</code> and <code>month</code> are reactive pieces of state in
+	Svelte, so we derive a new reactive variable with the <a href="https://svelte-5-preview.vercel.app/docs/runes" rel="nofollow"><code>$derived</code> rune</a>.
+	The derived value will reactively update any time any of its dependencies change.
 </ChatNote>
 
 ### First Day of the Week
@@ -377,8 +378,8 @@ Here's the final result after implementing all the things discussed in this arti
 is available on GitHub.
 
 <div class="not-prose w-full">
-  <LocalePicker {handler} />
-  <Calendar {locale} />
+	<LocalePicker {handler} />
+	<Calendar {locale} />
 </div>
 
 ## Conclusion

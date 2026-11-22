@@ -11,24 +11,25 @@ categories:
 coverImage: true
 coverAlt: A screenshot of the terminal user interface of the swpui search and replace tool.
 excerpt: >
-  swpui is a TUI (terminal user interface) tool for ergonomic and fast case-aware search and replace. It supports multiple search modes, including regex with capture groups.
+  swpui is a TUI (terminal user interface) tool for ergonomic and fast case-aware search and replace. It supports
+  multiple search modes, including regex with capture groups.
 ---
 
 <script lang="ts">
-  import Asciinema from "#lib/components/Asciinema.svelte"
-  import Console from '#lib/components/Console.svelte'
-  import Kbd from "#lib/components/Kbd.svelte"
-  import Image from '#lib/components/Image.svelte'
-  import ChatNote from '#lib/components/ChatNote.svelte'
-  import overview from './introducing-swpui/overview.cast?url'
-  import start from './introducing-swpui/start.png?enhanced&imgSizes=true'
-  import capture from './introducing-swpui/capture.png?enhanced&imgSizes=true'
-  import files from './introducing-swpui/files.png?enhanced&imgSizes=true'
-  import preview from './introducing-swpui/preview.png?enhanced&imgSizes=true'
-  import options from './introducing-swpui/options.png?enhanced&imgSizes=true'
+	import Asciinema from '#lib/components/Asciinema.svelte'
+	import Console from '#lib/components/Console.svelte'
+	import Kbd from '#lib/components/Kbd.svelte'
+	import Image from '#lib/components/Image.svelte'
+	import ChatNote from '#lib/components/ChatNote.svelte'
+	import overview from './introducing-swpui/overview.cast?url'
+	import start from './introducing-swpui/start.png?enhanced&imgSizes=true'
+	import capture from './introducing-swpui/capture.png?enhanced&imgSizes=true'
+	import files from './introducing-swpui/files.png?enhanced&imgSizes=true'
+	import preview from './introducing-swpui/preview.png?enhanced&imgSizes=true'
+	import options from './introducing-swpui/options.png?enhanced&imgSizes=true'
 </script>
 
-## Contents
+::toc(aria-label=Contents)
 
 ## TL;DR
 
@@ -53,17 +54,17 @@ by opening the options menu (<Kbd seq="Ctrl-o" /> or <Kbd seq="Alt-o" />).
 
 #### Via `cargo`
 
-<Console entries={["cargo install swpui"]} />
+<Console entries={['cargo install swpui']} />
 
 #### Via [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall)
 
-<Console entries={["cargo binstall swpui"]} />
+<Console entries={['cargo binstall swpui']} />
 
 #### Via `nix` (`nixpkgs-unstable`)
 
 Depending on your use case, use one of the commands below:
 
-<Console entries={["nix profile install nixpkgs#swpui", "nix run nixpkgs#swpui"]} />
+<Console entries={['nix profile install nixpkgs#swpui', 'nix run nixpkgs#swpui']} />
 
 #### Pre-built binaries and install script
 
@@ -105,8 +106,8 @@ Unfortunately, these did not check all the boxes I had in my wish list:
 - easy to install (single binary), with no runtime dependency.
 
 Then I came across [`serpl`](https://github.com/yassinebridi/serpl). On paper, it was almost exactly what I was looking
-for! It even supported the [`ast-grep`](https://ast-grep.github.io/) search syntax which uses tree-sitter to match certain
-types of code elements. Unfortunately, I quickly noticed a few
+for! It even supported the [`ast-grep`](https://ast-grep.github.io/) search syntax which uses tree-sitter to match
+certain types of code elements. Unfortunately, I quickly noticed a few
 [annoying a very obvious bugs](https://github.com/yassinebridi/serpl/issues) which made the experience less than ideal,
 and it required [`ripgrep`](https://github.com/burntsushi/ripgrep) and `ast-grep` to be available as separate binaries
 at runtime. That is, as far as I understand, the tool shelled out to the command, parsed its output, and generated a
@@ -127,9 +128,9 @@ interfaces, which I had been eyeing for the better part of a year without really
 The tool's executable is named `swp` for a nice a short command to type. Once you launch it, you see the following:
 
 <Image
-  src={start}
-  alt="A screenshot of the startup state of the swpui terminal interface. A column on the left contains two input fields a the top (one for search and one for replacement text) as well as a list of files, currently empty. A larger pane on the right will hold the preview of the search results for the selected file."
-  caption="The swpui interface is clearly segmented and self-documenting."
+	src={start}
+	alt="A screenshot of the startup state of the swpui terminal interface. A column on the left contains two input fields a the top (one for search and one for replacement text) as well as a list of files, currently empty. A larger pane on the right will hold the preview of the search results for the selected file."
+	caption="The swpui interface is clearly segmented and self-documenting."
 />
 
 Here are a few details you might have noticed. The current search mode is displayed in the search field's title, and
@@ -147,8 +148,8 @@ expression. To cycle between the search modes, the <Kbd seq="Ctrl-r" /> or <Kbd 
 available. In `case-aware` mode, the search is case insensitive, while in all other modes it's case sensitive.
 
 <ChatNote>
-While no case-insensitive regex mode exists, that can be toggled directly inline in the regex expression.
-<code>(?i:foo)</code> matches <code>foo</code> insensitively while <code>(?-i:foo)</code> is case sensitive.
+	While no case-insensitive regex mode exists, that can be toggled directly inline in the regex expression. <code>(?i:foo)</code>
+	matches <code>foo</code> insensitively while <code>(?-i:foo)</code> is case sensitive.
 </ChatNote>
 
 Thanks to the amazing [`rat-widget`](https://docs.rs/rat-widget/latest/rat_widget/index.html) crate, the inputs support
@@ -159,9 +160,9 @@ In regex mode, the replacement pattern supports capture groups interpolation wit
 special group that represents the full matched text.
 
 <Image
-  src={capture}
-  alt="The search input contains the regex `pub fn (.+)\(` and the replacement input contains `fn $1(`."
-  caption="Capture groups can be interpolated into the replacement text with a dollar-sign syntax."
+	src={capture}
+	alt="The search input contains the regex `pub fn (.+)\(` and the replacement input contains `fn $1(`."
+	caption="Capture groups can be interpolated into the replacement text with a dollar-sign syntax."
 />
 
 ### The File List
@@ -174,9 +175,9 @@ The list is scrollable, when focused, with the mouse as well as the up-down arro
 Next to each path is the number of active matches (_i.e._ those that were not toggled to be skipped) and total matches.
 
 <Image
-  src={files}
-  alt="A list of file paths is shown with abbreviated path segments such that the file's base name is still visible. On the right, a scrollbar shows that the list was scrolled towards the bottom. One of the file entries is highlighted and bold."
-  caption="Paths are abbreviated to retain as much useful information about the file's location as possible within the column's width."
+	src={files}
+	alt="A list of file paths is shown with abbreviated path segments such that the file's base name is still visible. On the right, a scrollbar shows that the list was scrolled towards the bottom. One of the file entries is highlighted and bold."
+	caption="Paths are abbreviated to retain as much useful information about the file's location as possible within the column's width."
 />
 
 As you can see from the screenshot above, I implement a small path abbreviation algorithm to retain information about
@@ -206,10 +207,10 @@ replacement is green and bold. For multiline matches, you'll even get the famili
 the lines.
 
 <Image
-  src={preview}
-  alt="A screenshot of the preview pane showing the word `worker` being replaced with `executor` for various matches in a file. Each match has a different case (pascal case, uppercase, and snake_case) and the replacement text adapts to each. A couple of lines of code of context is shown before and after each match."
-  caption="Here we can see the case-awareness at work, the replacement text is modified to match the original text case."
-  maxWidth={700}
+	src={preview}
+	alt="A screenshot of the preview pane showing the word `worker` being replaced with `executor` for various matches in a file. Each match has a different case (pascal case, uppercase, and snake_case) and the replacement text adapts to each. A couple of lines of code of context is shown before and after each match."
+	caption="Here we can see the case-awareness at work, the replacement text is modified to match the original text case."
+	maxWidth={700}
 />
 
 The matched line is truncated in a way that retains the matched text and replacement text as much as possible. So you
@@ -230,9 +231,9 @@ with too many shortcuts so having this menu was a good way to keep things simple
 terminal multiplexers.
 
 <Image
-  src={options}
-  alt="The options pane showing 3 options: the search mode (toggled with `r`), hidden files included or excluded (toggled with `h`) and `.gitignore` included or excluded (toggled with `g`)."
-  caption="The options menu uses single-key shortcuts to avoid polluting the global modifier key shortcuts."
+	src={options}
+	alt="The options pane showing 3 options: the search mode (toggled with `r`), hidden files included or excluded (toggled with `h`) and `.gitignore` included or excluded (toggled with `g`)."
+	caption="The options menu uses single-key shortcuts to avoid polluting the global modifier key shortcuts."
 />
 
 The default value for these options can be customized via a `swpui.toml` or `.swpui.toml` in the `~/.config/swpui` or
@@ -246,8 +247,8 @@ include-gitignored = false
 ```
 
 <ChatNote>
-<code>swpui</code> has its own ignore file named <code>.swpignore</code> which uses the same format as
-<code>.gitignore</code> and can be used to specifically filter out files from the search results.
+	<code>swpui</code> has its own ignore file named <code>.swpignore</code> which uses the same format as <code>.gitignore</code>
+	and can be used to specifically filter out files from the search results.
 </ChatNote>
 
 ## The Technical Stuff
@@ -445,10 +446,10 @@ issues (a [Codeberg mirror](https://codeberg.org/beeb/swpui) is available) or [m
 
 Until next time and thanks for reading.
 
-**EDIT 2026-05-31:** Adjusted `nix` install commands to use `nixpkgs-unstable`. `swpui` now has config file support and
+*EDIT 2026-05-31:* Adjusted `nix` install commands to use `nixpkgs-unstable`. `swpui` now has config file support and
 reads `.swpignore` files.
 
-**EDIT 2026-07-05:** `swpui` v0.9.0 adds mouse support, and starting with v0.10.0, it has support for glob filters
+*EDIT 2026-07-05:* `swpui` v0.9.0 adds mouse support, and starting with v0.10.0, it has support for glob filters
 (include and exclude).
 
 *[TUI]: Terminal User Interface

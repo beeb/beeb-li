@@ -15,13 +15,13 @@ excerpt: >
 ---
 
 <script lang="ts">
-  import shadow from './optimizing-text-offset-calculation/shadow.jpg?enhanced&imgSizes=true'
-  import Image from '#lib/components/Image.svelte'
-  import ChatNote from '#lib/components/ChatNote.svelte'
-  import ByteRegister from './optimizing-text-offset-calculation/ByteRegister.svelte'
+	import shadow from './optimizing-text-offset-calculation/shadow.jpg?enhanced&imgSizes=true'
+	import Image from '#lib/components/Image.svelte'
+	import ChatNote from '#lib/components/ChatNote.svelte'
+	import ByteRegister from './optimizing-text-offset-calculation/ByteRegister.svelte'
 </script>
 
-## Contents
+::toc(aria-label=Contents)
 
 ## Introduction
 
@@ -57,17 +57,17 @@ The `solar`-based parser outputs a list of `Definition`, an enum which represent
 contract, function, or struct definition). Contained inside this type is a source span (byte offset range) for the
 overall item, as well as the span for each parameter, member, or return value for this item.
 
-The goal is to augment these byte offsets with the other fields in `TextIndex`, that is the **line**, **column** and
-**UTF-16 offset** (number of Unicode code units before that position in the text when the text is encoded as UTF-16).
-The UTF-8 offset is simply the number of bytes since the start of the text (which is guaranteed to be valid UTF-8 in
-Rust), so we have that already from the parser's output.
+The goal is to augment these byte offsets with the other fields in `TextIndex`, that is the *line*, *column* and
+*UTF-16 offset* (number of Unicode code units before that position in the text when the text is encoded as UTF-16). The
+UTF-8 offset is simply the number of bytes since the start of the text (which is guaranteed to be valid UTF-8 in Rust),
+so we have that already from the parser's output.
 
 <ChatNote>
-<h5 class="font-bold">Updated 2026-03-14</h5>
-Because the LSP spec actually expects text positions as the line number and column offset, we need the UTF-16 offset
-from the start of the line. To make language server integrations easier, this is what
-<a href="https://github.com/beeb/lintspec/blob/643b8d59fb9bb15fe2aaa6ccb4a2702152d97f08/crates/lintspec-core/src/textindex.rs#L17-L34">lintspec now provides</a>. The rest of this article has not been updated to reflect this,
-but the working principle remains the same.
+	<h5 class="font-bold">Updated 2026-03-14</h5>
+
+	Because the LSP spec actually expects text positions as the line number and column offset, we need the UTF-16 offset
+	from the start of the line. To make language server integrations easier, this is what <a href="https://github.com/beeb/lintspec/blob/643b8d59fb9bb15fe2aaa6ccb4a2702152d97f08/crates/lintspec-core/src/textindex.rs#L17-L34">lintspec now provides</a>.
+	The rest of this article has not been updated to reflect this, but the working principle remains the same.
 </ChatNote>
 
 Here are the steps:
@@ -118,7 +118,7 @@ The naive implementation was taken from `slang` and goes like this:
 ```rust
 impl TextIndex {
     /// Advance the index, accounting for lf/nl/ls/ps characters and combinations.
-    /// 
+    ///
     /// This is *not* derived from the definition of 'newline' in the language definition,
     /// nor is it a complete implementation of the Unicode line breaking algorithm.
     #[inline]
@@ -213,15 +213,15 @@ These should not be considered absolute numbers but will serve to compare the im
 I tested the algorithm on two different source files:
 
 - The first, a pretty short file with 190 lines of code (marked "short" below), which yields 13 `Definition` items and
-  **126 byte offsets** of interest in the file;
-- The second "long" file with 1400 lines of code, which contains 42 `Definition` items and **426 byte offsets**.
+  *126 byte offsets* of interest in the file;
+- The second "long" file with 1400 lines of code, which contains 42 `Definition` items and *426 byte offsets*.
 
 <div class="overflow-x-auto">
 
-| Implementation   | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] |
-| ---------------- | ------------ | ----------- | --------- | ------------ |
-| Baseline (short) | 21.42        | 21.69       | 22.27     | 35.39        |
-| Baseline (long)  | 138.2        | 140.3       | 146.4     | 255          |
+	| Implementation   | Fastest \[µs\] | Median \[µs\] | Mean \[µs\] | Slowest \[µs\] |
+	| ---------------- | -------------- | ------------- | ----------- | -------------- |
+	| Baseline (short) | 21.42          | 21.69         | 22.27       | 35.39          |
+	| Baseline (long)  | 138.2          | 140.3         | 146.4       | 255            |
 
 </div>
 
@@ -280,18 +280,18 @@ This simple change yields a decent speedup versus the baseline already:
 
 <div class="overflow-x-auto">
 
-| Implementation         | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] | Speedup vs. baseline |
-| ---------------------- | ------------ | ----------- | --------- | ------------ | -------------------- |
-| Better advance (short) | 16.54        | 16.85       | 17.42     | 43.82        | 1.29x                |
-| Better advance (long)  | 100.6        | 102.1       | 104       | 126.9        | 1.37x                |
+	| Implementation         | Fastest \[µs\] | Median \[µs\] | Mean \[µs\] | Slowest \[µs\] | Speedup vs. baseline |
+	| ---------------------- | -------------- | ------------- | ----------- | -------------- | -------------------- |
+	| Better advance (short) | 16.54          | 16.85         | 17.42       | 43.82          | 1.29x                |
+	| Better advance (long)  | 100.6          | 102.1         | 104         | 126.9          | 1.37x                |
 
 </div>
 
 <Image
-  src={shadow}
-  maxWidth={800}
-  alt="A picture of a sleeping orange and white cat with his face burried in his paws."
-  caption="This picture of Shadow, my recently adopted cat, serves solely to break up the continuity of the article."
+	src={shadow}
+	maxWidth={800}
+	alt="A picture of a sleeping orange and white cat with his face burried in his paws."
+	caption="This picture of Shadow, my recently adopted cat, serves solely to break up the continuity of the article."
 />
 
 ## `Vec` is All You Need
@@ -325,7 +325,7 @@ fn gather_offsets(definitions: &[Definition]) -> Vec<usize> {
     }
     // looking at the data, this capacity is a good guess
     // it should almost always be enough to store all the offsets without growing the array
-    let mut offsets = Vec::with_capacity(definitions.len() * 16); 
+    let mut offsets = Vec::with_capacity(definitions.len() * 16);
     // ... rest of the function remains untouched ...
     offsets.sort_unstable();
     offsets
@@ -333,7 +333,7 @@ fn gather_offsets(definitions: &[Definition]) -> Vec<usize> {
 
 fn gather_text_indices(source: &str, offsets: &[usize]) -> Vec<TextIndex> {
     // upper bound for the size, we'll have fewer items if there are duplicates
-    let mut text_indices = Vec::with_capacity(offsets.len()); 
+    let mut text_indices = Vec::with_capacity(offsets.len());
     let mut current = TextIndex::ZERO;
 
     let mut ofs_iter = offsets.iter();
@@ -401,17 +401,17 @@ overhead of sorting the larger offsets array.
 
 <div class="overflow-x-auto">
 
-| Implementation   | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] | Speedup vs. previous | Speedup vs. baseline |
-| ---------------- | ------------ | ----------- | --------- | ------------ | -------------------- | -------------------- |
-| Only Vec (short) | 10.58        | 10.63       | 10.9      | 21.85        | 1.59x                | 2.04x                |
-| Only Vec (long)  | 82.65        | 83.08       | 86.94     | 152.9        | 1.23x                | 1.69x                |
+	| Implementation   | Fastest \[µs\] | Median \[µs\] | Mean \[µs\] | Slowest \[µs\] | Speedup vs. previous | Speedup vs. baseline |
+	| ---------------- | -------------- | ------------- | ----------- | -------------- | -------------------- | -------------------- |
+	| Only Vec (short) | 10.58          | 10.63         | 10.9        | 21.85          | 1.59x                | 2.04x                |
+	| Only Vec (long)  | 82.65          | 83.08         | 86.94       | 152.9          | 1.23x                | 1.69x                |
 
 </div>
 
 ## SIMDid You Say ASCII?
 
 <ChatNote>
-What's that I hear? Yes, you. You in the back. Sim-who? SIMD? Never heard of him.
+	What's that I hear? Yes, you. You in the back. Sim-who? SIMD? Never heard of him.
 </ChatNote>
 
 If you were looking at that hot loop in `gather_text_indices` and shouting "You can parallelize that!" then you'd be
@@ -436,8 +436,8 @@ are pretty common on consumer CPUs (AVX2 instruction set), which I target with `
 supported, `wide` uses two `i8x16` internally.
 
 <ChatNote>
-Remember how each processor architecture have their own instructions? Well that crate abstracts that away and performs
-runtime checks to see which of those are available on the machine running the code.
+	Remember how each processor architecture have their own instructions? Well that crate abstracts that away and performs
+	runtime checks to see which of those are available on the machine running the code.
 </ChatNote>
 
 This function simply takes a slice of `i8` (many SIMD instructions somehow operate on signed integers, probably because
@@ -454,13 +454,44 @@ Take the string `hello\r\ncafé` as an example. In UTF-8, the `é` character enc
 both of which are greater than 127. When reinterpreted as `i8`, they become negative (we only show 12 bytes here for
 compactness, but the actual registers contain 32):
 
-<ByteRegister label="as u8" cells={[ { label: 'h' }, { label: 'e' }, { label: 'l' }, { label: 'l' }, { label: 'o' }, {
-label: '\\r', variant: 'newline' }, { label: '\\n', variant: 'newline' }, { label: 'c' }, { label: 'a' }, { label: 'f'
-}, { label: '0xC3', variant: 'nonascii' }, { label: '0xA9', variant: 'nonascii' }, ]} />
+<ByteRegister
+	label="as u8"
+	cells={[
+		{ label: 'h' },
+		{ label: 'e' },
+		{ label: 'l' },
+		{ label: 'l' },
+		{ label: 'o' },
+		{
+			label: '\\r',
+			variant: 'newline',
+		},
+		{ label: '\\n', variant: 'newline' },
+		{ label: 'c' },
+		{ label: 'a' },
+		{ label: 'f' },
+		{ label: '0xC3', variant: 'nonascii' },
+		{ label: '0xA9', variant: 'nonascii' },
+	]}
+/>
 
-<ByteRegister label="as i8" cells={[ { label: '104' }, { label: '101' }, { label: '108' }, { label: '108' }, { label:
-'111' }, { label: '13' }, { label: '10' }, { label: '99' }, { label: '97' }, { label: '102' }, { label: '−61', variant:
-'negative' }, { label: '−87', variant: 'negative' }, ]} />
+<ByteRegister
+	label="as i8"
+	cells={[
+		{ label: '104' },
+		{ label: '101' },
+		{ label: '108' },
+		{ label: '108' },
+		{ label: '111' },
+		{ label: '13' },
+		{ label: '10' },
+		{ label: '99' },
+		{ label: '97' },
+		{ label: '102' },
+		{ label: '−61', variant: 'negative' },
+		{ label: '−87', variant: 'negative' },
+	]}
+/>
 
 We thus put all zeroes into another one of those registers and perform a `simd_lt` operation, which will compare each
 byte of the first operand with the bytes in the second, and set the corresponding byte in the result to `0xFF` if lower,
@@ -468,64 +499,213 @@ or `0x00` if equal or higher. At this point, our result is still a `i8x32`, but 
 yet another special SIMD instruction. In `wide`, it's as easy as invoking `to_bitmask`. This will map each of the bytes
 in the result to a _bit_ in a regular 32-bit integer.
 
-<ByteRegister label="splat(0x00)" cells={[ { label: '0x00' }, { label: '0x00' }, { label: '0x00' }, { label: '0x00' }, {
-label: '0x00' }, { label: '0x00' }, { label: '0x00' }, { label: '0x00' }, { label: '0x00' }, { label: '0x00' }, { label:
-'0x00' }, { label: '0x00' }, ]} />
+<ByteRegister
+	label="splat(0x00)"
+	cells={[
+		{ label: '0x00' },
+		{ label: '0x00' },
+		{ label: '0x00' },
+		{ label: '0x00' },
+		{
+			label: '0x00',
+		},
+		{ label: '0x00' },
+		{ label: '0x00' },
+		{ label: '0x00' },
+		{ label: '0x00' },
+		{ label: '0x00' },
+		{ label: '0x00' },
+		{ label: '0x00' },
+	]}
+/>
 
-<ByteRegister label="< 0 i8x32" cells={[ { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, {
-label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label:
-'0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00',
-variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0xFF', variant: 'nonascii' }, { label: '0xFF',
-variant: 'nonascii' }, ]} />
+<ByteRegister
+	label="< 0 i8x32"
+	cells={[
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{
+			label: '0x00',
+			variant: 'unset',
+		},
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0xFF', variant: 'nonascii' },
+		{ label: '0xFF', variant: 'nonascii' },
+	]}
+/>
 
-<ByteRegister label="u32 bits (lo to hi)" cells={[ { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, {
-label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0',
-variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset'
-}, { label: '0', variant: 'unset' }, { label: '1', variant: 'set' }, { label: '1', variant: 'set' }, ]} />
+<ByteRegister
+	label="u32 bits (lo to hi)"
+	cells={[
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{
+			label: '0',
+			variant: 'unset',
+		},
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '1', variant: 'set' },
+		{ label: '1', variant: 'set' },
+	]}
+/>
 
 We then do the same to check if some of the input bytes are equal to `\n` or `\r`. The `splat` operation fills a wide
 register with multiple copies of the same byte, and `simd_eq` puts `0xFF` in the result if the bytes match:
 
-<ByteRegister label="splat(\n)" cells={[ { label: '\\n', variant: 'newline' }, { label: '\\n', variant: 'newline' }, {
-label: '\\n', variant: 'newline' }, { label: '\\n', variant: 'newline' }, { label: '\\n', variant: 'newline' }, { label:
-'\\n', variant: 'newline' }, { label: '\\n', variant: 'newline' }, { label: '\\n', variant: 'newline' }, { label: '\\n',
-variant: 'newline' }, { label: '\\n', variant: 'newline' }, { label: '\\n', variant: 'newline' }, { label: '\\n',
-variant: 'newline' }, ]} />
+<ByteRegister
+	label="splat(\n)"
+	cells={[
+		{ label: '\\n', variant: 'newline' },
+		{ label: '\\n', variant: 'newline' },
+		{
+			label: '\\n',
+			variant: 'newline',
+		},
+		{ label: '\\n', variant: 'newline' },
+		{ label: '\\n', variant: 'newline' },
+		{ label: '\\n', variant: 'newline' },
+		{ label: '\\n', variant: 'newline' },
+		{ label: '\\n', variant: 'newline' },
+		{ label: '\\n', variant: 'newline' },
+		{ label: '\\n', variant: 'newline' },
+		{ label: '\\n', variant: 'newline' },
+		{ label: '\\n', variant: 'newline' },
+	]}
+/>
 
-<ByteRegister label="== LF i8x32" cells={[ { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, {
-label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label:
-'0x00', variant: 'unset' }, { label: '0xFF', variant: 'newline' }, { label: '0x00', variant: 'unset' }, { label: '0x00',
-variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant:
-'unset' }, ]} />
+<ByteRegister
+	label="== LF i8x32"
+	cells={[
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{
+			label: '0x00',
+			variant: 'unset',
+		},
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0xFF', variant: 'newline' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+	]}
+/>
 
-<ByteRegister label="LF u32 bits (lo to hi)" cells={[ { label: '0', variant: 'unset' }, { label: '0', variant: 'unset'
-}, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0',
-variant: 'unset' }, { label: '1', variant: 'set' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' },
-{ label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, ]} />
+<ByteRegister
+	label="LF u32 bits (lo to hi)"
+	cells={[
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '1', variant: 'set' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+	]}
+/>
 
-<ByteRegister label="splat(\r)" cells={[ { label: '\\r', variant: 'newline' }, { label: '\\r', variant: 'newline' }, {
-label: '\\r', variant: 'newline' }, { label: '\\r', variant: 'newline' }, { label: '\\r', variant: 'newline' }, { label:
-'\\r', variant: 'newline' }, { label: '\\r', variant: 'newline' }, { label: '\\r', variant: 'newline' }, { label: '\\r',
-variant: 'newline' }, { label: '\\r', variant: 'newline' }, { label: '\\r', variant: 'newline' }, { label: '\\r',
-variant: 'newline' }, ]} />
+<ByteRegister
+	label="splat(\r)"
+	cells={[
+		{ label: '\\r', variant: 'newline' },
+		{ label: '\\r', variant: 'newline' },
+		{
+			label: '\\r',
+			variant: 'newline',
+		},
+		{ label: '\\r', variant: 'newline' },
+		{ label: '\\r', variant: 'newline' },
+		{ label: '\\r', variant: 'newline' },
+		{ label: '\\r', variant: 'newline' },
+		{ label: '\\r', variant: 'newline' },
+		{ label: '\\r', variant: 'newline' },
+		{ label: '\\r', variant: 'newline' },
+		{ label: '\\r', variant: 'newline' },
+		{ label: '\\r', variant: 'newline' },
+	]}
+/>
 
-<ByteRegister label="== CR i8x32" cells={[ { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, {
-label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label:
-'0xFF', variant: 'newline' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00',
-variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant: 'unset' }, { label: '0x00', variant:
-'unset' }, ]} />
+<ByteRegister
+	label="== CR i8x32"
+	cells={[
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{
+			label: '0x00',
+			variant: 'unset',
+		},
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0xFF', variant: 'newline' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+		{ label: '0x00', variant: 'unset' },
+	]}
+/>
 
-<ByteRegister label="CR u32 bits (lo to hi)" cells={[ { label: '0', variant: 'unset' }, { label: '0', variant: 'unset'
-}, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '1',
-variant: 'set' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' },
-{ label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, ]} />
+<ByteRegister
+	label="CR u32 bits (lo to hi)"
+	cells={[
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '1', variant: 'set' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+	]}
+/>
 
 We then merge all 3 masks with a simple bit-wise `OR`:
 
-<ByteRegister label="combined u32 (lo to hi)" cells={[ { label: '0', variant: 'final' }, { label: '0', variant: 'final'
-}, { label: '0', variant: 'final' }, { label: '0', variant: 'final' }, { label: '0', variant: 'final' }, { label: '1',
-variant: 'set' }, { label: '1', variant: 'set' }, { label: '0', variant: 'unset' }, { label: '0', variant: 'unset' }, {
-label: '0', variant: 'unset' }, { label: '1', variant: 'set' }, { label: '1', variant: 'set' }, ]} />
+<ByteRegister
+	label="combined u32 (lo to hi)"
+	cells={[
+		{ label: '0', variant: 'final' },
+		{ label: '0', variant: 'final' },
+		{ label: '0', variant: 'final' },
+		{ label: '0', variant: 'final' },
+		{ label: '0', variant: 'final' },
+		{ label: '1', variant: 'set' },
+		{ label: '1', variant: 'set' },
+		{ label: '0', variant: 'unset' },
+		{ label: '0', variant: 'unset' },
+		{
+			label: '0',
+			variant: 'unset',
+		},
+		{ label: '1', variant: 'set' },
+		{ label: '1', variant: 'set' },
+	]}
+/>
 
 With this function, it's now trivial to know how many bytes at the start of the slice are contiguous ASCII characters,
 we simply call `mask.trailing_zeros()` (the lowest bit in the mask corresponds to the first byte in the slice). In the
@@ -568,13 +748,13 @@ correspond to the offsets of interest.
 The process goes something like this:
 
 1. Check if there are 32 bytes remaining in the input;
-1. If so, count how many of those are ASCII with the helper;
-1. Also check if the next offset of interest is within this chunk;
-1. If the next offset comes before the next non-ASCII or newline, advance the current `TextIndex` and save a copy;
-1. Otherwise, advance the `TextIndex` to the next non-ASCII or newline;
-1. After processing this 32-byte chunk, if we stopped because of non-ASCII or newline character, we process those with
+2. If so, count how many of those are ASCII with the helper;
+3. Also check if the next offset of interest is within this chunk;
+4. If the next offset comes before the next non-ASCII or newline, advance the current `TextIndex` and save a copy;
+5. Otherwise, advance the `TextIndex` to the next non-ASCII or newline;
+6. After processing this 32-byte chunk, if we stopped because of non-ASCII or newline character, we process those with
    the default routine (`char` iterator and `TextIndex::advance`), else we go for the next chunk;
-1. When we're done processing line endings and Unicode characters (if any), we go back to the SIMD routine.
+7. When we're done processing line endings and Unicode characters (if any), we go back to the SIMD routine.
 
 Are you ready for the Wall of Code™?
 
@@ -679,10 +859,10 @@ The numbers are in, and they look great:
 
 <div class="overflow-x-auto">
 
-| Implementation | Fastest [µs] | Median [µs] | Mean [µs] | Slowest [µs] | Speedup vs. previous | Speedup vs. baseline |
-| -------------- | ------------ | ----------- | --------- | ------------ | -------------------- | -------------------- |
-| SIMD (short)   | 1.951        | 1.972       | 2.036     | 6.321        | 5.39x                | 11.00x               |
-| SIMD (long)    | 12.74        | 12.82       | 13.24     | 26.36        | 6.48x                | 10.94x               |
+	| Implementation | Fastest \[µs\] | Median \[µs\] | Mean \[µs\] | Slowest \[µs\] | Speedup vs. previous | Speedup vs. baseline |
+	| -------------- | -------------- | ------------- | ----------- | -------------- | -------------------- | -------------------- |
+	| SIMD (short)   | 1.951          | 1.972         | 2.036       | 6.321          | 5.39x                | 11.00x               |
+	| SIMD (long)    | 12.74          | 12.82         | 13.24       | 26.36          | 6.48x                | 10.94x               |
 
 </div>
 
@@ -692,19 +872,19 @@ Here is the final comparison between the baseline and each of the optimization s
 
 <div class="overflow-x-auto">
 
-| Short file             | Median [µs] | Speedup vs. baseline |
-| ---------------------- | ----------- | -------------------- |
-| Baseline (short)       | 21.69       | 1.00x                |
-| Better advance (short) | 16.85       | 1.29x                |
-| Only Vec (short)       | 10.63       | 2.04x                |
-| SIMD (short)           | 1.972       | 11.00x               |
+	| Short file             | Median \[µs\] | Speedup vs. baseline |
+	| ---------------------- | ------------- | -------------------- |
+	| Baseline (short)       | 21.69         | 1.00x                |
+	| Better advance (short) | 16.85         | 1.29x                |
+	| Only Vec (short)       | 10.63         | 2.04x                |
+	| SIMD (short)           | 1.972         | 11.00x               |
 
-| Long file             | Median [µs] | Speedup vs. baseline |
-| --------------------- | ----------- | -------------------- |
-| Baseline (long)       | 140.3       | 1.00x                |
-| Better advance (long) | 102.1       | 1.37x                |
-| Only Vec (long)       | 83.08       | 1.69x                |
-| SIMD (long)           | 12.82       | 10.94x               |
+	| Long file             | Median \[µs\] | Speedup vs. baseline |
+	| --------------------- | ------------- | -------------------- |
+	| Baseline (long)       | 140.3         | 1.00x                |
+	| Better advance (long) | 102.1         | 1.37x                |
+	| Only Vec (long)       | 83.08         | 1.69x                |
+	| SIMD (long)           | 12.82         | 10.94x               |
 
 </div>
 

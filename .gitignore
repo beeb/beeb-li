@@ -12,3 +12,5 @@ vite.config.ts.timestamp-*
 
 .direnv/
 /.vercel/
+
+!.helix/

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@plugin "@iconify/tailwind4";
 @plugin "daisyui" {
 	themes: false;
 }
@@ -69,23 +70,23 @@
 
 /* table of contents */
 
-h2#contents + ul {
+.prose .toc > ul {
 	@apply list-decimal;
 }
 
-h2#contents + ul a {
+.prose .toc > ul a {
 	@apply text-base-content font-normal;
 }
 
-h2#contents + ul ul {
+.prose .toc > ul ul {
 	@apply list-none my-0;
 }
 
-h2#contents + ul li {
+.prose .toc > ul li {
 	@apply my-1;
 }
 
-h2#contents + ul ul > li:last-child {
+.prose .toc > ul ul > li:last-child {
 	@apply mb-0;
 }
 
@@ -178,6 +179,26 @@ html:has(input.theme-controller[value="light"]:not(:checked)) .shiki span {
 .prose pre[data-language]::before {
 	content: attr(data-language);
 	@apply absolute right-4 bottom-4 text-sm border rounded-sm p-1 opacity-60;
+}
+
+/* heading anchors */
+.prose :has(> .heading-anchor) {
+	@apply flex flex-wrap items-center gap-x-2;
+}
+
+.heading-anchor::after {
+	@apply icon-[mingcute--link-line] size-[0.8em] content-[''];
+}
+
+/* on devices with a cursor, only show the anchor when hovering the heading */
+@media (hover: hover) {
+	.heading-anchor {
+		@apply opacity-0 transition-opacity;
+	}
+
+	:hover > .heading-anchor {
+		@apply opacity-100;
+	}
 }
 
 /* various */
