@@ -1,0 +1,9 @@
+{
+	"plugins": ["@mdsvex/prettier-plugin"],
+	"useTabs": true,
+	"printWidth": 120,
+	"singleQuote": true,
+	"semi": false,
+	"proseWrap": "always",
+	"overrides": [{ "files": "*.md", "options": { "parser": "mdsvex" } }]
+}

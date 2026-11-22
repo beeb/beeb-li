@@ -1,0 +1,3 @@
+[[language]]
+name = "markdown"
+formatter = { command = "pnpm", args = ["exec", "prettier", "--stdin-filepath", "%{buffer_name}"] }

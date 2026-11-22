@@ -9,8 +9,8 @@ categories:
   - testing
   - tutorial
 coverImage: true
-coverCredits: "Photo by yasin hemmati on Unsplash"
-coverAlt: "A picture of molten metal exiting the spout of a foundry into a vat"
+coverCredits: 'Photo by yasin hemmati on Unsplash'
+coverAlt: 'A picture of molten metal exiting the spout of a foundry into a vat'
 excerpt: >
   Differential testing allows to compare implementations and is especially useful in Solidity, where optimizations are
   frequently made by replacing code with low-level YUL instructions. By leveraging the fast startup times and low
@@ -18,13 +18,13 @@ excerpt: >
 ---
 
 <script lang="ts">
-  import stars from './diff-testing-solidity-rust-foundry/star-history-2024614.png?enhanced&imgSizes=true'
-  import Image from '#lib/components/Image.svelte'
-  import Console from '#lib/components/Console.svelte'
-  import ChatNote from '#lib/components/ChatNote.svelte'
+	import stars from './diff-testing-solidity-rust-foundry/star-history-2024614.png?enhanced&imgSizes=true'
+	import Image from '#lib/components/Image.svelte'
+	import Console from '#lib/components/Console.svelte'
+	import ChatNote from '#lib/components/ChatNote.svelte'
 </script>
 
-## Contents
+::toc(aria-label=Contents)
 
 ## Introduction
 
@@ -59,12 +59,12 @@ The ability to use the Solidity language across the full development cycle, from
 surely to thank for that.
 
 <Image
-  src={stars}
-  maxWidth={500}
-  alt="A chart of the evolution of GitHub stars for the Foundry and Hardhat projects. The Foundry line shows a rapid
+	src={stars}
+	maxWidth={500}
+	alt="A chart of the evolution of GitHub stars for the Foundry and Hardhat projects. The Foundry line shows a rapid
   increase in stars count while the Hardhat line shows that its slope is decreasing since 2023. The Foundry project
   overtook Hardhat in terms of stars around the beginning of 2023."
-  caption="Although arguably not the best metric of popularity, the number of stars Foundry has on GitHub, compared to
+	caption="Although arguably not the best metric of popularity, the number of stars Foundry has on GitHub, compared to
   the previously popular toolkit Hardhat, demonstrates the shifting preference of the Solidity ecosystem."
 />
 
@@ -95,7 +95,7 @@ It will be obvious to those who know me personally that my language of choice fo
 really, for implementing anything!) is Rust.
 
 In the context of today however, Rust is particularly interesting because, it being a compiled language with a focus on
-correctness and performance, the **startup times and memory footprint** are relatively small, and the expansive crate
+correctness and performance, the *startup times and memory footprint* are relatively small, and the expansive crate
 ecosystem makes it a breeze to find good quality alternative implementations for many things.
 
 Since diff-testing often relies of fuzzing the inputs to a particular function (_i.e._ generating random values), the
@@ -105,9 +105,9 @@ increase the time spent running our test.
 
 ### Testing Overhead
 
-The above example calling the `echo` command takes **192ms** on my machine for 256 fuzzing runs. Compared to this, the
+The above example calling the `echo` command takes *192ms* on my machine for 256 fuzzing runs. Compared to this, the
 same test which doesn't call `echo` (but performs otherwise all the same operations of building the array in memory and
-the assert) takes **9ms**. The FFI test is a noticeably slower of course, which is why we have to make our executable as
+the assert) takes *9ms*. The FFI test is a noticeably slower of course, which is why we have to make our executable as
 fast as possible.
 
 ## Project Setup
@@ -115,7 +115,7 @@ fast as possible.
 Let's setup a project to demonstrate some basic uses of the techniques described above. First, we create a new Foundry
 project and initiate a Rust project inside:
 
-<Console entries={[ "forge init diff-testing", "cd diff-testing", "cargo new utils", ]} />
+<Console entries={['forge init diff-testing', 'cd diff-testing', 'cargo new utils']} />
 
 Since we want to be able to invoke `cargo` commands directly from the root of the `diff-testing` project and have the
 built binary reside inside the `target/release` folder, we will add a `Cargo.toml` file at the root:
@@ -128,7 +128,7 @@ members = ["utils"]
 
 Now, running the following inside our project should compile and run the Rust binary in release mode:
 
-<Console entries={[ "cargo run -qr", { text: "Hello, world!", prefix: "", cl: "text-info" } ]} />
+<Console entries={['cargo run -qr', { text: 'Hello, world!', prefix: '', cl: 'text-info' }]} />
 
 ## Example: Solady's `DateTimeLib`
 
@@ -136,14 +136,14 @@ As a practical exercise, we will differentially test the `timestampToDate` funct
 [Solady's `DateTimeLib` library](https://github.com/Vectorized/solady/blob/678c9163550810b08f0ffb09624c9f7532392303/src/utils/DateTimeLib.sol#L118C14-L124).
 We add the Solady dependency to the project:
 
-<Console entries={["forge install Vectorized/solady"]} />
+<Console entries={['forge install Vectorized/solady']} />
 
 ### Rust reference implementation
 
 Let's start by creating our reference implementation in Rust. We first add a dependency on `alloy-core` for Solidity
 types and ABI encoding, and `chrono` for date/time manipulations:
 
-<Console entries={["cargo add -p utils chrono alloy-core -F alloy-core/sol-types"]} />
+<Console entries={['cargo add -p utils chrono alloy-core -F alloy-core/sol-types']} />
 
 We then add the following to our `utils/src/main.rs`:
 
@@ -195,12 +195,20 @@ year, month and day are then ABI-encoded into a tuple of 3 unsigned 256-bit inte
 
 When we invoke our binary, we should see the following:
 
-<Console entries={[ "cargo build -r", "target/release/utils timestamp_to_date 1717200000", { text:
-"0x00000000000000000000000000000000000000000000000000000000000007e800000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000001",
-prefix: "", cl: "text-info" } ]} />
+<Console
+	entries={[
+		'cargo build -r',
+		'target/release/utils timestamp_to_date 1717200000',
+		{
+			text: '0x00000000000000000000000000000000000000000000000000000000000007e800000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000001',
+			prefix: '',
+			cl: 'text-info',
+		},
+	]}
+/>
 
 Benchmarking this command with [hyperfine](https://github.com/sharkdp/hyperfine) gives us an average execution time of
-**298μs** on my system. Not too bad! For 256 fuzzing runs, this would translate to a total time of roughly 76ms, not
+*298μs* on my system. Not too bad! For 256 fuzzing runs, this would translate to a total time of roughly 76ms, not
 accounting for the overhead of the `vm.ffi` call.
 
 ### Foundry Test
@@ -235,21 +243,24 @@ function testFuzz_soladyTimestampToDate(uint256 timestamp) public {
 ```
 
 <ChatNote>
-<strong>Note</strong>: to keep the Rust implementation simple and for the sake of demonstration, we limit the timestamp
-range to a maximum value that is much smaller than what Solady supports, so that we can use the <code>chrono</code> crate. In
-practice however, it would be good to test the full range of acceptable values according to Solady's own limitations.
+	<strong>Note</strong>: to keep the Rust implementation simple and for the sake of demonstration, we limit the
+	timestamp range to a maximum value that is much smaller than what Solady supports, so that we can use the <code>chrono</code>
+	crate. In practice however, it would be good to test the full range of acceptable values according to Solady's own
+	limitations.
 </ChatNote>
 
 And here's the result. Seems our test is even faster than the `echo` example we've seen before! 🎉
 
-<!-- deno-fmt-ignore-start -->
-<Console entries={[
-"forge test --ffi",
-{
-text: "Ran 1 test for test/Diff.t.sol:DiffTest\n[PASS] testFuzz_soladyTimestampToDate(uint256) (runs: 257, μ: 13136, ~: 12816)\nSuite result: ok. 1 passed; 0 failed; 0 skipped; finished in 131.61ms (131.39ms CPU time)\n\nRan 1 test suite in 135.05ms (131.61ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)",
-prefix: "", cl: "text-info"}
-]} />
-<!-- deno-fmt-ignore-end -->
+<Console
+	entries={[
+		'forge test --ffi',
+		{
+			text: 'Ran 1 test for test/Diff.t.sol:DiffTest\n[PASS] testFuzz_soladyTimestampToDate(uint256) (runs: 257, μ: 13136, ~: 12816)\nSuite result: ok. 1 passed; 0 failed; 0 skipped; finished in 131.61ms (131.39ms CPU time)\n\nRan 1 test suite in 135.05ms (131.61ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)',
+			prefix: '',
+			cl: 'text-info',
+		},
+	]}
+/>
 
 Note that we added the `--ffi` argument to `forge test` to enable the feature. This could also be enabled by default via
 the `foundry.toml` configuration file:

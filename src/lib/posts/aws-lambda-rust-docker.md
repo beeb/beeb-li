@@ -18,11 +18,11 @@ excerpt: >
 ---
 
 <script lang="ts">
-  import ChatNote from '#lib/components/ChatNote.svelte'
-  import Console from '#lib/components/Console.svelte'
+	import ChatNote from '#lib/components/ChatNote.svelte'
+	import Console from '#lib/components/Console.svelte'
 </script>
 
-## Contents
+::toc(aria-label=Contents)
 
 ## Introduction
 
@@ -85,9 +85,9 @@ requests to this locally-running lambda without worrying about the AWS event obj
 and allows to cross-compile for different processor architectures.
 
 <ChatNote>
-Interestingly, Cargo Lambda uses the <a href="https://www.cargo-lambda.info/guide/cross-compiling.html" ref="nofollow">
-Zig toolchain to enable cross-compilation</a>. How cool! Note that the use of
-<a href="https://github.com/cross-rs/cross" ref="nofollow">cross</a> is also supported.
+	Interestingly, Cargo Lambda uses the <a href="https://www.cargo-lambda.info/guide/cross-compiling.html" ref="nofollow">
+	Zig toolchain to enable cross-compilation</a>.
+	How cool! Note that the use of <a href="https://github.com/cross-rs/cross" ref="nofollow">cross</a> is also supported.
 </ChatNote>
 
 ## The Dockerfile
@@ -157,7 +157,7 @@ images from a single Dockerfile. Only `linux/amd64` and `linux/arm64` are
 
 Here's how this file would be used to build an ARM image for our `hello_world` service:
 
-<Console entries={[ "docker build --platform linux/arm64 --build-arg package=hello_world -t hello_world:latest ." ]} />
+<Console entries={['docker build --platform linux/arm64 --build-arg package=hello_world -t hello_world:latest .']} />
 
 Note that this Dockerfile would work within a Cargo workspace thanks to the `--bin $package` argument, so you could use
 a single Dockerfile to compile every service in your monorepo!
@@ -169,7 +169,7 @@ need to formulate our request in a format that is comprehensible to the AWS Lamb
 
 To spin up our container, we use the following command:
 
-<Console entries={[ "docker run --rm -p 8080:8080 hello_world:latest" ]} />
+<Console entries={['docker run --rm -p 8080:8080 hello_world:latest']} />
 
 The request needs to be sent with the `POST` method and a JSON body matching the
 [Payload 2.0 format](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html).
@@ -198,12 +198,16 @@ It took me a while to find this information because I didn't really know what I 
 If we send this request to the container, we get a response from our function 🎉 (albeit wrapped in the API Gateway
 response format).
 
-<!-- deno-fmt-ignore-start -->
-<Console entries={[
-"curl -X POST --data '{\"version\":\"2.0\",\"rawQueryString\":\"name=beeb\",\"requestContext\":{\"http\":{\"method\":\"GET\"},\"timeEpoch\":0}}' http://localhost:8080/2015-03-31/functions/function/invocations",
-{ text: "{\"statusCode\":200,\"headers\":{\"content-type\":\"text/html\"},\"multiValueHeaders\":{},\"body\":\"Hello beeb, this is an AWS Lambda HTTP request\",\"isBase64Encoded\":false,\"cookies\":[]}", prefix: "", cl: "text-info" },
-]} />
-<!-- deno-fmt-ignore-end -->
+<Console
+	entries={[
+		'curl -X POST --data \'{"version":"2.0","rawQueryString":"name=beeb","requestContext":{"http":{"method":"GET"},"timeEpoch":0}}\' http://localhost:8080/2015-03-31/functions/function/invocations',
+		{
+			text: '{"statusCode":200,"headers":{"content-type":"text/html"},"multiValueHeaders":{},"body":"Hello beeb, this is an AWS Lambda HTTP request","isBase64Encoded":false,"cookies":[]}',
+			prefix: '',
+			cl: 'text-info',
+		},
+	]}
+/>
 
 ## Final Words
 

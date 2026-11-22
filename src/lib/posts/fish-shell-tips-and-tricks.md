@@ -9,23 +9,25 @@ categories:
   - tips
 coverImage: true
 coverCredits: Photo by Pratik Patel on Unsplash
-coverAlt: A picture of an orange shell from some marine animal, on a black sand beach. The sea can be seen in the background, blurry and desaturated, with some rocks delimiting the other side of a creek.
+coverAlt:
+  A picture of an orange shell from some marine animal, on a black sand beach. The sea can be seen in the background,
+  blurry and desaturated, with some rocks delimiting the other side of a creek.
 excerpt: >
   A collection of tips and tricks for the fish shell I wish I had known about a long time ago.
 ---
 
 <script lang="ts">
-  import Asciinema from "#lib/components/Asciinema.svelte"
-  import ChatNote from '#lib/components/ChatNote.svelte'
-  import Kbd from "#lib/components/Kbd.svelte"
-  import editBuffer from './fish-shell-tips-and-tricks/edit-buffer.cast?url'
-  import lastCommand from './fish-shell-tips-and-tricks/last-command.cast?url'
-  import sudo from './fish-shell-tips-and-tricks/sudo.cast?url'
-  import open from './fish-shell-tips-and-tricks/open.cast?url'
-  import abbr from './fish-shell-tips-and-tricks/abbr.cast?url'
+	import Asciinema from '#lib/components/Asciinema.svelte'
+	import ChatNote from '#lib/components/ChatNote.svelte'
+	import Kbd from '#lib/components/Kbd.svelte'
+	import editBuffer from './fish-shell-tips-and-tricks/edit-buffer.cast?url'
+	import lastCommand from './fish-shell-tips-and-tricks/last-command.cast?url'
+	import sudo from './fish-shell-tips-and-tricks/sudo.cast?url'
+	import open from './fish-shell-tips-and-tricks/open.cast?url'
+	import abbr from './fish-shell-tips-and-tricks/abbr.cast?url'
 </script>
 
-## Contents
+::toc(aria-label=Contents)
 
 ## Introduction
 
@@ -44,7 +46,13 @@ buffer in your configured `$VISUAL` or `$EDITOR` tool with the default keybindin
 
 In the cast below, the buffer opens in [helix](https://helix-editor.com/), my modal editor of choice!
 
-<Asciinema url={editBuffer} fallback="https://asciinema.org/a/m7mrUL9LmRoz2AymjVN1DY4LB" cols={110} rows={11} loop={3} />
+<Asciinema
+	url={editBuffer}
+	fallback="https://asciinema.org/a/m7mrUL9LmRoz2AymjVN1DY4LB"
+	cols={110}
+	rows={11}
+	loop={3}
+/>
 
 ## Undo and Redo Command Edits
 
@@ -73,13 +81,20 @@ end
 abbr -a !! --position anywhere --function last_history_item
 ```
 
-<Asciinema url={lastCommand} fallback="https://asciinema.org/a/j124k6CJMKcUp5unlIkx2g5cc" cols={110} rows={11} loop={3} />
-&nbsp;
+<Asciinema
+	url={lastCommand}
+	fallback="https://asciinema.org/a/j124k6CJMKcUp5unlIkx2g5cc"
+	cols={110}
+	rows={11}
+	loop={3}
+/>
+
+<div>&nbsp;</div>
 
 <ChatNote>
-The huge advantage of abbreviations is that they automatically expand when you hit the "space" or "enter" key, so they
-are not "blind" and allow you to inspect the command before committing.
-We'll go into more details about the <code>abbr</code> command in a later section of this article.
+	The huge advantage of abbreviations is that they automatically expand when you hit the "space" or "enter" key, so they
+	are not "blind" and allow you to inspect the command before committing. We'll go into more details about the <code>abbr</code>
+	command in a later section of this article.
 </ChatNote>
 
 ## Prepend `sudo`
@@ -226,8 +241,8 @@ the <Kbd seq="ctrl-x" /> shortcut. To paste, a simple <Kbd seq="ctrl-v" /> does 
 
 <Kbd seq="ctrl-k" /> puts everything from the cursor position until the end of the line into the Kill Ring, which can
 then be pasted with <Kbd seq="ctrl-y" /> (the key stands for "yank", apparently a heritage of the Emacs edition mode).
-Since the pasteboard is a ring, we can put multiple things in there and then rotate between them in reverse order,
-<strong>after pasting</strong>, with <Kbd seq="alt-y" /> (yank-pop).
+Since the pasteboard is a ring, we can put multiple things in there and then rotate between them in reverse order, <strong>after pasting</strong>,
+with <Kbd seq="alt-y" /> (yank-pop).
 
 ## Bonus: Directory History
 
