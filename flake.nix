@@ -22,7 +22,6 @@
               nodejs-slim
               pagefind
               pnpm
-              prettier
               typescript
             ];
             shellHook = ''
